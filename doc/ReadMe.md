@@ -2,7 +2,7 @@
 
 ## 参考源码
 
-https://github.com/coderzh/v8-demo
+* [依赖V8动态库运行JS代码](https://github.com/coderzh/v8-demo)
 
 ## 命令行
 
@@ -60,3 +60,11 @@ shengshuqiangdeMacBook-Pro:build shengshuqiang$ cp ../libs/* /usr/local/lib
 shengshuqiangdeMacBook-Pro:build shengshuqiang$ ./v8_demo 
 我服SSU,一个牛逼💯的人
 ```
+
+# V8和JS相互调用
+
+## 参考源码
+
+* [使用 Google V8 引擎开发可定制的应用程序](https://www.ibm.com/developerworks/cn/opensource/os-cn-v8engine/index.html)
+* [计算器原型样例代码](https://www.ibm.com/developerworks/apps/download/index.jsp?contentid=809957&filename=v8demo.zip&method=http&locale=zh_CN)
+
