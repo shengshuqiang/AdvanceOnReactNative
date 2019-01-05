@@ -1,23 +1,15 @@
 handleMsg = (msg) => {
-	var result = '我服' + msg + ',一个牛逼💯的人'
+	var result = '我服' + msg + ',一个牛逼的人'
 	console.log('handleMsg:' + result)
 	return result
 }
 
 init = () => {
-	RedArmy = '🔥'
-	BlackArmy = '💧'
-	EmptyArmy = '🎄'
+	RedArmy = '♤'
+	BlackArmy = '♠︎'
+	EmptyArmy = '♢'
 	Board = [EmptyArmy, BlackArmy, BlackArmy, BlackArmy, EmptyArmy, EmptyArmy, EmptyArmy, RedArmy, RedArmy, RedArmy]
 	Location = ['⑩','①','②','③','④','⑤','⑥','⑦','⑧','⑨']
-	Right = '→'
-	Left = '←'
-	Right = '↑'
-	Right = '↓'
-	Right = '↖'
-	Right = '↗'
-	Right = '↘'
-	Right = '↙'
 	Left2Right = '一'
 	Top2Bottom = '｜'
 	LeftBottom2RightTop = '╱'
@@ -26,7 +18,7 @@ init = () => {
 	stepIndex = 0
 
 	printBoard()
-	printMsg("请🌴🐑");
+	printMsg("请");
 }
 
 buildChess = index => (Location[index] + Board[index])
@@ -53,10 +45,10 @@ receiveOrderStr = orderStr => {
 		if (srcIndex >= 1 && srcIndex <= 9 && destIndex >= 1 && destIndex <= 9) {
 			handleOrder(srcIndex, destIndex)
 		} else {
-			printMsg('🈲🚫犯规⛔️输入指令【'+ orderStr + '】错误，应该为两位1-9的数字，源位置目标位置')
+			printMsg('犯规：️输入非法指令【'+ orderStr + '】错误，应该为两位1-9的数字，源位置目标位置')
 		}
 	} else {
-		printMsg('🈲🚫犯规⛔️输入指令【'+ orderStr + '】错误，应该为两位1-9的数字，源位置目标位置')
+		printMsg('犯规：输入非法指令【'+ orderStr + '】错误，应该为两位1-9的数字，源位置目标位置')
 	}
 }
 
@@ -69,17 +61,17 @@ handleOrder = (srcIndex, destIndex) => {
 			Board[srcIndex] = EmptyArmy
 			printMsg('Step' + (stepIndex++) + ': ' + srcIndex + '➡️' + destIndex)
 		} else {
-			printMsg('🈲🚫犯规⛔️源位置' + srcIndex + '不是你的棋子' + Board[srcIndex])
+			printMsg('犯规：️源位置' + srcIndex + '不是你的棋子' + Board[srcIndex])
 		}
 	} else {
-		printMsg('🈲🚫犯规⛔️目标位置' + destIndex + '已有棋子' + Board[destIndex])
+		printMsg('犯规：️目标位置' + destIndex + '已有棋子' + Board[destIndex])
 	}
 	printBoard()
 }
 
-
+/*
 exports.handleMsg = handleMsg
 exports.init = init
 exports.printBoard = printBoard
 exports.handleOrder = handleOrder
-
+*/

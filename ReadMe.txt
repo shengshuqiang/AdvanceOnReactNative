@@ -41,5 +41,8 @@
         4. 执行make命令编译生成动态链接文件libHelloJNI.dylib：make
         5. 执行javac命令生成class文件HelloJNI.class：javac ../HelloJNI.java -d .
         6. 执行java命令运行程序：java HelloJNI
+        7. 执行hello.js中移动棋子指令，会看到棋局移动：receiveOrderStr(15)或者handleOrder(1,5)
+        8. handleOrder(7,4)
+
 
 

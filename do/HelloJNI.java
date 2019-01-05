@@ -13,9 +13,16 @@ import java.io.InputStream;
 // https://mp.weixin.qq.com/s/xu1wM2c7mCNRK8xI1M7P4A
 
 public class HelloJNI {
+    private Scanner scanner = new Scanner(System.in);
+
     static {
         System.loadLibrary("HelloJNI");
     }
+
+    public HelloJNI() {
+        scanner.useDelimiter(System.getProperty("line.separator"));
+    }
+
     public native void load(String jsBundle);
     public native void sendOrder(String orderStr);
 
@@ -33,14 +40,6 @@ public class HelloJNI {
         }
         if (null != jsBundle) {
             helloJni.load(jsBundle);
-
-            Scanner scanner = new Scanner(System.in);
-            scanner.useDelimiter(System.getProperty("line.separator"));
-            while(scanner.hasNext()){
-                String str = scanner.next();
-                System.out.println("Scanner:\t" + str);
-                helloJni.sendOrder(str);
-            }
         }
     }
 
@@ -62,7 +61,16 @@ public class HelloJNI {
          inputStream.read(bs);
          inputStream.close();
          String fileStr = new String(bs);
-         System.out.println("##JAVA##\n" + fileStr);
+         // System.out.println("##JAVA##\n" + fileStr);
          return fileStr;
+     }
+
+     public String waitForInputOrder() {
+         if (scanner.hasNext()) {
+             String order = scanner.next();
+             // System.out.println("##JAVA##\n" + "waitForInputOrder:\t" + order);
+             return order;
+         }
+         return null;
      }
 }
