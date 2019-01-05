@@ -111,17 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named do
+# Target rules for targets named HelloJNI
 
 # Build rule for target.
-do: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 do
-.PHONY : do
+HelloJNI: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 HelloJNI
+.PHONY : HelloJNI
 
 # fast build rule for target.
-do/fast:
-	$(MAKE) -f CMakeFiles/do.dir/build.make CMakeFiles/do.dir/build
-.PHONY : do/fast
+HelloJNI/fast:
+	$(MAKE) -f CMakeFiles/HelloJNI.dir/build.make CMakeFiles/HelloJNI.dir/build
+.PHONY : HelloJNI/fast
 
 HelloJNI.o: HelloJNI.cc.o
 
@@ -129,7 +129,7 @@ HelloJNI.o: HelloJNI.cc.o
 
 # target to build an object file
 HelloJNI.cc.o:
-	$(MAKE) -f CMakeFiles/do.dir/build.make CMakeFiles/do.dir/HelloJNI.cc.o
+	$(MAKE) -f CMakeFiles/HelloJNI.dir/build.make CMakeFiles/HelloJNI.dir/HelloJNI.cc.o
 .PHONY : HelloJNI.cc.o
 
 HelloJNI.i: HelloJNI.cc.i
@@ -138,7 +138,7 @@ HelloJNI.i: HelloJNI.cc.i
 
 # target to preprocess a source file
 HelloJNI.cc.i:
-	$(MAKE) -f CMakeFiles/do.dir/build.make CMakeFiles/do.dir/HelloJNI.cc.i
+	$(MAKE) -f CMakeFiles/HelloJNI.dir/build.make CMakeFiles/HelloJNI.dir/HelloJNI.cc.i
 .PHONY : HelloJNI.cc.i
 
 HelloJNI.s: HelloJNI.cc.s
@@ -147,7 +147,7 @@ HelloJNI.s: HelloJNI.cc.s
 
 # target to generate assembly for a file
 HelloJNI.cc.s:
-	$(MAKE) -f CMakeFiles/do.dir/build.make CMakeFiles/do.dir/HelloJNI.cc.s
+	$(MAKE) -f CMakeFiles/HelloJNI.dir/build.make CMakeFiles/HelloJNI.dir/HelloJNI.cc.s
 .PHONY : HelloJNI.cc.s
 
 # Help Target
@@ -158,7 +158,7 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... do"
+	@echo "... HelloJNI"
 	@echo "... HelloJNI.o"
 	@echo "... HelloJNI.i"
 	@echo "... HelloJNI.s"

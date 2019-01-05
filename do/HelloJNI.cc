@@ -1,6 +1,6 @@
 #include "HelloJNI.h"
 
-// gcc -dynamiclib HelloJNI.c -o libHelloLib.jnilib -I ./include/
+// gcc -dynamiclib HelloJNI.cc -o libHelloLib.jnilib -I ./include/
 
 /*
  * Class:     HelloJNI
@@ -9,7 +9,7 @@
  */
 JNIEXPORT void JNICALL Java_HelloJNI_load(JNIEnv *env, jobject jobj, jstring jstr) {
     const char * str = env->GetStringUTFChars(jstr, NULL);
-    printf("Java_HelloJNI_load: %s\n", str);
+    printf("##C##\nJava_HelloJNI_load: %s\n", str);
     // init();
 }
 
@@ -21,7 +21,7 @@ JNIEXPORT void JNICALL Java_HelloJNI_load(JNIEnv *env, jobject jobj, jstring jst
 JNIEXPORT void JNICALL Java_HelloJNI_sendOrder(JNIEnv * env, jobject jobj, jstring jstr) {
     const char * str = env->GetStringUTFChars(jstr, NULL);
     if(str){
-        printf("Java_HelloJNI_sendOrder:\t%s\n", str);
+        printf("##C##\nJava_HelloJNI_sendOrder:\t%s\n", str);
         env->ReleaseStringUTFChars(jstr, str);
     }
 }

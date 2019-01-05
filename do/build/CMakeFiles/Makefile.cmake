@@ -47,5 +47,5 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/do.dir/DependInfo.cmake"
+  "CMakeFiles/HelloJNI.dir/DependInfo.cmake"
   )

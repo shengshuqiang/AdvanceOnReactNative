@@ -6,7 +6,7 @@
                     1. CMakeLists.txt文件中确保配置是add_executable(learn shell.cc)
                     2. 新建build文件夹：mkdir build
                     3. 进入build文件夹：cd build
-                    4. CMake编译，build文件夹内生成一堆构建文件：CMake ..
+                    4. cmake编译，build文件夹内生成一堆构建文件：cmake ..
                     5. make编译：make
                     6. 运行程序：./learn
                     7. 加载js文件【路径相对于当前执行命令位置】：load('../../js/hello.js')
@@ -15,7 +15,7 @@
                     10. 执行hello.js中退出指令quit()，程序退出：quit()
     2. 文件夹java
         1. 功能
-            1. 打通JNI能力，java中可以调用c中实现方法【详情参考// https://mp.weixin.qq.com/s/xu1wM2c7mCNRK8xI1M7P4A】
+            1. 打通JNI能力，java中可以调用c中实现方法【详情参考：https://mp.weixin.qq.com/s/xu1wM2c7mCNRK8xI1M7P4A】
                 1. 进入java目录，运行命令行【javac、javah、gcc、java命令】
                     1. 执行javac命令，生成.class文件：javac HelloJNI.java
                     2. 执行javah命令，生成.h文件：javah HelloJNI
@@ -35,5 +35,11 @@
         3. java端输入指令，js刷新棋盘并且对弈，直至高下立判
         4. java端只是用户输入和棋盘展示终端，c端只负责透传消息，js端负责逻辑处理
     2. 命令
-        1. g++ -dynamiclib HelloJNI.cc -o libHelloJNI.jnilib -I ./include/
+        1. 新建build文件夹：mkdir build
+        2. 进入build文件夹：cd build
+        3. 执行cmake命令编译，build文件夹内生成一堆构建文件：cmake ..
+        4. 执行make命令编译生成动态链接文件libHelloJNI.dylib：make
+        5. 执行javac命令生成class文件HelloJNI.class：javac ../HelloJNI.java -d .
+        6. 执行java命令运行程序：java HelloJNI
+
 

@@ -28,7 +28,7 @@ public class HelloJNI {
 
         String jsBundle = null;
         try {
-            jsBundle = readFile("./hello.js");
+            jsBundle = readFile("../hello.js");
         } catch(IOException exception) {
         }
         if (null != jsBundle) {
@@ -62,7 +62,7 @@ public class HelloJNI {
          inputStream.read(bs);
          inputStream.close();
          String fileStr = new String(bs);
-         System.out.println(fileStr);
+         System.out.println("##JAVA##\n" + fileStr);
          return fileStr;
      }
 }

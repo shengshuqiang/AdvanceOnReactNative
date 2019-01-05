@@ -198,6 +198,9 @@ CMAKE_STRIP:FILEPATH=/Applications/Xcode.app/Contents/Developer/Toolchains/Xcode
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
+//Dependencies for the target
+HelloJNI_LIB_DEPENDS:STATIC=general;libv8.dylib;general;libv8.dylib;general;libv8_libplatform.dylib;
+
 //Value Computed by CMake
 do_BINARY_DIR:STATIC=/Users/shengshuqiang/ideal/HelloJSCore/AdvanceOnReactNative/do/build
 
