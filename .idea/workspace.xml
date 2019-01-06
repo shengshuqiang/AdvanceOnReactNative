@@ -3,6 +3,19 @@
   <component name="ChangeListManager">
     <list default="true" id="6ccf8a2d-19b9-4d42-a7c2-5d69841eb442" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change beforePath="$PROJECT_DIR$/do/HelloJNI.cc" afterPath="$PROJECT_DIR$/do/HelloJNI.cc" />
+      <change beforePath="$PROJECT_DIR$/do/HelloJNI.java" afterPath="$PROJECT_DIR$/do/HelloJNI.java" />
+      <change beforePath="$PROJECT_DIR$/doc/ReadMe.md" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/doc/v8-say-hello.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/learn/java/.idea/workspace.xml" afterPath="$PROJECT_DIR$/learn/java/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/learn/java/HelloJNI.class" afterPath="$PROJECT_DIR$/learn/java/HelloJNI.class" />
+      <change beforePath="$PROJECT_DIR$/learn/java/HelloJNI.cpp" afterPath="$PROJECT_DIR$/learn/java/HelloJNI.cpp" />
+      <change beforePath="$PROJECT_DIR$/learn/java/HelloJNI.h" afterPath="$PROJECT_DIR$/learn/java/HelloJNI.h" />
+      <change beforePath="$PROJECT_DIR$/learn/java/HelloJNI.java" afterPath="$PROJECT_DIR$/learn/java/HelloJNI.java" />
+      <change beforePath="$PROJECT_DIR$/learn/java/HelloScriptEngine.class" afterPath="$PROJECT_DIR$/learn/java/HelloScriptEngine.class" />
+      <change beforePath="$PROJECT_DIR$/learn/java/HelloScriptEngine.java" afterPath="$PROJECT_DIR$/learn/java/HelloScriptEngine.java" />
+      <change beforePath="$PROJECT_DIR$/learn/java/libNativeLibrary.jnilib" afterPath="$PROJECT_DIR$/learn/java/libNativeLibrary.jnilib" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -26,8 +39,8 @@
       <file leaf-file-name="HelloJNI.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/do/HelloJNI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="127">
-              <caret line="43" column="5" lean-forward="false" selection-start-line="43" selection-start-column="5" selection-end-line="43" selection-end-column="5" />
+            <state relative-caret-position="487">
+              <caret line="75" column="1" lean-forward="false" selection-start-line="75" selection-start-column="1" selection-end-line="75" selection-end-column="1" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#621#622#0" expanded="true" />
@@ -217,6 +230,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1440" height="801" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -270,8 +284,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/do/HelloJNI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="43" column="5" lean-forward="false" selection-start-line="43" selection-start-column="5" selection-end-line="43" selection-end-column="5" />
+        <state relative-caret-position="487">
+          <caret line="75" column="1" lean-forward="false" selection-start-line="75" selection-start-column="1" selection-end-line="75" selection-end-column="1" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#621#622#0" expanded="true" />

@@ -15,14 +15,6 @@ extern "C" {
 JNIEXPORT void JNICALL Java_HelloJNI_sendMsg
   (JNIEnv *, jclass, jstring);
 
-/*
- * Class:     HelloJNI
- * Method:    sendOrder
- * Signature: (Ljava/lang/String;)V
- */
-JNIEXPORT void JNICALL Java_HelloJNI_sendOrder
-  (JNIEnv *, jobject, jstring);
-
 #ifdef __cplusplus
 }
 #endif

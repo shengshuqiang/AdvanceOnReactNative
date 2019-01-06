@@ -1,9 +1,6 @@
 #include "HelloJNI.h"
 
-v8::Isolate* isolate;
-v8::Isolate::CreateParams create_params;
 v8::Local<v8::Context> context;
-std::unique_ptr<v8::Platform> platform;
 
 /*
  * Class:     HelloJNI
@@ -15,41 +12,24 @@ JNIEXPORT void JNICALL Java_HelloJNI_load(JNIEnv *env, jobject jobj, jstring jst
 //    printf("##C##\nJava_HelloJNI_load:isolate= %s\n", isolate);
     // printf("##C##\nJava_HelloJNI_load: %s\n", str);
     Init(env, jobj, str);
+    env->ReleaseStringUTFChars(jstr, str);
 }
 
-/*
- * Class:     HelloJNI
- * Method:    sendOrder
- * Signature: (Ljava/lang/String;)V
- */
-JNIEXPORT void JNICALL Java_HelloJNI_sendOrder(JNIEnv * env, jobject jobj, jstring jstr) {
-    const char * str = env->GetStringUTFChars(jstr, NULL);
-    if(str){
-//        v8::Context::Scope context_scope(context);
-//        v8::HandleScope handle_scope(isolate);
-        ExecuteString(str);
-        env->ReleaseStringUTFChars(jstr, str);
-    }
-}
-
-
-void Init(JNIEnv * env, jobject jobj, const char* str) {
+void Init(JNIEnv* env, jobject jobj, const char* str) {
     // 初始化v8引擎
     char* argv = "hello";
     int argc = 1;
     v8::V8::InitializeICUDefaultLocation(argv);
     v8::V8::InitializeExternalStartupData(argv);
-    //  std::unique_ptr<v8::Platform> platform = v8::platform::NewDefaultPlatform();
+    std::unique_ptr<v8::Platform> platform = v8::platform::NewDefaultPlatform();
     platform = v8::platform::NewDefaultPlatform();
     v8::V8::InitializePlatform(platform.get());
     v8::V8::Initialize();
     v8::V8::SetFlagsFromCommandLine(&argc, &argv, true);
-    //  v8::Isolate* isolate;
-    //  v8::Isolate::CreateParams create_params;
-
+    v8::Isolate* isolate;
+    v8::Isolate::CreateParams create_params;
     create_params.array_buffer_allocator = v8::ArrayBuffer::Allocator::NewDefaultAllocator();
     isolate = v8::Isolate::New(create_params);
-
     {
         // 初始化js上下文
         v8::Isolate::Scope isolate_scope(isolate);
@@ -60,33 +40,24 @@ void Init(JNIEnv * env, jobject jobj, const char* str) {
             fprintf(stderr, "Error creating context\n");
             return;
         }
-    //        printf("##C##\nInit:isolate=%p\n",isolate);
-        ExecuteString(str);
-        ExecuteString("init()");
+        // printf("##C##\nInit:isolate=%p\n",isolate);
+        ExecuteString(isolate, str);
+        ExecuteString(isolate, "init()");
 
         static const int kBufferSize = 256;
         // Enter the execution environment before evaluating any code.
         v8::Context::Scope context_scope(context);
-        v8::Local<v8::String> name(
-        v8::String::NewFromUtf8(context->GetIsolate(), "(shell)",
-                              v8::NewStringType::kNormal).ToLocalChecked());
+        v8::Local<v8::String> name(v8::String::NewFromUtf8(isolate, "(shell)", v8::NewStringType::kNormal).ToLocalChecked());
         while (true) {
-//            char buffer[kBufferSize];
-//            fprintf(stderr, "> ");
-//            char* str = fgets(buffer, kBufferSize, stdin);
-//            if (str == NULL) break;
-//            v8::HandleScope handle_scope(context->GetIsolate());
-//            ExecuteString(str);
-//            while (v8::platform::PumpMessageLoop(platform.get(), context->GetIsolate())) continue;
             jclass cls = env->GetObjectClass(jobj);
             jmethodID mid = env->GetMethodID(cls, "waitForInputOrder", "()Ljava/lang/String;");
             if (mid == NULL) {
-                return; /* method not found */
+                return;
             }
             jstring jstr = static_cast<jstring>(env->CallObjectMethod(jobj, mid));
             const char* iputOrder = env->GetStringUTFChars(jstr, NULL);
             // printf("##C##\nJava_HelloJNI_load:iputOrder= %s\n", iputOrder);
-            ExecuteString(iputOrder);
+            ExecuteString(isolate, iputOrder);
         }
     }
     // 释放v8引擎
@@ -129,8 +100,7 @@ v8::Local<v8::Context> CreateShellContext(v8::Isolate* isolate) {
 }
 
 // Executes a string within the current v8 context.
-bool ExecuteString(const char* str) {
-//  v8::Isolate::Scope isolate_scope(isolate);
+bool ExecuteString(v8::Isolate* isolate, const char* str) {
   v8::HandleScope handle_scope(isolate);
   v8::Context::Scope context_scope(context);
   v8::Local<v8::String> source = v8::String::NewFromUtf8(isolate, str, v8::NewStringType::kNormal).ToLocalChecked();

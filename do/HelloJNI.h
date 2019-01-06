@@ -20,7 +20,7 @@ v8::Local<v8::Context> CreateShellContext(v8::Isolate* isolate);
 const char* LocalValue2Str(v8::Isolate* isolate, v8::Local<v8::Value> localStr);
 void ReportException(v8::Isolate* isolate, v8::TryCatch* handler);
 const char* ToCString(const v8::String::Utf8Value& value);
-bool ExecuteString(const char* str);
+bool ExecuteString(v8::Isolate* isolate, const char* str);
 void Print(const v8::FunctionCallbackInfo<v8::Value>& args);
 void Quit(const v8::FunctionCallbackInfo<v8::Value>& args);
 
@@ -39,7 +39,6 @@ JNIEXPORT void JNICALL Java_HelloJNI_load
  */
 JNIEXPORT void JNICALL Java_HelloJNI_sendOrder
   (JNIEnv *, jobject, jstring);
-
 
 #ifdef __cplusplus
 }

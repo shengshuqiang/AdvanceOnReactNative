@@ -70,7 +70,7 @@ static bool run_shell;
 
 
 int main(int argc, char* argv[]) {
-  fprintf(stderr, "main: argv=%s\n", *argv);
+  // fprintf(stderr, "main: argv=%s\n", *argv);
   // 初始化v8引擎
   v8::V8::InitializeICUDefaultLocation(argv[0]);
   v8::V8::InitializeExternalStartupData(argv[0]);
@@ -100,7 +100,7 @@ int main(int argc, char* argv[]) {
     }
     v8::Context::Scope context_scope(context);
     result = RunMain(isolate, platform.get(), argc, argv);
-    fprintf(stderr, "RunMain result\targc=%i, argv=%s, result=%i, run_shell=%d\n", argc, *argv, result, run_shell);
+    // fprintf(stderr, "RunMain result\targc=%i, argv=%s, result=%i, run_shell=%d\n", argc, *argv, result, run_shell);
     if (run_shell) RunShell(context, platform.get());
   }
 
@@ -279,10 +279,10 @@ v8::MaybeLocal<v8::String> ReadFile(v8::Isolate* isolate, const char* name) {
 // Process remaining command line arguments and execute files
 int RunMain(v8::Isolate* isolate, v8::Platform* platform, int argc,
             char* argv[]) {
-  fprintf(stderr, "RunMain\t%i, %s\n", argc, *argv);
+  // fprintf(stderr, "RunMain\t%i, %s\n", argc, *argv);
   for (int i = 1; i < argc; i++) {
     const char* str = argv[i];
-    fprintf(stderr, "RunMain\t%i, %s\n", i, str);
+    // fprintf(stderr, "RunMain\t%i, %s\n", i, str);
     if (strcmp(str, "--shell") == 0) {
       run_shell = true;
     } else if (strcmp(str, "-f") == 0) {
@@ -327,7 +327,7 @@ int RunMain(v8::Isolate* isolate, v8::Platform* platform, int argc,
 
 // The read-eval-execute loop of the shell.
 void RunShell(v8::Local<v8::Context> context, v8::Platform* platform) {
-  fprintf(stderr, "RunShell:\tV8 version %s [sample shell]\n", v8::V8::GetVersion());
+  // fprintf(stderr, "RunShell:\tV8 version %s [sample shell]\n", v8::V8::GetVersion());
   static const int kBufferSize = 256;
   // Enter the execution environment before evaluating any code.
   v8::Context::Scope context_scope(context);
@@ -356,7 +356,7 @@ void RunShell(v8::Local<v8::Context> context, v8::Platform* platform) {
 bool ExecuteString(v8::Isolate* isolate, v8::Local<v8::String> source,
                    v8::Local<v8::Value> name, bool print_result,
                    bool report_exceptions) {
-  fprintf(stderr, "ExecuteString:\tsource=\n%s\n, name=\n%s\n", LocalValue2Str(isolate, source), LocalValue2Str(isolate, name));
+  // fprintf(stderr, "ExecuteString:\tsource=\n%s\n, name=\n%s\n", LocalValue2Str(isolate, source), LocalValue2Str(isolate, name));
 
   v8::HandleScope handle_scope(isolate);
   v8::TryCatch try_catch(isolate);

@@ -1,1 +1,0 @@
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/do.dir/HelloJNI.cc.o  -o do  -L/Users/shengshuqiang/ideal/HelloJSCore/AdvanceOnReactNative/do/libs -Wl,-rpath,/Users/shengshuqiang/ideal/HelloJSCore/AdvanceOnReactNative/do/libs -lv8 -lv8 -lv8_libplatform 

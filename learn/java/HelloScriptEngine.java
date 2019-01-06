@@ -8,6 +8,9 @@ import javax.script.ScriptException;
 
 /**
  * Created by shengshuqiang on 2018/11/17.
+ * 运行命令：
+ * javac HelloScriptEngine.java
+ * java HelloScriptEngine
  */
 public class HelloScriptEngine {
 
@@ -30,11 +33,6 @@ public class HelloScriptEngine {
      */
     public void test(String name) {
         ScriptEngineManager sem = new ScriptEngineManager();
-    /*
-     *sem.getEngineByExtension(String extension)参数为js
-      sem.getEngineByMimeType(String mimeType) 参数为application/javascript 或者text/javascript
-      sem.getEngineByName(String shortName)参数为js或javascript或JavaScript
-     */
         ScriptEngine se = sem.getEngineByName("js");
         try {
             String script = "function say(){ return 'hello," + name + "'; }";
@@ -45,7 +43,6 @@ public class HelloScriptEngine {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
     /*
      * 加载脚本引擎，并在java中调用js方法
@@ -115,18 +112,20 @@ public class HelloScriptEngine {
      * https://blog.csdn.net/f6991/article/details/9312791
      */
     public void testJSCore2() {
+        // 初始化JS脚本引擎
         ScriptEngineManager factory = new ScriptEngineManager();
-        // create a JavaScript engine
         ScriptEngine engine = factory.getEngineByName("JavaScript");
+        // 注入全局变量，a = 4， b = 6
         engine.put("a", 4);
         engine.put("b", 6);
-        try
-        {
+        try {
+            // 运行JS代码字符串
+            // 定义求最大值函数max_num
+            // 执行max_num(a,b)，a 和 b对应上面设置的全局变量
             Object maxNum = engine.eval("function max_num(a,b){return (a>b)?a:b;}max_num(a,b);");
             System.out.println("max_num:" + maxNum);
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
         }
     }

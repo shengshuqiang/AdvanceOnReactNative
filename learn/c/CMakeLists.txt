@@ -14,6 +14,5 @@ add_executable(learn shell.cc)
 # add_executable(learn hello-world.cc)
 
 
-
 # message(STATUS ${CMAKE_BINARY_DIR})
 target_link_libraries(learn libv8.dylib ${PROJECT_LINK_LIBS})
