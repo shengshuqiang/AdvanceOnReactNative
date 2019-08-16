@@ -1,0 +1,30 @@
+{
+  "name": "quick-tmp",
+  "description": "Quickly and synchronously retrieve a temporary directory name for you to use",
+  "version": "0.0.0",
+  "main": "index.js",
+  "browser": "index.js",
+  "dependencies": {
+    "first-match": "0.0.1",
+    "osenv": "0.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {},
+  "author": "Hugh Kennedy <hughskennedy@gmail.com> (http://hughsk.io/)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hughsk/quick-tmp"
+  },
+  "bugs": {
+    "url": "https://github.com/hughsk/quick-tmp/issues"
+  },
+  "homepage": "https://github.com/hughsk/quick-tmp",
+  "keywords": [
+    "tmp",
+    "synchronous",
+    "quick",
+    "temporary",
+    "directory"
+  ]
+}
