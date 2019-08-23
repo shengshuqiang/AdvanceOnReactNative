@@ -30,57 +30,25 @@ var ITEM_HEIGHT = 100;
 
 const InitItems = [
     {
-        id: 51723
+        id: 1
     }, {
-        id: 51123
+        id: 2
     }, {
-        id: 51780
+        id: 3
     }, {
-        id: 51673
-    }, {
-        id: 51544
-    }, {
-        id: 51503
-    }, {
-        id: 51371
-    }, {
-        id: 51312
-    }, {
-        id: 51500
-    }, {
-        id: 51605
-    }, {
-        id: 51723
-    }, {
-        id: 51123
+        id: 2
     }
 ];
 
 const SecondItems = [
     {
-        id: 51723
+        id: 1
     }, {
-        id: 51121
+        id: 4
     }, {
-        id: 51780
+        id: 3
     }, {
-        id: 51673
-    }, {
-        id: 51544
-    }, {
-        id: 51503
-    }, {
-        id: 51371
-    }, {
-        id: 51312
-    }, {
-        id: 51500
-    }, {
-        id: 51605
-    }, {
-        id: 51723
-    }, {
-        id: 51121
+        id: 4
     }
 ];
 
@@ -90,7 +58,7 @@ export default class App extends Component<Props> {
     constructor(props: P, context: any) {
         super(props, context);
         this.state = {
-            count: 1
+            count: 0
         }
     }
 
@@ -100,20 +68,22 @@ export default class App extends Component<Props> {
     }
 
     getItemKey = (item, index) => {
-        return item.id;
+        // return item.id;
+        return index;
     }
 
     renderItem = ({ item, index }) => {
-        const key = this.getItemKey(item, index);
-        console.log('SSU', 'renderItem', `${key}_${index}`);
+        // const key = this.getItemKey(item, index);
+        const title = `${item.id}`;
+        console.log('SSU', 'renderItem', title);
         return (
-            <View style={{flex: 1, height: 30}}>
+            <View style={{flex: 1, width: 50, height: 50,  justifyContent: 'center', alignItems: 'center'}}>
                 <Text style={{
                     position: 'absolute',
                     color: 'red',
                     backgroundColor: 'blue',
-                    height: 30
-                }}>{`${key}_${index}`}</Text>
+                    width: 50, height: 50
+                }}>{title}</Text>
             </View>
         );
     }
@@ -171,7 +141,6 @@ export default class App extends Component<Props> {
                 </TouchableHighlight>
                 <FlatList
                     style={{flex: 1}}
-                    keyExtractor={this.getItemKey}
                     renderItem={this.renderItem}
                     data={data}>
                 </FlatList>

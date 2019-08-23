@@ -20,7 +20,7 @@
 // will not be available later from within the Profiler.
 // This impacts props/state as well as Interactions.
 // https://github.com/facebook/react-devtools/issues/1262
-const LEVEL_THRESHOLD = 2;
+const LEVEL_THRESHOLD = 10;
 
 /**
  * Get a enhanced/artificial type string based on the object instance

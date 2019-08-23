@@ -139,7 +139,7 @@ class Store extends EventEmitter {
     this.searchRoots = null;
     this.hovered = null;
     this.selected = null;
-    this.selectedTab = 'Elements';
+    this.selectedTab = 'Fiber双树算法';
     this.showCopyableInput = null;
     this.breadcrumbHead = null;
     this.isBottomTagHovered = false;
@@ -171,6 +171,7 @@ class Store extends EventEmitter {
     this._bridge.on('update', (data) => this._updateComponent(data));
     this._bridge.on('updateProfileTimes', (data) => this._updateComponentProfileTimes(data));
     this._bridge.on('sendFiberTree', (data) => {
+      // console.log('SSU', 'sendFiberTree', data);
       this.fiberTreeInfos.push(data);
       this.emit('sendFiberTree');
     });

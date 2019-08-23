@@ -237,7 +237,7 @@ function installGlobalHook(window: Object) {
               }
           });
           hook.cachedFiberTreeInfos = [];
-      }
+      },
   });
   Object.defineProperty(window, '__REACT_DEVTOOLS_GLOBAL_HOOK__', {
     value: (hook : Hook),

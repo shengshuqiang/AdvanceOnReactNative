@@ -74,7 +74,7 @@ function initialize(socket) {
   var listeners = [];
   socket.onmessage = (evt) => {
     var data = JSON.parse(evt.data);
-      // console.log('SSU', 'socket.onmessage', JSON.stringify(data));
+      // console.log('SSU', 'socket.onmessage', data);
     listeners.forEach((fn) => fn(data));
   };
 
