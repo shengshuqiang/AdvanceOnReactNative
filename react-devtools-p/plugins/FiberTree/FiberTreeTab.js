@@ -111,7 +111,6 @@ class FiberTreeTab extends React.Component<Props, State> {
           }} onClick={this.onPressRatioSub}>-
           </div>
         </div>
-        <div>{desc}</div>
         <div style={{display: 'flex', overflow: 'scroll'}}>
           {this.props.fiberTreeInfos && this.props.fiberTreeInfos.map((fiberTreeInfo, recordIndex) => {
             return (
@@ -131,7 +130,8 @@ class FiberTreeTab extends React.Component<Props, State> {
             );
           })}
         </div>
-        <canvas id="myCanvas" width="1000" height="3000">
+        <div>{desc}</div>
+        <canvas id="myCanvas" width="5000" height="5000">
           Your browser does not support the canvas element.
         </canvas>
       </div>

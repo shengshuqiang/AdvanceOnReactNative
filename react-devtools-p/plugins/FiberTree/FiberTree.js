@@ -1,294 +1,3 @@
-// const fibers = [{
-//     "id": 0,
-//     "desc": "0_HostRoot_",
-//     "return": -1,
-//     "child": 22,
-//     "sibling": -1,
-//     "alternate": 1,
-//     "firstEffect": 28,
-//     "lastEffect": 28,
-//     "nextEffect": -1
-// }, {
-//     "id": 22,
-//     "desc": "22_ClassComponent_",
-//     "return": 0,
-//     "child": 23,
-//     "sibling": -1,
-//     "alternate": 3,
-//     "firstEffect": 28,
-//     "lastEffect": 28,
-//     "nextEffect": -1
-// }, {
-//     "id": 23,
-//     "desc": "23_ForwardRef_",
-//     "return": 22,
-//     "child": 24,
-//     "sibling": -1,
-//     "alternate": 4,
-//     "firstEffect": 28,
-//     "lastEffect": 28,
-//     "nextEffect": -1
-// }, {
-//     "id": 24,
-//     "desc": "24_ContextConsumer_",
-//     "return": 23,
-//     "child": 25,
-//     "sibling": -1,
-//     "alternate": 5,
-//     "firstEffect": 28,
-//     "lastEffect": 28,
-//     "nextEffect": -1
-// }, {
-//     "id": 25,
-//     "desc": "25_HostComponent_",
-//     "return": 24,
-//     "child": 26,
-//     "sibling": -1,
-//     "alternate": 6,
-//     "firstEffect": 28,
-//     "lastEffect": 28,
-//     "nextEffect": -1
-// }, {
-//     "id": 26,
-//     "desc": "26_ForwardRef_",
-//     "return": 25,
-//     "child": 9,
-//     "sibling": 27,
-//     "alternate": 7,
-//     "firstEffect": -1,
-//     "lastEffect": -1,
-//     "nextEffect": -1
-// }, {
-//     "id": 9,
-//     "desc": "9_ContextConsumer_",
-//     "return": 7,
-//     "child": 10,
-//     "sibling": -1,
-//     "alternate": -1,
-//     "firstEffect": 17,
-//     "lastEffect": 10,
-//     "nextEffect": -1
-// }, {
-//     "id": 10,
-//     "desc": "10_HostComponent_Ref,",
-//     "return": 9,
-//     "child": 11,
-//     "sibling": -1,
-//     "alternate": -1,
-//     "firstEffect": 17,
-//     "lastEffect": 11,
-//     "nextEffect": 8
-// }, {
-//     "id": 11,
-//     "desc": "11_ClassComponent_Update,PlacementAndUpdate,",
-//     "return": 10,
-//     "child": 12,
-//     "sibling": -1,
-//     "alternate": -1,
-//     "firstEffect": 17,
-//     "lastEffect": 12,
-//     "nextEffect": 10
-// }, {
-//     "id": 12,
-//     "desc": "12_ClassComponent_Update,PlacementAndUpdate,",
-//     "return": 11,
-//     "child": 13,
-//     "sibling": -1,
-//     "alternate": -1,
-//     "firstEffect": 17,
-//     "lastEffect": 17,
-//     "nextEffect": 11
-// }, {
-//     "id": 13,
-//     "desc": "13_ForwardRef_",
-//     "return": 12,
-//     "child": 14,
-//     "sibling": -1,
-//     "alternate": -1,
-//     "firstEffect": 17,
-//     "lastEffect": 17,
-//     "nextEffect": -1
-// }, {
-//     "id": 14,
-//     "desc": "14_ContextConsumer_",
-//     "return": 13,
-//     "child": 15,
-//     "sibling": -1,
-//     "alternate": -1,
-//     "firstEffect": 17,
-//     "lastEffect": 17,
-//     "nextEffect": -1
-// }, {
-//     "id": 15,
-//     "desc": "15_HostComponent_",
-//     "return": 14,
-//     "child": 16,
-//     "sibling": -1,
-//     "alternate": -1,
-//     "firstEffect": 17,
-//     "lastEffect": 17,
-//     "nextEffect": -1
-// }, {
-//     "id": 16,
-//     "desc": "16_ForwardRef_",
-//     "return": 15,
-//     "child": 17,
-//     "sibling": -1,
-//     "alternate": -1,
-//     "firstEffect": 17,
-//     "lastEffect": 17,
-//     "nextEffect": -1
-// }, {
-//     "id": 17,
-//     "desc": "17_ClassComponent_Update,PlacementAndUpdate,",
-//     "return": 16,
-//     "child": 18,
-//     "sibling": -1,
-//     "alternate": -1,
-//     "firstEffect": -1,
-//     "lastEffect": -1,
-//     "nextEffect": 12
-// }, {
-//     "id": 18,
-//     "desc": "18_ContextConsumer_",
-//     "return": 17,
-//     "child": 19,
-//     "sibling": -1,
-//     "alternate": -1,
-//     "firstEffect": -1,
-//     "lastEffect": -1,
-//     "nextEffect": -1
-// }, {
-//     "id": 19,
-//     "desc": "19_ContextProvider_",
-//     "return": 18,
-//     "child": 20,
-//     "sibling": -1,
-//     "alternate": -1,
-//     "firstEffect": -1,
-//     "lastEffect": -1,
-//     "nextEffect": -1
-// }, {
-//     "id": 20,
-//     "desc": "20_HostComponent_",
-//     "return": 19,
-//     "child": 21,
-//     "sibling": -1,
-//     "alternate": -1,
-//     "firstEffect": -1,
-//     "lastEffect": -1,
-//     "nextEffect": -1
-// }, {
-//     "id": 21,
-//     "desc": "21_HostText_",
-//     "return": 20,
-//     "child": -1,
-//     "sibling": -1,
-//     "alternate": -1,
-//     "firstEffect": -1,
-//     "lastEffect": -1,
-//     "nextEffect": -1
-// }, {
-//     "id": 27,
-//     "desc": "27_ClassComponent_",
-//     "return": 25,
-//     "child": 28,
-//     "sibling": -1,
-//     "alternate": 8,
-//     "firstEffect": 28,
-//     "lastEffect": 28,
-//     "nextEffect": -1
-// }, {
-//     "id": 28,
-//     "desc": "28_ClassComponent_Update,PlacementAndUpdate,",
-//     "return": 27,
-//     "child": -1,
-//     "sibling": -1,
-//     "alternate": 29,
-//     "firstEffect": -1,
-//     "lastEffect": -1,
-//     "nextEffect": -1
-// }, {
-//     "id": 29,
-//     "desc": "29_ClassComponent_",
-//     "return": 8,
-//     "child": -1,
-//     "sibling": -1,
-//     "alternate": 28,
-//     "firstEffect": -1,
-//     "lastEffect": -1,
-//     "nextEffect": -1
-// }, {
-//     "id": 8,
-//     "desc": "8_ClassComponent_",
-//     "return": 6,
-//     "child": 29,
-//     "sibling": -1,
-//     "alternate": 27,
-//     "firstEffect": -1,
-//     "lastEffect": -1,
-//     "nextEffect": -1
-// }, {
-//     "id": 7,
-//     "desc": "7_ForwardRef_",
-//     "return": 6,
-//     "child": 9,
-//     "sibling": 8,
-//     "alternate": 26,
-//     "firstEffect": -1,
-//     "lastEffect": -1,
-//     "nextEffect": -1
-// }, {
-//     "id": 6,
-//     "desc": "6_HostComponent_",
-//     "return": 5,
-//     "child": 7,
-//     "sibling": -1,
-//     "alternate": 25,
-//     "firstEffect": -1,
-//     "lastEffect": -1,
-//     "nextEffect": -1
-// }, {
-//     "id": 5,
-//     "desc": "5_ContextConsumer_",
-//     "return": 4,
-//     "child": 6,
-//     "sibling": -1,
-//     "alternate": 24,
-//     "firstEffect": -1,
-//     "lastEffect": -1,
-//     "nextEffect": -1
-// }, {
-//     "id": 4,
-//     "desc": "4_ForwardRef_",
-//     "return": 3,
-//     "child": 5,
-//     "sibling": -1,
-//     "alternate": 23,
-//     "firstEffect": -1,
-//     "lastEffect": -1,
-//     "nextEffect": -1
-// }, {
-//     "id": 3,
-//     "desc": "3_ClassComponent_",
-//     "return": 1,
-//     "child": 4,
-//     "sibling": -1,
-//     "alternate": 22,
-//     "firstEffect": -1,
-//     "lastEffect": -1,
-//     "nextEffect": -1
-// }, {
-//     "id": 1,
-//     "desc": "1_HostRoot_",
-//     "return": -1,
-//     "child": 3,
-//     "sibling": -1,
-//     "alternate": 0,
-//     "firstEffect": -1,
-//     "lastEffect": -1,
-//     "nextEffect": -1
-// }];
 const RealDOMElements = ['HostComponent', 'HostText'];
 let Radius;
 let DOMRadius;
@@ -317,7 +26,7 @@ function init(ratio) {
     Radius = 30 * ratio;
     DOMRadius = 50 * ratio;
     FontSize = 20 * ratio;
-    DOMFontSize = 22 * ratio;
+    DOMFontSize = 20 * ratio;
     FontColor = 'black';
     Font = FontSize + 'px  Arial';
     DOMFont = DOMFontSize + 'px  Arial';
@@ -329,8 +38,8 @@ function init(ratio) {
     YStep = 3 * Radius;
     InitX = 2 * Radius;
     InitY = 2 * Radius;
-    DOMXStep = 2 * DOMRadius;
-    DOMRootXStep = 4 * DOMXStep;
+    DOMXStep = 5 * DOMRadius;
+    DOMRootXStep = 2 * DOMXStep;
     DOMYStep = 3 * DOMRadius;
     DOMInitX = 3 * DOMRadius;
     DOMInitY = 2 * DOMRadius;
@@ -472,8 +181,8 @@ function drawFiberNode(cxt, id, fiberXYObj) {
     cxt.font = DescFont;
     cxt.fillText(tag, x - cxt.measureText(tag).width / 2, y + 0.7 * FontSize);
     cxt.fillText(type, x - cxt.measureText(type).width / 2, y + 1.4 * FontSize);
-    cxt.fillText(nativeTag, x - cxt.measureText(nativeTag).width / 2, y + 2.1 * FontSize);
-    cxt.fillText(effectTag, x - cxt.measureText(effectTag).width / 2, y + 2.8 * FontSize);
+    nativeTag && cxt.fillText(nativeTag, x - cxt.measureText(nativeTag).width / 2, y + 2.1 * FontSize);
+    effectTag && cxt.fillText(effectTag, x - cxt.measureText(effectTag).width / 2, y + 2.8 * FontSize);
 
     drawFiberNode(cxt, fiber.child, fiberXYObj);
     drawFiberNode(cxt, fiber.sibling, fiberXYObj);
@@ -499,31 +208,28 @@ function layoutFiberNode(id, fiberXYObj, x, y) {
   }
 };
 
-function getDomNodeXY(domNode, offsetLeafCount, index) {
-  const {allLeafCount, rightLeafCount, level} = domNode;
-  const {allLeafCount: parentAllLeafCount = 0, rightLeafCount: parentRightLeafCount = 0, children: parentChildren = null} = domNode.parent || {};
-  let parentOffsetLeafCount = 0;
-  if (parentChildren && index > (parentChildren.length - 1) / 2) {
-    parentOffsetLeafCount = parentAllLeafCount - parentRightLeafCount;
-  }
-  const x = DOMInitX + (allLeafCount - rightLeafCount + offsetLeafCount + parentOffsetLeafCount) * DOMXStep;
+function getDomNodeXY(domNode, offsetLeafCount) {
+  const {index, level} = domNode;
+  const x = DOMInitX + (offsetLeafCount + index) * DOMXStep;
   const y = DOMInitY + level * DOMYStep;
 
   return {x, y};
 }
-function drawDomNode(cxt, domNode, offsetLeafCount, index) {
+
+function drawDomNode(cxt, domNode, offsetLeafCount) {
   if (!domNode) {
     return;
   }
-  const {name, nativeTag, children, style, allLeafCount, leftLeafCount, rightLeafCount, level} = domNode;
+  const {name, nativeTag, children, style, index, level} = domNode;
+  // const styleStr = style ? `(${style.width ? style.width : 'w'}, ${style.height ? style.height : 'h'}) ${style.text ? style.text : ''}` : '';
   const styleStr = JSON.stringify(style);
-  const {x, y} = getDomNodeXY(domNode, offsetLeafCount, index);
+  const {x, y} = getDomNodeXY(domNode, offsetLeafCount);
   // line
   cxt.strokeStyle = DOMNodeChildLineColor;
   cxt.lineWidth = LineWidth;
   children && children.forEach((childDomNode, childIndex) => {
     if (childDomNode) {
-      const {x: xx, y: yy} = getDomNodeXY(childDomNode, offsetLeafCount, childIndex);
+      const {x: xx, y: yy} = getDomNodeXY(childDomNode, offsetLeafCount);
       cxt.beginPath();
       cxt.moveTo(x, y);
       cxt.lineTo(xx, yy);
@@ -542,50 +248,127 @@ function drawDomNode(cxt, domNode, offsetLeafCount, index) {
 
   cxt.fillStyle = FontColor;
   cxt.font = DOMFont;
-  cxt.fillText(name, x - cxt.measureText(name).width / 2, y + 0.0 * DOMFontSize);
-  cxt.fillText(nativeTag, x - cxt.measureText(nativeTag).width / 2, y + 1 * DOMFontSize);
+  cxt.fillText(nativeTag, x - cxt.measureText(nativeTag).width / 2, y + 0 * DOMFontSize);
+  cxt.fillText(name, x - cxt.measureText(name).width / 2, y + 1.0 * DOMFontSize);
+  cxt.font = DescFont;
   cxt.fillText(styleStr, x - cxt.measureText(styleStr).width / 2, y + 2 * DOMFontSize);
   children && children.forEach((childDomNode, childIndex) => {
     drawDomNode(cxt, childDomNode, offsetLeafCount, childIndex);
   });
 }
 
-function travelDomNodeLeafCount(domNode) {
-  if (domNode.children && domNode.children.length > 0) {
-    domNode.allLeafCount = 0;
-    domNode.leftLeafCount = 0;
-    domNode.rightLeafCount = 0;
-    const childCount = domNode.children.length;
-    const halfChildCount = (childCount - 1) / 2;
-    domNode.children.forEach((childDomNode, index) => {
-      childDomNode.parent = domNode;
-      childDomNode.level = domNode.level + 1;
-
-      travelDomNodeLeafCount(childDomNode);
-      const childLeafCount = childDomNode.allLeafCount;
-
-      domNode.allLeafCount += childLeafCount;
-
-      if (index < halfChildCount) {
-        domNode.leftLeafCount += childLeafCount;
-      } else if (index === halfChildCount) {
-        domNode.leftLeafCount += childDomNode.leftLeafCount;
-        domNode.rightLeafCount += childDomNode.rightLeafCount;
-      } else {
-        domNode.rightLeafCount += childLeafCount;
+function layoutDomNode(domNode, treeInfo) {
+  if (!domNode) {
+    return null;
+  }
+  const layoutDomNode = buildLayoutDomNodeTree(domNode, 0, treeInfo);
+  console.log('SSU', 'buildLayoutDomNodeTree', {layoutDomNode, treeInfo});
+  correctLayoutDomNodeTree(layoutDomNode, treeInfo.maxLevel);
+  console.log('SSU', 'correctLayoutDomNodeTree', {layoutDomNode, treeInfo});
+  const queue = [];
+  queue.push(layoutDomNode);
+  let index = 0;
+  while (queue.length > 0) {
+    const node = queue.shift();
+    const {children} = node;
+    if (children) {
+      children && children.forEach((childLayoutDomNode, childIndex) => {
+        queue.push(childLayoutDomNode);
+      });
+    } else {
+      node.index = index;
+      if (node.domNode) {
+        node.domNode.index = index;
+        node.domNode.level = node.level;
+        console.log('SSU', 'layoutDomNode', node.domNode.nativeTag, {index, level: node.domNode.level, node});
       }
+      let parent = node.isMiddleChild ? node.parent : null;
+      while (parent) {
+        if (parent.domNode) {
+          parent.domNode.index = index;
+          parent.domNode.level = parent.level;
+          console.log('SSU', 'layoutDomNode', parent.domNode.nativeTag, {index, level: parent.domNode.level, node});
+        }
+        parent = parent.isMiddleChild ? parent.parent : null;
+      }
+      index ++;
+
+      if (index > treeInfo.maxIndex) {
+        treeInfo.maxIndex = index;
+      }
+    }
+  }
+}
+
+function buildLayoutDomNodeTree(domNode, level, treeInfo) {
+  if (!domNode) {
+    return null;
+  }
+  const layoutDomNode = {
+    domNode,
+    parent: null,
+    children: null,
+    isMiddleChild: false,
+    index: 0,
+    level,
+  };
+  if (level > treeInfo.maxLevel) {
+    treeInfo.maxLevel = level;
+  }
+  const {children} = domNode;
+  children && children.forEach((childDomNode, childIndex) => {
+    const childLayoutDomNode = buildLayoutDomNodeTree(childDomNode, level + 1, treeInfo);
+    if (childLayoutDomNode) {
+      childLayoutDomNode.parent = layoutDomNode;
+      if (layoutDomNode.children) {
+        layoutDomNode.children.push(childLayoutDomNode);
+      } else {
+        layoutDomNode.children = [childLayoutDomNode];
+      }
+    }
+  });
+  console.log('SSU', 'buildLayoutDomNodeTree', domNode.nativeTag, {index: layoutDomNode.index, level});
+  return layoutDomNode;
+}
+
+function correctLayoutDomNodeTree(layoutDomNode, maxLevel) {
+  if (!layoutDomNode) {
+    return null;
+  }
+
+  const {children, level} = layoutDomNode;
+  if (children) {
+    if (children.length % 2 === 0) {
+      const midChildLayoutDomNode = {
+        domNode: null,
+        parent: layoutDomNode,
+        children: null,
+        isMiddleChild: true,
+        index: 0,
+        level: level + 1,
+      };
+      children.splice(children.length / 2, 0, midChildLayoutDomNode);
+    }
+    children[(children.length - 1) / 2].isMiddleChild = true;
+
+    children.forEach((childLayoutDomNode, childIndex) => {
+      correctLayoutDomNodeTree(childLayoutDomNode, maxLevel);
     });
   } else {
-    domNode.allLeafCount = 1;
-    domNode.leftLeafCount = 0;
-    domNode.rightLeafCount = 0;
-  }
+    if (level < maxLevel) {
+      const midChildLayoutDomNode = {
+        domNode: null,
+        parent: layoutDomNode,
+        children: null,
+        isMiddleChild: true,
+        index: 0,
+        level: level + 1,
+      };
+      layoutDomNode.children = [midChildLayoutDomNode];
 
-  if (domNode.allLeafCount > 0 && domNode.allLeafCount % 2 === 0) {
-    domNode.allLeafCount += 1;
+      correctLayoutDomNodeTree(midChildLayoutDomNode, maxLevel);
+    }
   }
-  const {name, nativeTag, children, style, allLeafCount, leftLeafCount, rightLeafCount, level} = domNode;
-  console.log('SSU', 'travelDomNodeLeafCount', { nativeTag, allLeafCount, leftLeafCount, rightLeafCount, level  });
 }
 
 export default function drawFiberTree(fibers, doms, ratio) {
@@ -596,7 +379,9 @@ export default function drawFiberTree(fibers, doms, ratio) {
   init(ratio);
   const cxt = canvas.getContext('2d');
   cxt.clearRect(0, 0, canvas.width, canvas.height);
+  cxt.save();
   console.log('SSU', 'drawFiberTree', {fibers, doms});
+  // console.log('SSU', 'drawFiberTree', {fibers, doms}, JSON.stringify(fibers), JSON.stringify(doms));
   // doms
   if (doms) {
     const domRootTagSet = new Set();
@@ -610,10 +395,8 @@ export default function drawFiberTree(fibers, doms, ratio) {
         nativeTag,
         parent: null,
         children: null,
-        allLeafCount: 0,
-        leftLeafCount: 0,
-        rightLeafCount: 0,
         level: 0,
+        index: 0,
       });
     });
     doms.forEach((dom) => {
@@ -633,38 +416,38 @@ export default function drawFiberTree(fibers, doms, ratio) {
     let rootDomNodeOffsetLeafCount = 0;
     domRootTagSet.forEach((nativeTag) => {
       const domNode = domTag2NodeMap.get(nativeTag);
-      travelDomNodeLeafCount(domNode);
-      console.log('SSU', 'travelDomNodeLeafCount all', {domNode});
-      rootDomNodeOffsetLeafCount += domNode.allLeafCount;
-      drawDomNode(cxt, domNode, rootDomNodeOffsetLeafCount, 0);
+      const treeInfo = {maxLevel: 0, maxIndex: 0};
+      layoutDomNode(domNode, treeInfo);
+      rootDomNodeOffsetLeafCount += treeInfo.maxIndex;
+      drawDomNode(cxt, domNode, rootDomNodeOffsetLeafCount);
     });
-    cxt.translate(rootDomNodeOffsetLeafCount * DOMRadius, 0);
+    cxt.translate(DOMInitX + rootDomNodeOffsetLeafCount * DOMXStep + DOMRootXStep, 0);
   }
 
   // fibers
-  // if (fibers) {
-  //   const fiberXYObj = {};
-  //   const fiberRoots = [];
-  //   fibers.forEach(fiber => {
-  //     fiberXYObj[fiber.id] = fiber;
-  //     if (fiber.return === InvalidID) {
-  //       fiberRoots.push(fiber.id);
-  //     }
-  //   });
-  //   fiberRoots.forEach((id, index) => {
-  //     layoutFiberNode(id, fiberXYObj, InitX + index * RootXStep, InitY);
-  //   });
-  //   const alternateIDSet = new Set();
-  //   fiberRoots.forEach((id) => {
-  //     drawFiberLine(cxt, id, fiberXYObj, alternateIDSet);
-  //   });
-  //   fiberRoots.forEach((id) => {
-  //     drawFiberNode(cxt, id, fiberXYObj);
-  //   });
-  //   console.log('SSU', 'drawFiberTree.fibers', {fiberXYObj, fiberRoots});
-  //
-  // }
-  // console.log('SSU', JSON.stringify(fiberXYObj));
+  if (fibers) {
+    const fiberXYObj = {};
+    const fiberRoots = [];
+    fibers.forEach(fiber => {
+      fiberXYObj[fiber.id] = fiber;
+      if (fiber.return === InvalidID) {
+        fiberRoots.push(fiber.id);
+      }
+    });
+    fiberRoots.forEach((id, index) => {
+      layoutFiberNode(id, fiberXYObj, InitX + index * RootXStep, InitY);
+    });
+    const alternateIDSet = new Set();
+    fiberRoots.forEach((id) => {
+      drawFiberLine(cxt, id, fiberXYObj, alternateIDSet);
+    });
+    fiberRoots.forEach((id) => {
+      drawFiberNode(cxt, id, fiberXYObj);
+    });
+    console.log('SSU', 'drawFiberTree.fibers', {fiberXYObj, fiberRoots});
+
+  }
+  cxt.restore();
 };
 
 

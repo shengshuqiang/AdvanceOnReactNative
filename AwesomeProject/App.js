@@ -11,6 +11,7 @@ import {
     StyleSheet,
     Text,
     TouchableHighlight,
+    TouchableWithoutFeedback,
     View,
     Image
 } from 'react-native';
@@ -105,18 +106,13 @@ export default class App extends Component<Props, State> {
     render() {
         console.log('SSU', 'App#render()', {count: this.state.count});
         return (
-            <View>
-                <TouchableHighlight style={{width: 300, height: 150, backgroundColor: 'red'}} onPress={this.onPress}>
+            <TouchableWithoutFeedback onPress={this.onPress}>
+                <View style={{width: 300, height: 150, backgroundColor: 'red'}}>
                     {this.state.count % 2 === 0 ? <Text style={styles.txt}>{`点击数${this.state.count}`}</Text> :
                         <Image style={styles.img}
                                source={{uri: 'http://demo.sc.chinaz.com/Files/pic/icons/5918/c12.png'}}/>}
-                </TouchableHighlight>
-                <TouchableHighlight style={{width: 300, height: 150, backgroundColor: 'red'}} onPress={this.onPress}>
-                    {this.state.count % 2 === 0 ? <Text style={styles.txt}>{`点击数${this.state.count}`}</Text> :
-                        <Image style={styles.img}
-                               source={{uri: 'http://demo.sc.chinaz.com/Files/pic/icons/5918/c12.png'}}/>}
-                </TouchableHighlight>
-            </View>
+                </View>
+            </TouchableWithoutFeedback>
         );
     }
 }

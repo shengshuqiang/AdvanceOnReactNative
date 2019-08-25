@@ -48,9 +48,16 @@ admindeMacBook-Pro-5:react-devtools shengshuqiang$ npm start
 	22. ReactDevTools -> React: 
 23. 坑爹
 	24. backend.js dehydrate.js LEVEL_THRESHOLD 导致数据解析错误
+25. ReactNative
+	26. JavaModuleWrapper.java 
+		27. mModuleHolder.getName()+ "." + ((JavaMethodWrapper) mMethods.get(methodId)).getMethod().getName() + "("+parameters.toString()+")"
+		28. getName().equals("UIManager")
+29. NB的架构，可扩展，不需要知道整体框架实现原理，对着其中一个功能复制黏贴即可扩展。
 
-TODO 第一个断点处开始遍历看看如何执行？
-commitAllHostEffects
+# TODO
+1. NativeModuleView支持自适应高度
+2. 第一个断点处开始遍历看看如何执行？
+3. commitAllHostEffects
 
 
 # 参考
