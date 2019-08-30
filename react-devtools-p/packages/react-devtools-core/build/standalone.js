@@ -48479,6 +48479,7 @@ var RootXStep;
 var YStep;
 var InitX;
 var InitY;
+var DOMXOffset;
 var DOMXStep;
 var DOMRootXStep;
 var DOMYStep;
@@ -48501,8 +48502,9 @@ function init(ratio) {
     XStep = 4 * Radius;
     RootXStep = 4 * XStep;
     YStep = 3 * Radius;
-    InitX = 2 * Radius;
+    InitX = 5 * Radius;
     InitY = 2 * Radius;
+    DOMXOffset = 3 * RootXStep;
     DOMXStep = 5 * DOMRadius;
     DOMRootXStep = 2 * DOMXStep;
     DOMYStep = 3 * DOMRadius;
@@ -48512,6 +48514,7 @@ function init(ratio) {
   }
 }
 
+var HighLightColor = 'purple';
 var NodeColor = '#FF0000';
 var RealDOMNodeColor = '#32cd32';
 var NodeAlternateLineColor = 'purple';
@@ -48629,7 +48632,7 @@ function drawFiberLine(cxt, id, fiberXYObj, alternateIDSet) {
 
 ;
 
-function drawFiberNode(cxt, id, fiberXYObj) {
+function drawFiberNode(cxt, id, fiberXYObj, currentFiberID) {
   if (id !== InvalidID) {
     var fiber = fiberXYObj[id];
     var x = fiber.x,
@@ -48638,6 +48641,15 @@ function drawFiberNode(cxt, id, fiberXYObj) {
         effectTag = fiber.effectTag,
         type = fiber.type,
         nativeTag = fiber.nativeTag; // circle
+
+    if (id === currentFiberID) {
+      // highlight currentFiberID
+      cxt.fillStyle = HighLightColor;
+      cxt.beginPath();
+      cxt.arc(x, y, 1.5 * Radius, 0, Math.PI * 2, true);
+      cxt.closePath();
+      cxt.fill();
+    }
 
     if (isRealDOMElement(fiber)) {
       cxt.fillStyle = RealDOMNodeColor;
@@ -48665,8 +48677,8 @@ function drawFiberNode(cxt, id, fiberXYObj) {
     cxt.fillText(type, x - cxt.measureText(type).width / 2, y + 1.4 * FontSize);
     nativeTag && cxt.fillText(nativeTag, x - cxt.measureText(nativeTag).width / 2, y + 2.1 * FontSize);
     effectTag && cxt.fillText(effectTag, x - cxt.measureText(effectTag).width / 2, y + 2.8 * FontSize);
-    drawFiberNode(cxt, fiber.child, fiberXYObj);
-    drawFiberNode(cxt, fiber.sibling, fiberXYObj);
+    drawFiberNode(cxt, fiber.child, fiberXYObj, currentFiberID);
+    drawFiberNode(cxt, fiber.sibling, fiberXYObj, currentFiberID);
   }
 }
 
@@ -48704,17 +48716,16 @@ function getDomNodeXY(domNode, offsetLeafCount) {
   };
 }
 
-function drawDomNode(cxt, domNode, offsetLeafCount) {
+function drawDomNode(cxt, domNode, offsetLeafCount, currentFiberID) {
   if (!domNode) {
     return;
   }
 
   var name = domNode.name,
+      id = domNode.id,
       nativeTag = domNode.nativeTag,
       children = domNode.children,
-      style = domNode.style,
-      index = domNode.index,
-      level = domNode.level; // const styleStr = style ? `(${style.width ? style.width : 'w'}, ${style.height ? style.height : 'h'}) ${style.text ? style.text : ''}` : '';
+      style = domNode.style; // const styleStr = style ? `(${style.width ? style.width : 'w'}, ${style.height ? style.height : 'h'}) ${style.text ? style.text : ''}` : '';
 
   var styleStr = JSON.stringify(style);
 
@@ -48736,13 +48747,18 @@ function drawDomNode(cxt, domNode, offsetLeafCount) {
       cxt.lineTo(xx, yy);
       cxt.stroke();
     }
-  });
-  console.log('SSU', 'drawDomNode', {
-    x: x,
-    y: y,
-    domNode: domNode
-  });
+  }); // console.log('SSU', 'drawDomNode', {x, y, domNode});
+
   cxt.lineWidth = LineWidth;
+
+  if (currentFiberID === id) {
+    cxt.fillStyle = HighLightColor;
+    cxt.beginPath();
+    cxt.arc(x, y, 1.5 * DOMRadius, 0, Math.PI * 2, true);
+    cxt.closePath();
+    cxt.fill();
+  }
+
   cxt.fillStyle = RealDOMNodeColor;
   cxt.beginPath();
   cxt.rect(x - DOMRadius, y - DOMRadius, 2 * DOMRadius, 2 * DOMRadius);
@@ -48750,12 +48766,13 @@ function drawDomNode(cxt, domNode, offsetLeafCount) {
   cxt.fill();
   cxt.fillStyle = FontColor;
   cxt.font = DOMFont;
-  cxt.fillText(nativeTag, x - cxt.measureText(nativeTag).width / 2, y + 0 * DOMFontSize);
+  var title = "".concat(nativeTag, "(").concat(id, ")");
+  cxt.fillText(title, x - cxt.measureText(title).width / 2, y + 0 * DOMFontSize);
   cxt.fillText(name, x - cxt.measureText(name).width / 2, y + 1.0 * DOMFontSize);
   cxt.font = DescFont;
   cxt.fillText(styleStr, x - cxt.measureText(styleStr).width / 2, y + 2 * DOMFontSize);
   children && children.forEach(function (childDomNode, childIndex) {
-    drawDomNode(cxt, childDomNode, offsetLeafCount, childIndex);
+    drawDomNode(cxt, childDomNode, offsetLeafCount, childIndex, currentFiberID);
   });
 }
 
@@ -48764,16 +48781,10 @@ function layoutDomNode(domNode, treeInfo) {
     return null;
   }
 
-  var layoutDomNode = buildLayoutDomNodeTree(domNode, 0, treeInfo);
-  console.log('SSU', 'buildLayoutDomNodeTree', {
-    layoutDomNode: layoutDomNode,
-    treeInfo: treeInfo
-  });
-  correctLayoutDomNodeTree(layoutDomNode, treeInfo.maxLevel);
-  console.log('SSU', 'correctLayoutDomNodeTree', {
-    layoutDomNode: layoutDomNode,
-    treeInfo: treeInfo
-  });
+  var layoutDomNode = buildLayoutDomNodeTree(domNode, 0, treeInfo); // console.log('SSU', 'buildLayoutDomNodeTree', {layoutDomNode, treeInfo});
+
+  correctLayoutDomNodeTree(layoutDomNode, treeInfo.maxLevel); // console.log('SSU', 'correctLayoutDomNodeTree', {layoutDomNode, treeInfo});
+
   var queue = [];
   queue.push(layoutDomNode);
   var index = 0;
@@ -48791,12 +48802,7 @@ function layoutDomNode(domNode, treeInfo) {
 
       if (node.domNode) {
         node.domNode.index = index;
-        node.domNode.level = node.level;
-        console.log('SSU', 'layoutDomNode', node.domNode.nativeTag, {
-          index: index,
-          level: node.domNode.level,
-          node: node
-        });
+        node.domNode.level = node.level; // console.log('SSU', 'layoutDomNode', node.domNode.nativeTag, {index, level: node.domNode.level, node});
       }
 
       var parent = node.isMiddleChild ? node.parent : null;
@@ -48804,12 +48810,7 @@ function layoutDomNode(domNode, treeInfo) {
       while (parent) {
         if (parent.domNode) {
           parent.domNode.index = index;
-          parent.domNode.level = parent.level;
-          console.log('SSU', 'layoutDomNode', parent.domNode.nativeTag, {
-            index: index,
-            level: parent.domNode.level,
-            node: node
-          });
+          parent.domNode.level = parent.level; // console.log('SSU', 'layoutDomNode', parent.domNode.nativeTag, {index, level: parent.domNode.level, node});
         }
 
         parent = parent.isMiddleChild ? parent.parent : null;
@@ -48855,11 +48856,8 @@ function buildLayoutDomNodeTree(domNode, level, treeInfo) {
         layoutDomNode.children = [childLayoutDomNode];
       }
     }
-  });
-  console.log('SSU', 'buildLayoutDomNodeTree', domNode.nativeTag, {
-    index: layoutDomNode.index,
-    level: level
-  });
+  }); // console.log('SSU', 'buildLayoutDomNodeTree', domNode.nativeTag, {index: layoutDomNode.index, level});
+
   return layoutDomNode;
 }
 
@@ -48904,7 +48902,7 @@ function correctLayoutDomNodeTree(layoutDomNode, maxLevel) {
   }
 }
 
-function drawFiberTree(fibers, doms, ratio) {
+function drawFiberTree(currentFiberID, fibers, doms, ratio) {
   var canvas = document.getElementById('myCanvas');
 
   if (!canvas) {
@@ -48919,58 +48917,7 @@ function drawFiberTree(fibers, doms, ratio) {
     fibers: fibers,
     doms: doms
   }); // console.log('SSU', 'drawFiberTree', {fibers, doms}, JSON.stringify(fibers), JSON.stringify(doms));
-  // doms
-
-  if (doms) {
-    var domRootTagSet = new Set();
-    var domTag2NodeMap = new Map();
-    doms.forEach(function (dom) {
-      var name = dom.name,
-          nativeTag = dom.nativeTag,
-          children = dom.children,
-          style = dom.style;
-      domRootTagSet.add(nativeTag);
-      domTag2NodeMap.set(nativeTag, {
-        name: name,
-        style: style,
-        nativeTag: nativeTag,
-        parent: null,
-        children: null,
-        level: 0,
-        index: 0
-      });
-    });
-    doms.forEach(function (dom) {
-      var name = dom.name,
-          nativeTag = dom.nativeTag,
-          children = dom.children,
-          style = dom.style;
-      var domNode = domTag2NodeMap.get(nativeTag);
-      domNode.children = [];
-      children && children.forEach(function (childNativeTag) {
-        var childDomNode = domTag2NodeMap.get(childNativeTag);
-        domNode.children.push(childDomNode);
-        domRootTagSet.delete(childNativeTag);
-      });
-    });
-    console.log('SSU', 'drawFiberTree.doms', {
-      domRootTagSet: domRootTagSet,
-      domTag2NodeMap: domTag2NodeMap
-    });
-    var rootDomNodeOffsetLeafCount = 0;
-    domRootTagSet.forEach(function (nativeTag) {
-      var domNode = domTag2NodeMap.get(nativeTag);
-      var treeInfo = {
-        maxLevel: 0,
-        maxIndex: 0
-      };
-      layoutDomNode(domNode, treeInfo);
-      rootDomNodeOffsetLeafCount += treeInfo.maxIndex;
-      drawDomNode(cxt, domNode, rootDomNodeOffsetLeafCount);
-    });
-    cxt.translate(DOMInitX + rootDomNodeOffsetLeafCount * DOMXStep + DOMRootXStep, 0);
-  } // fibers
-
+  // fibers
 
   if (fibers) {
     var fiberXYObj = {};
@@ -48990,11 +48937,58 @@ function drawFiberTree(fibers, doms, ratio) {
       drawFiberLine(cxt, id, fiberXYObj, alternateIDSet);
     });
     fiberRoots.forEach(function (id) {
-      drawFiberNode(cxt, id, fiberXYObj);
+      drawFiberNode(cxt, id, fiberXYObj, currentFiberID);
+    }); // console.log('SSU', 'drawFiberTree.fibers', {fiberXYObj, fiberRoots});
+  }
+
+  cxt.translate(DOMXOffset, 0); // doms
+
+  if (doms) {
+    var domRootTagSet = new Set();
+    var domTag2NodeMap = new Map();
+    doms.forEach(function (dom) {
+      var name = dom.name,
+          id = dom.id,
+          nativeTag = dom.nativeTag,
+          children = dom.children,
+          style = dom.style;
+      domRootTagSet.add(nativeTag);
+      domTag2NodeMap.set(nativeTag, {
+        name: name,
+        id: id,
+        style: style,
+        nativeTag: nativeTag,
+        parent: null,
+        children: null,
+        level: 0,
+        index: 0
+      });
     });
-    console.log('SSU', 'drawFiberTree.fibers', {
-      fiberXYObj: fiberXYObj,
-      fiberRoots: fiberRoots
+    doms.forEach(function (dom) {
+      var name = dom.name,
+          id = dom.id,
+          nativeTag = dom.nativeTag,
+          children = dom.children,
+          style = dom.style;
+      var domNode = domTag2NodeMap.get(nativeTag);
+      domNode.children = [];
+      children && children.forEach(function (childNativeTag) {
+        var childDomNode = domTag2NodeMap.get(childNativeTag);
+        domNode.children.push(childDomNode);
+        domRootTagSet.delete(childNativeTag);
+      });
+    }); // console.log('SSU', 'drawFiberTree.doms', {domRootTagSet, domTag2NodeMap});
+
+    var rootDomNodeOffsetLeafCount = 0;
+    domRootTagSet.forEach(function (nativeTag) {
+      var domNode = domTag2NodeMap.get(nativeTag);
+      var treeInfo = {
+        maxLevel: 0,
+        maxIndex: 0
+      };
+      layoutDomNode(domNode, treeInfo);
+      rootDomNodeOffsetLeafCount += treeInfo.maxIndex;
+      drawDomNode(cxt, domNode, rootDomNodeOffsetLeafCount, currentFiberID);
     });
   }
 
@@ -49224,7 +49218,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-var InitRatio = 1.0 * 0.8;
+var InitRatio = 1.0 * 0.48;
 var RatioStep = InitRatio * 0.2;
 
 var FiberTreeTab =
@@ -49257,6 +49251,22 @@ function (_React$Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onPressPlay", function () {
+      _this.play(0);
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "play", function (recordIndex) {
+      _this.setState({
+        recordIndex: recordIndex
+      });
+
+      if (recordIndex < _this.props.fiberTreeInfos.length - 1) {
+        setTimeout(function () {
+          _this.play(recordIndex + 1);
+        }, 300);
+      }
+    });
+
     _this.state = {
       ratio: InitRatio,
       recordIndex: _this.props.fiberTreeInfos ? _this.props.fiberTreeInfos.length - 1 : -1
@@ -49266,9 +49276,9 @@ function (_React$Component) {
 
   _createClass(FiberTreeTab, [{
     key: "draw",
-    value: function draw(fibers, doms, ratio) {
+    value: function draw(currentFiberID, fibers, doms, ratio) {
       // console.log('SSU', 'drawFiberTree', JSON.stringify(fibers));
-      Object(_FiberTree__WEBPACK_IMPORTED_MODULE_2__["default"])(fibers, doms, ratio);
+      Object(_FiberTree__WEBPACK_IMPORTED_MODULE_2__["default"])(currentFiberID, fibers, doms, ratio);
     }
   }, {
     key: "componentWillReceiveProps",
@@ -49287,6 +49297,7 @@ function (_React$Component) {
 
       // const {fibers = null} = this.state.recordIndex >= 0 ? this.fiberTreeInfos[this.state.recordIndex] : {};
       var _ref = this.props.fiberTreeInfos ? this.state.recordIndex >= 0 && this.state.recordIndex < this.props.fiberTreeInfos.length ? this.props.fiberTreeInfos[this.state.recordIndex] : this.props.fiberTreeInfos[this.props.fiberTreeInfos.length - 1] : {},
+          currentFiberID = _ref.currentFiberID,
           _ref$fibers = _ref.fibers,
           fibers = _ref$fibers === void 0 ? null : _ref$fibers,
           _ref$doms = _ref.doms,
@@ -49296,13 +49307,13 @@ function (_React$Component) {
 
 
       setTimeout(function () {
-        return _this2.draw(fibers, doms, _this2.state.ratio);
+        return _this2.draw(currentFiberID, fibers, doms, _this2.state.ratio);
       }, 0);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: {
           overflow: 'scroll'
         }
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Hello SSU"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: {
           display: 'flex',
           width: 2000
@@ -49339,7 +49350,19 @@ function (_React$Component) {
           color: 'red'
         },
         onClick: this.onPressRatioSub
-      }, "-")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "-"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        style: {
+          width: 100,
+          height: 30,
+          backgroundColor: 'purple',
+          borderRadius: 15,
+          marginLeft: 10,
+          fontSize: 25,
+          textAlign: 'center',
+          color: 'red'
+        },
+        onClick: this.onPressPlay
+      }, "Play"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, desc)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: {
           display: 'flex',
           overflow: 'scroll'
@@ -49353,13 +49376,14 @@ function (_React$Component) {
             borderRadius: 15,
             fontSize: 25,
             textAlign: 'center',
+            marginLeft: 10,
             color: 'blue'
           },
           onClick: function onClick() {
             _this2.onPressRecord(recordIndex);
           }
-        }, fiberTreeInfo.index);
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, desc), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("canvas", {
+        }, ((Array(3).join('~') + fiberTreeInfo.index).slice(-3) + Array(3).join('~')).slice(0, 5));
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("canvas", {
         id: "myCanvas",
         width: "5000",
         height: "5000"

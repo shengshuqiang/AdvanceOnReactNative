@@ -9,6 +9,12 @@ admindeMacBook-Pro-5:react-devtools shengshuqiang$ pwd
 admindeMacBook-Pro-5:react-devtools shengshuqiang$ npm start
 
 
+懂ReactFiber有啥用？
+
+虽然看上去这样的算法有些“简陋”，但是其基于的是第一个假设：两个不同组件一般产生不一样的DOM结构。根据React官方博客，这一假设至今为止没有导致严重的性能问题。这当然也给我们一个提示，在实现自己的组件时，保持稳定的DOM结构会有助于性能的提升。例如，我们有时可以通过CSS隐藏或显示某些节点，而不是真的移除或添加DOM节点。
+
+逐级拆解细化图，展开收起脑图
+
 
 # 考考你
 
@@ -22,26 +28,73 @@ admindeMacBook-Pro-5:react-devtools shengshuqiang$ npm start
 8. <blockquote>问：React工作流程？<br>答：。</blockquote>
 9. <blockquote>问：如何关联Native自定义组件？<br>答：。</blockquote>
 10. <blockquote>问：每个Fiber节点存了什么信息，输入和输出是什么？<br>答：。</blockquote>
-	11. FiberNode
-		12. stateNode
-			12. HostRoot对应{containerInfo}
-			13. ClassComponent对应为new的函数对象实例
-			13. HostComponent对应为ReactNativeFiberHostComponent，包含_children和_nativeTag。
-			14. HostText对应为nativeTag。
-		12. elementType
-			13. ClassComponent对应为函数，如APPContainer()。
-			14. ForwardRef、ContextConsumer、ContextProvider对应为对象，如{$$typeof: Symbol(react.forward_ref), render: ƒ, displayName: "View"}。
-			15. HostComponent对应为字符串，如“RCTView”。
-			16. HostText对应为null。
-			16. 
-		13. memoizedProps
-		14. memoizedState
-		15. pendingProps
-		16. effectTag
-	17. instanceCache[tag] = hostInst; 缓存对应native view树的dom 树
-	18. instanceProps[tag] = props;
-	19. HostText和HostComponent才对应实体DOM节点
-20. React和ReactDevTools通信
+11. 若当前一帧（16ms）内还有足够的时间就继续做下一个小任务，时间不够就停止操作，等主线程空闲时再恢复。这种停止/恢复操作，需要记录上下文信息。而当前只记录单一dom节点的vDom tree 是无法完成的，Fiber引入了fiber tree，是用来记录上下文的vDom tree怎么体现?
+12. Element、Instance、DOM之间关系？![](https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/T81bAV0NNN9O9mZV7hEJWHc4LudmBe8V6fmXRLEgjFEicf8q7mT42EpSr0wauGHcjv60OL41b5CQ7MdiayzZSQTw/640?wx_fmt=png)![](element_instance_dom.png)![](element_instance_dom2.png)
+13. 在React Fiber中，一次更新过程会分成多个分片完成，所以完全有可能一个更新任务还没有完成，就被另一个更高优先级的更新过程打断，这时候，优先级高的更新任务会优先处理完，而低优先级更新任务所做的工作则会完全作废，然后等待机会重头再来。
+
+# 背景
+1. ![Lin Clark - A Cartoon Intro to Fiber - React Conf 2017](https://www.bilibili.com/video/av40427580/)
+2.  React 组件实质是一个函数，只要是一样的输入，就会得到同样的输出组件。
+2. [React Conf 2017视频观后感](https://zhuanlan.zhihu.com/p/25819975)
+2. [调度算法](https://juejin.im/post/5b7016606fb9a0099406f8de)
+	2. React 16版本之前使用的 Stack Reconciler 调度算法，它通过递归的形式遍历 Virtual DOM，存在难以中断和恢复的问题，如果react更新任务运行时间过长，就会阻塞布局、动画等的运行，可能导致掉帧。
+	3. Fiber Reconciler允许渲染过程分段完成，而不必须一次性完成，中间可以返回至主进程控制执行其他任务，它有如下新特性：
+		* 可拆分，可中断任务
+		* 可重用各分阶段任务，且可以设置优先级
+		* 可以在父子组件任务间前进后退切换任务
+		* render方法可以返回多元素（即可以返回数组）
+		* 支持异常边界处理异常
+1. Fiber核心是实现了一个基于优先级和requestIdleCallback的循环任务调度算法。
+11. Fiber Tree[](https://www.cnblogs.com/qingmingsang/articles/9131512.html)
+	12. 运行时存在3种实例：
+		* DOM: 真实的DOM节点。
+		* Elements：主要是描述UI长什么样子(type, props)。
+		* Instances: 根据Elements创建的，对组件及DOM节点的抽象表示，VDOM tree维护了组件状态以及组件与DOM树的关系。
+	1. 在首次渲染过程中构建出VDOM tree，后续需要更新时(setState())，diff VDOM tree得到DOM change，并把DOM change应用(patch)到DOM树。![逐层进行节点比较](https://upload-images.jianshu.io/upload_images/1828354-a2610ed017b10b50.png)
+	2. React Fiber解决过去Reconciler存在的问题的思路是把渲染/更新过程(递归diff)拆分成一系列小任务，每次检查树上的一小部分，做完看是否还有时间继续下一个任务，有的话继续，没有的话把自己挂起，主线程不忙的时候再继续。
+12. FiberNode数据结构:维护每一个分片的数据结构
+	13. return, child, sibling：![](https://pic2.zhimg.com/80/v2-453e1f48a4f53356bee021c90ee00bed_hd.jpg)
+	14. key: 复用标识
+	15. tag：它在协调算法中用于确定需要完成的工作。如前所述，工作取决于React元素的类型。
+	12. stateNode：保存组件的类实例、DOM 节点或与 Fiber 节点关联的其他 React 元素类型的引用。总的来说，我们可以认为该属性用于保持与一个 Fiber 节点相关联的局部状态。
+		12. HostRoot对应{containerInfo}
+		13. ClassComponent对应为new的函数对象实例
+		13. HostComponent对应为ReactNativeFiberHostComponent，包含_children和_nativeTag。
+		14. HostText对应为nativeTag。
+	12. elementType/type: 描述了它对应的组件。对于复合组件，类型是函数或类组件本身。对于宿主组件（div，span等），类型是字符串。定义此 Fiber 节点的函数或类。对于类组件，它指向构造函数，对于 DOM 元素，它指定 HTML 标记。我经常使用这个字段来理解 Fiber 节点与哪个元素相关。
+		13. ClassComponent对应为函数，如APPContainer()。
+		14. ForwardRef、ContextConsumer、ContextProvider对应为对象，如{$$typeof: Symbol(react.forward_ref), render: ƒ, displayName: "View"}。
+		15. HostComponent对应为字符串，如“RCTView”。
+		16. HostText对应为null。
+	13. memoizedProps：在前一个渲染中用于创建输出的 Fiber 的 props。
+	14. memoizedState：用于创建输出的 Fiber 状态。处理更新时，它会反映当前在屏幕上呈现的状态。
+	15. pendingProps：props是函数的参数。一个 fiber 的pendingProps在执行开始时设置，并在结束时设置memoizedProps。已从 React 元素中的新数据更新并且需要应用于子组件或 DOM 元素的 props。
+	16. updateQueue: state更新队列。状态更新、回调和 DOM 更新的队列。
+	17. firstEffect 、lastEffect 等玩意是用来保存中断前后 effect 的状态，用户中断后恢复之前的操作。这个意思还是很迷糊的，因为 Fiber 使用了可中断的架构。
+	16. effectTag
+	17. alternate：在调用render或setState后，会克隆出一个镜像fiber，diff产生出的变化会标记在镜像fiber上。而alternate就是链接当前fiber tree和镜像fiber tree, 用于断点恢复。workInProgress tree上每个节点都有一个effect list，用来存放需要更新的内容。此节点更新完毕会向子节点或邻近节点合并 effect list。
+17. React组件渲染分为两个阶段：reconciliation（diff阶段）和 commit(操作DOM阶段)。从图上可以看到：![](https://user-gold-cdn.xitu.io/2018/9/1/1659372700ca2644)
+	* reconciler阶段是对Virtual DOM操作阶段，对应到新的调度算法中，就是找到需要更新的工作![](https://user-gold-cdn.xitu.io/2018/9/1/165937271ae48685)。遍历完Fiber树之后，通过Diff算法，可以产出 EffectList，给commit阶段使用。![](https://images2018.cnblogs.com/blog/771172/201806/771172-20180604092206991-1822228176.jpg)
+		* reconciliation：找到需要更新的工作，通过 Diff Fiber Tree 找出要做的更新工作，这是一个js计算过程，计算结果可以被缓存，计算过程可以被打断，也可以恢复执行
+		* commit：提交更新并调用对应渲染模块（react-dom）进行渲染，为了防止页面抖动，该过程是同步且不能被打断
+	* render阶段是渲染阶段，拿到更新工作，在不同应用中，使用不同的渲染方式进行渲染
+	* 整个函数调用流程![](https://user-gold-cdn.xitu.io/2018/9/1/16593727b3dab4bb)
+	* 生命周期函数汇总表![](https://user-gold-cdn.xitu.io/2018/9/1/16593727da4d5516)![](https://img-blog.csdnimg.cn/20181028224402793.jpg)
+17. Context和Provider妙用。
+17. instanceCache[tag] = hostInst; 缓存对应native view树的dom 树
+18. instanceProps[tag] = props;
+19. HostText和HostComponent才对应实体DOM节点
+20.  React 中的一个组件视为一个使用 state 和 props 来计算 UI 表示的函数。
+21. 副作用列表：Dan Abramov 为副作用列表提供了一个类比。他喜欢将它想象成一棵圣诞树，「圣诞灯」将所有有效节点捆绑在一起。
+21. 双树结构
+	21.  在第一次渲染之后，React 最终得到一个 Fiber 树，它反映了用于渲染 UI 的应用程序的状态。这棵树通常被称为 current 树（当前树）。当 React 开始处理更新时，它会构建一个所谓的 workInProgress 树（工作过程树）。
+	22. 当 React 开始处理更新时，它会构建一个所谓的 workInProgress 树（工作过程树），它反映了要刷新到屏幕的未来状态。
+	23. 所有工作都在 workInProgress 树的 Fiber 节点上执行。当 React 遍历 current 树时，对于每个现有 Fiber 节点，React 会创建一个构成 workInProgress 树的备用节点，这一节点会使用 render 方法返回的 React 元素中的数据来创建。处理完更新并完成所有相关工作后，React 将准备好一个备用树以刷新到屏幕。一旦这个 workInProgress 树在屏幕上呈现，它就会变成 current 树。
+	21. 在React Fiber中使用了双缓冲技术(double buffering)，像redux里的nextListeners，以fiber tree为主，workInProgress tree为辅。
+	22. 双缓冲具体指的是workInProgress tree构造完毕，得到的就是新的fiber tree，每个fiber上都有个alternate属性，也指向一个fiber，创建workInProgress节点时优先取alternate，没有的话就创建一个。
+	23. fiber与workInProgress互相持有引用，把current指针指向workInProgress tree，丢掉旧的fiber tree。旧fiber就作为新fiber更新的预留空间，达到复用fiber实例的目的。
+	24. 工作中才有双树，稳态后只维持系统容器部分的双树(不变)和用户容器的单树。
+21. React和ReactDevTools通信
 	21. React -> ReactDevTools
 		22. React: backend.js ws.send(JSON.stringify(data));
 		23. ReactDevTools: standalone.js socket.onmessage
@@ -53,17 +106,160 @@ admindeMacBook-Pro-5:react-devtools shengshuqiang$ npm start
 		27. mModuleHolder.getName()+ "." + ((JavaMethodWrapper) mMethods.get(methodId)).getMethod().getName() + "("+parameters.toString()+")"
 		28. getName().equals("UIManager")
 29. NB的架构，可扩展，不需要知道整体框架实现原理，对着其中一个功能复制黏贴即可扩展。
+30. 调用关系
+	31. React
+
+- renderApplication.js#renderApplication
+  - ReactNativeRenderer-dev.js#render
+    - updateContainer
+      - scheduleRootUpdate
+        - scheduleWork
+          - requestWork
+            - performSyncWork
+              - performWork
+                - performWorkOnRoot
+                  - renderRoot
+                    - workLoop
+                      - performUnitOfWork
+                        - beginWork
+                          - updateHostRoot
+                            - reconcileChildren
+                              - reconcileSingleElement
+                                - createFiberFromElement
+                          - updateClassComponent
+                            - constructClassInstance：创建实例
+                            - mountClassInstance：挂载
+                            - updateClassInstance：更新实例，判断当前是否需要重新渲染
+                              - callComponentWillReceiveProps
+                              - checkShouldComponentUpdate
+                              - componentWillUpdate
+                            - finishClassComponent：根据标识确定是否重新渲染
+                              - nextChildren = instance.render()：调用render方法，生成子节点
+                              - reconcileChildren
+                                - reconcileChildFibers
+                                  - createFiberFromElement
+                          - updateForwardRef
+                            - renderWithHooks
+                              - children = View()
+                            - reconcileChildren
+                          - updateContextConsumer
+                          - updateHostComponent
+                            - reconcileChildren
+                          - updateContextProvider
+                            - reconcileChildren
+                          - updateHostText
+                        - completeUnitOfWork：开始回溯到有效祖先兄弟节点
+                          - completeWork
+                            - HostText
+                              - stateNode = createTextInstance
+                                - UIManager.createView()
+                            - HostComponent（宿主组件，原生DOM）
+                              - updateHostComponent$1
+                              - instance = createInstance
+                                - UIManager.createView()
+                              - appendAllChildren
+                              - finalizeInitialChildren
+                                - UIManager.setChildren()
+                            - ContextProvider
+                              - popProvider
+                            - ContextConsumer
+                            - ForwardRef
+                            - ClassComponent
+                  - completeRoot
+                    - commitRoot
+                      - commitAllHostEffects：遍历链表直接处理
+                        - PlacementAndUpdate：添加&更新
+                          - commitPlacement
+                            - appendChildToContainer
+                              - UIManager.setChildren()
+                        - Update：更新
+                          - commitWork
+                            - HostText
+                              - commitTextUpdate
+                                - UIManager.updateView()
+                            - HostComponent
+                              - commitUpdate
+                                - UIManager.updateView()
+                        - Deletion：删除
+                          - commitDeletion
+                            - unmountHostComponents
+                              - removeChild
+                                - UIManager.manageChildren（）
+                        - Placement：添加
+                          - commitPlacement
+                            - appendChild
+                              - UIManager.manageChildren（）
+                      - invokeGuardedCallback
+                        - commitLifeCycles
+                          - ClassComponent
+                            - instance.componentDidMount()
+                            - instance.componentDidUpdate()
+                            - commitUpdateQueue
+                            - commitUpdateEffects：调用setState中callback
+- 渲染树
+  - HostRoot
+    - HostRoot：AppContainer
+      - ForwardRef：View
+        - ContextConsumer：react.context
+          - HostComponent：RCTView
+            - ForwardRef：View
+              - ContextConsumer：react.context
+                - HostComponent：RCTView
+                  - ClassComponent：App
+                    - ClassComponent：TouchableHighlight
+                      - ForwardRef：View
+                        - ContextConsumer：react.context
+                          - HostComponent：RCTView
+                            - ForwardRef：Text
+                              - ClassComponent：TouchableText
+                                - ContextConsumer：react.context
+                                  - ContextProvider：react.provider
+                                    - HostComponent：RCTText
+                                      - HostText：点击数0 (到达子节点，开始回溯到有效祖先兄弟节点)
+            - YellowBox
+
+
+
+30. 图解
+	11. 初始化结束稳定态，只保留用户容器单树![](commitRootEnd【performWorkOnRoot_2-completeUnitOfWork_1】.png)
+	12. ![](completeUnitOfWork【performWorkOnRoot_3-completeUnitOfWork_0】.png)
+	13. ![](completeUnitOfWork【performWorkOnRoot_3-completeUnitOfWork_1】.png)
+	14. ![](commitRootStart【performWorkOnRoot_3-completeUnitOfWork_1】.png)
+	15. ![](commitRootEnd【performWorkOnRoot_3-completeUnitOfWork_1】.png)
+	16. ![](completeUnitOfWork【performWorkOnRoot_4-completeUnitOfWork_0】.png)
+	17. ![](completeUnitOfWork【performWorkOnRoot_4-completeUnitOfWork_1】.png)
+	18. ![](commitRootStart【performWorkOnRoot_4-completeUnitOfWork_1】.png)
+	19. ![](commitRootEnd【performWorkOnRoot_4-completeUnitOfWork_1】.png)
+20. 问题
+	21. 双树什么时候互换的，current和finishwork分别对应什么？
+	22. 工作内循环条件是什么？外循环呢？为什么onPress之前会触发一次外循环？
+	23. 工作计数发送跳变？
+	
 
 # TODO
 1. NativeModuleView支持自适应高度
 2. 第一个断点处开始遍历看看如何执行？
 3. commitAllHostEffects
+4. 修正日志信息，继续按键state变化排查
 
 
+[提供demo演示网页 ](https://supnate.github.io/react-dom-diff/index.html)
 # 参考
 
-1. [React16源码之React Fiber架构](https://juejin.im/post/5b7016606fb9a0099406f8de)
+1. [React16源码之React Fiber架构](https://github.com/HuJiaoHJ/blog/issues/7#)
+2. [React Fiber架构](https://zhuanlan.zhihu.com/p/37095662)
 2. [「译」React Fiber 那些事: 深入解析新的协调算法](https://juejin.im/post/5c052f95e51d4523d51c8300)
+3. [浅析React Diff 与 Fiber](https://zhuanlan.zhihu.com/p/58863799)
 3. [200行代码实现简版react](https://juejin.im/post/5c0c7304f265da613e22106c)
 2. [React 源码剖析系列 － 不可思议的 react diff](https://zhuanlan.zhihu.com/p/20346379)
 3. [React源码分析](https://juejin.im/post/5abe05ea5188255c61631d6c)
+4. [[react] React Fiber 初探](https://www.cnblogs.com/qingmingsang/articles/9131512.html)
+5. [Virtual DOM 的实现和 React Fiber 简介](https://www.jianshu.com/p/b189b2949b33)
+6. [React中一个没人能解释清楚的问题——为什么要使用Virtual DOM](https://www.zcfy.cc/article/the-one-thing-that-no-one-properly-explains-about-react-why-virtual-dom-hashnode-1211.html)
+6. [深度剖析：如何实现一个 Virtual DOM 算法 #13](https://github.com/livoras/blog/issues/13)
+6. [React Fiber 架构【译】](https://blog.yongyuan.us/articles/2017-04-10-react-fiber/)
+7. [React Fiber是什么](https://zhuanlan.zhihu.com/p/26027085)
+5. [浅谈React16框架 - Fiber](https://blog.csdn.net/P6P7qsW6ua47A2Sb/article/details/82322033)
+6. [如何理解 React Fiber 架构？](https://www.zhihu.com/question/49496872)
+7. [React 16 架构研究记录（文末有彩蛋）](https://zhuanlan.zhihu.com/p/36926155)
+8. [对React生命周期的理解](https://blog.csdn.net/WonderGlans/article/details/83479577)

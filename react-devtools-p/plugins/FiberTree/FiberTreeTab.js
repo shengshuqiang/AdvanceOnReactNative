@@ -22,7 +22,7 @@ type State = {
   ratio: number;
   recordIndex: number;
 };
-const InitRatio = 1.0 * 0.8;
+const InitRatio = 1.0 * 0.48;
 const RatioStep = InitRatio * 0.2;
 
 class FiberTreeTab extends React.Component<Props, State> {
@@ -34,9 +34,9 @@ class FiberTreeTab extends React.Component<Props, State> {
     };
   }
 
-  draw(fibers, doms, ratio) {
+  draw(currentFiberID, fibers, doms, ratio) {
     // console.log('SSU', 'drawFiberTree', JSON.stringify(fibers));
-    drawFiberTree(fibers, doms, ratio);
+    drawFiberTree(currentFiberID, fibers, doms, ratio);
   };
 
   onPressRatioAdd = () => {
@@ -57,6 +57,21 @@ class FiberTreeTab extends React.Component<Props, State> {
     });
   };
 
+  onPressPlay = () => {
+    this.play(0);
+  };
+
+  play = (recordIndex) => {
+    this.setState({
+      recordIndex,
+    });
+    if (recordIndex < this.props.fiberTreeInfos.length - 1) {
+      setTimeout(() => {
+        this.play(recordIndex + 1);
+      }, 300);
+    }
+  };
+
   componentWillReceiveProps(
     nextProps: Props,
     nextContext: any,
@@ -72,14 +87,13 @@ class FiberTreeTab extends React.Component<Props, State> {
   render() {
     // const {fibers = null} = this.state.recordIndex >= 0 ? this.fiberTreeInfos[this.state.recordIndex] : {};
 
-    const {fibers = null, doms = null, desc = null} = this.props.fiberTreeInfos ?
+    const {currentFiberID, fibers = null, doms = null, desc = null} = this.props.fiberTreeInfos ?
       (this.state.recordIndex >= 0 && this.state.recordIndex < this.props.fiberTreeInfos.length ? this.props.fiberTreeInfos[this.state.recordIndex] : this.props.fiberTreeInfos[this.props.fiberTreeInfos.length - 1])
       : {};
     // console.log('SSU', 'FiberTreeTab#render', JSON.stringify(fibers));
-    setTimeout(() => this.draw(fibers, doms, this.state.ratio), 0);
+    setTimeout(() => this.draw(currentFiberID, fibers, doms, this.state.ratio), 0);
     return (
       <div style={{overflow: 'scroll'}}>
-        <div>Hello SSU</div>
         <div style={{display: 'flex', width: 2000}}>
           <div style={{
             width: 30,
@@ -110,6 +124,18 @@ class FiberTreeTab extends React.Component<Props, State> {
             color: 'red',
           }} onClick={this.onPressRatioSub}>-
           </div>
+          <div style={{
+            width: 100,
+            height: 30,
+            backgroundColor: 'purple',
+            borderRadius: 15,
+            marginLeft: 10,
+            fontSize: 25,
+            textAlign: 'center',
+            color: 'red',
+          }} onClick={this.onPressPlay}>Play
+          </div>
+          <div>{desc}</div>
         </div>
         <div style={{display: 'flex', overflow: 'scroll'}}>
           {this.props.fiberTreeInfos && this.props.fiberTreeInfos.map((fiberTreeInfo, recordIndex) => {
@@ -121,16 +147,16 @@ class FiberTreeTab extends React.Component<Props, State> {
                 borderRadius: 15,
                 fontSize: 25,
                 textAlign: 'center',
+                marginLeft: 10,
                 color: 'blue',
               }} onClick={() => {
                 this.onPressRecord(recordIndex);
               }}>
-                {fiberTreeInfo.index}
+                {((Array(3).join('~') + fiberTreeInfo.index).slice(-3) + Array(3).join('~')).slice(0, 5)}
               </div>
             );
           })}
         </div>
-        <div>{desc}</div>
         <canvas id="myCanvas" width="5000" height="5000">
           Your browser does not support the canvas element.
         </canvas>
