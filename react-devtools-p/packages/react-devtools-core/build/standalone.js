@@ -49267,6 +49267,40 @@ function (_React$Component) {
       }
     });
 
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onKeyDown", function (e) {
+      var recordIndex = _this.state.recordIndex;
+
+      switch (e.keyCode) {
+        case 37: //左
+
+        case 38:
+          //上
+          recordIndex--;
+
+          if (recordIndex >= 0) {
+            _this.setState({
+              recordIndex: recordIndex
+            });
+          }
+
+          break;
+
+        case 39: //右
+
+        case 40:
+          //下
+          recordIndex++;
+
+          if (recordIndex < _this.props.fiberTreeInfos.length) {
+            _this.setState({
+              recordIndex: recordIndex
+            });
+          }
+
+          break;
+      }
+    });
+
     _this.state = {
       ratio: InitRatio,
       recordIndex: _this.props.fiberTreeInfos ? _this.props.fiberTreeInfos.length - 1 : -1
@@ -49289,6 +49323,16 @@ function (_React$Component) {
           recordIndex: nextProps.fiberTreeInfos.length - 1
         });
       }
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      document.addEventListener('keydown', this.onKeyDown);
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      document.removeEventListener('keydown', this.onKeyDown);
     }
   }, {
     key: "render",

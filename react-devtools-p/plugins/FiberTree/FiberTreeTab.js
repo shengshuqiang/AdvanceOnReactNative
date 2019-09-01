@@ -84,6 +84,34 @@ class FiberTreeTab extends React.Component<Props, State> {
     }
   }
 
+  componentDidMount(){
+    document.addEventListener('keydown', this.onKeyDown)
+  }
+
+  componentWillUnmount(){
+    document.removeEventListener('keydown', this.onKeyDown)
+  }
+
+  onKeyDown = (e) => {
+    let {recordIndex} = this.state;
+    switch( e.keyCode) {
+      case 37: //左
+      case 38: //上
+        recordIndex --;
+        break;
+      case 39: //右
+      case 40: //下
+        recordIndex ++;
+        break;
+    }
+
+    recordIndex += this.props.fiberTreeInfos.length;
+    recordIndex %= this.props.fiberTreeInfos.length;
+    this.setState({
+      recordIndex,
+    });
+  }
+
   render() {
     // const {fibers = null} = this.state.recordIndex >= 0 ? this.fiberTreeInfos[this.state.recordIndex] : {};
 
