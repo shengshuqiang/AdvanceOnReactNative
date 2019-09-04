@@ -24,19 +24,32 @@ type State = {
 };
 const InitRatio = 1.0 * 0.48;
 const RatioStep = InitRatio * 0.2;
+const LifecycleMethods: string[] = ['constructor',
+  'getDerivedStateFromProps',
+  'componentWillMount', 'UNSAFE_componentWillMount',
+  'componentWillReceiveProps', 'UNSAFE_componentWillReceiveProps',
+  'shouldComponentUpdate',
+  'componentWillUpdate', 'UNSAFE_componentWillUpdate',
+  'render',
+  'getSnapshotBeforeUpdate',
+  'componentDidMount',
+  'componentDidUpdate',
+  'componentWillUnmount'];
 
 class FiberTreeTab extends React.Component<Props, State> {
+
   constructor(props: Props) {
     super(props);
     this.state = {
       ratio: InitRatio,
       recordIndex: this.props.fiberTreeInfos ? this.props.fiberTreeInfos.length - 1 : -1,
     };
+
   }
 
-  draw(currentFiberID, fibers, doms, ratio) {
+  draw(currentFiberID, fibers, doms, runRecordRootNode, ratio) {
     // console.log('SSU', 'drawFiberTree', JSON.stringify(fibers));
-    drawFiberTree(currentFiberID, fibers, doms, ratio);
+    drawFiberTree(currentFiberID, fibers, doms, runRecordRootNode, ratio);
   };
 
   onPressRatioAdd = () => {
@@ -84,24 +97,24 @@ class FiberTreeTab extends React.Component<Props, State> {
     }
   }
 
-  componentDidMount(){
-    document.addEventListener('keydown', this.onKeyDown)
+  componentDidMount() {
+    document.addEventListener('keydown', this.onKeyDown);
   }
 
-  componentWillUnmount(){
-    document.removeEventListener('keydown', this.onKeyDown)
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.onKeyDown);
   }
 
   onKeyDown = (e) => {
     let {recordIndex} = this.state;
-    switch( e.keyCode) {
+    switch (e.keyCode) {
       case 37: //左
       case 38: //上
-        recordIndex --;
+        recordIndex--;
         break;
       case 39: //右
       case 40: //下
-        recordIndex ++;
+        recordIndex++;
         break;
     }
 
@@ -110,16 +123,107 @@ class FiberTreeTab extends React.Component<Props, State> {
     this.setState({
       recordIndex,
     });
+  };
+
+  // buildRunRecordTree(fiberTreeInfos, recordIndex) {
+  //   let runRecordRootNode = {
+  //     title: '起点',
+  //     parent: null,
+  //     children: [],
+  //   };
+  //   if (fiberTreeInfos && recordIndex >= 0 && recordIndex < fiberTreeInfos.length) {
+  //     for (let i = 0; i <= recordIndex; i++) {
+  //       let parentRunRecordNode = runRecordRootNode;
+  //       const {runRecordStack} = fiberTreeInfos[i];
+  //       const highLight = (i === recordIndex);
+  //       runRecordStack && runRecordStack.forEach((runRecord) => {
+  //         let runRecordNode = parentRunRecordNode.children.find((child) => (child.title === runRecord));
+  //         if (runRecordNode) {
+  //           runRecordNode.highLight = highLight;
+  //         } else {
+  //           runRecordNode = {
+  //             title: runRecord,
+  //             parent: parentRunRecordNode,
+  //             children: [],
+  //             highLight,
+  //           };
+  //           parentRunRecordNode.children.push(runRecordNode);
+  //         }
+  //         parentRunRecordNode = runRecordNode;
+  //       });
+  //     }
+  //   }
+  //
+  //   return runRecordRootNode;
+  // }
+
+  buildRunRecordHistoryTree(runRecordHistory, preHistoryCount) {
+    let runRecordRootNode = null;
+    // let runRecordRootNode = {
+    //     title: '起点',
+    //     parent: null,
+    //     children: [],
+    // };
+    let runRecordParentNode = runRecordRootNode;
+    if (runRecordHistory && runRecordHistory.length) {
+      runRecordHistory.forEach((runRecord, index) => {
+        const boxColor = LifecycleMethods.includes(runRecord) ? 'red' : (runRecord.startsWith('UIManager.') ? 'blue' : null);
+        const isPatch = index > preHistoryCount;
+        let runRecordNode;
+        if ('pop()' === runRecord) {
+          runRecordNode = runRecordParentNode;
+          runRecordNode.highLight = false;
+          runRecordNode.isPatch = isPatch;
+          runRecordParentNode = runRecordNode.parent;
+        } else {
+          if (runRecordParentNode) {
+            runRecordNode = runRecordParentNode.children.find((child) => (child.title === runRecord));
+            if (runRecordNode) {
+              // do nothing
+            } else {
+              runRecordNode = {
+                title: runRecord,
+                parent: runRecordParentNode,
+                children: [],
+                highLight: true,
+                boxColor,
+                isPatch: false,
+              };
+              runRecordParentNode.children.push(runRecordNode);
+            }
+            runRecordNode.highLight = true;
+            runRecordNode.isPatch = false;
+            runRecordParentNode = runRecordNode;
+          } else {
+            runRecordNode = {
+              title: runRecord,
+              parent: null,
+              children: [],
+              highLight: true,
+              boxColor,
+              isPatch: false,
+            };
+            runRecordRootNode = runRecordNode;
+            runRecordParentNode = runRecordNode;
+          }
+        }
+      });
+    }
+
+    return runRecordRootNode;
   }
 
   render() {
     // const {fibers = null} = this.state.recordIndex >= 0 ? this.fiberTreeInfos[this.state.recordIndex] : {};
 
-    const {currentFiberID, fibers = null, doms = null, desc = null} = this.props.fiberTreeInfos ?
+    const {currentFiberID, fibers = null, doms = null, runRecordHistory = null, desc = null} = this.props.fiberTreeInfos ?
       (this.state.recordIndex >= 0 && this.state.recordIndex < this.props.fiberTreeInfos.length ? this.props.fiberTreeInfos[this.state.recordIndex] : this.props.fiberTreeInfos[this.props.fiberTreeInfos.length - 1])
       : {};
+    // const runRecordRootNode = this.buildRunRecordTree(this.props.fiberTreeInfos, this.state.recordIndex);
+    const preRunRecordHistory = this.props.fiberTreeInfos && this.state.recordIndex > 0 && this.state.recordIndex < this.props.fiberTreeInfos.length ? this.props.fiberTreeInfos[this.state.recordIndex - 1].runRecordHistory : null;
+    const runRecordRootNode = this.buildRunRecordHistoryTree(runRecordHistory, preRunRecordHistory ? preRunRecordHistory.length : -1);
     // console.log('SSU', 'FiberTreeTab#render', JSON.stringify(fibers));
-    setTimeout(() => this.draw(currentFiberID, fibers, doms, this.state.ratio), 0);
+    setTimeout(() => this.draw(currentFiberID, fibers, doms, runRecordRootNode, this.state.ratio), 0);
     return (
       <div style={{overflow: 'scroll'}}>
         <div style={{display: 'flex', width: 2000}}>
@@ -163,7 +267,7 @@ class FiberTreeTab extends React.Component<Props, State> {
             color: 'red',
           }} onClick={this.onPressPlay}>Play
           </div>
-          <div>{desc}</div>
+          <div>{`${desc}  【${this.state.recordIndex} / ${this.props.fiberTreeInfos ? this.props.fiberTreeInfos.length - 1 : 0}】`}</div>
         </div>
         <div style={{display: 'flex', overflow: 'scroll'}}>
           {this.props.fiberTreeInfos && this.props.fiberTreeInfos.map((fiberTreeInfo, recordIndex) => {
@@ -185,7 +289,7 @@ class FiberTreeTab extends React.Component<Props, State> {
             );
           })}
         </div>
-        <canvas id="myCanvas" width="5000" height="5000">
+        <canvas id="myCanvas" width="10000" height="10000">
           Your browser does not support the canvas element.
         </canvas>
       </div>

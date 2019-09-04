@@ -48468,11 +48468,13 @@ var Radius;
 var DOMRadius;
 var FontSize;
 var DOMFontSize;
+var RunRecordFontSize;
 var DescFontSize;
 var FontColor;
 var DescFontColor;
 var Font;
 var DOMFont;
+var RunRecordFont;
 var DescFont;
 var XStep;
 var RootXStep;
@@ -48480,6 +48482,7 @@ var YStep;
 var InitX;
 var InitY;
 var DOMXOffset;
+var DOMYOffset;
 var DOMXStep;
 var DOMRootXStep;
 var DOMYStep;
@@ -48493,9 +48496,11 @@ function init(ratio) {
     DOMRadius = 50 * ratio;
     FontSize = 20 * ratio;
     DOMFontSize = 20 * ratio;
+    RunRecordFont = 25 * ratio;
     FontColor = 'black';
     Font = FontSize + 'px  Arial';
     DOMFont = DOMFontSize + 'px  Arial';
+    RunRecordFont = RunRecordFont + 'px  Arial';
     DescFontColor = 'gray';
     DescFontSize = 10;
     DescFont = DescFontSize + 'px  Arial';
@@ -48505,7 +48510,8 @@ function init(ratio) {
     InitX = 5 * Radius;
     InitY = 2 * Radius;
     DOMXOffset = 3 * RootXStep;
-    DOMXStep = 5 * DOMRadius;
+    DOMYOffset = 3 * RootXStep;
+    DOMXStep = 1.5 * DOMRadius;
     DOMRootXStep = 2 * DOMXStep;
     DOMYStep = 3 * DOMRadius;
     DOMInitX = 3 * DOMRadius;
@@ -48517,6 +48523,8 @@ function init(ratio) {
 var HighLightColor = 'purple';
 var NodeColor = '#FF0000';
 var RealDOMNodeColor = '#32cd32';
+var RunRecordNodeColor = 'yellow';
+var HighLightRunRecordNodeColor = 'purple';
 var NodeAlternateLineColor = 'purple';
 var NodeChildLineColor = 'green';
 var DOMNodeChildLineColor = 'black';
@@ -48794,7 +48802,7 @@ function layoutDomNode(domNode, treeInfo) {
     var children = node.children;
 
     if (children) {
-      children && children.forEach(function (childLayoutDomNode, childIndex) {
+      children.forEach(function (childLayoutDomNode, childIndex) {
         queue.push(childLayoutDomNode);
       });
     } else {
@@ -48869,7 +48877,7 @@ function correctLayoutDomNodeTree(layoutDomNode, maxLevel) {
   var children = layoutDomNode.children,
       level = layoutDomNode.level;
 
-  if (children) {
+  if (children && children.length) {
     if (children.length % 2 === 0) {
       var midChildLayoutDomNode = {
         domNode: null,
@@ -48902,7 +48910,219 @@ function correctLayoutDomNodeTree(layoutDomNode, maxLevel) {
   }
 }
 
-function drawFiberTree(currentFiberID, fibers, doms, ratio) {
+function buildDisplayTreeNode(node, level, treeInfo) {
+  if (!node) {
+    return null;
+  }
+
+  var displayTreeNode = {
+    node: node,
+    title: node.title,
+    highLight: node.highLight,
+    boxColor: node.boxColor,
+    isPatch: node.isPatch,
+    parent: null,
+    children: [],
+    isMiddleChild: false,
+    index: 0,
+    level: level
+  };
+
+  if (level > treeInfo.maxLevel) {
+    treeInfo.maxLevel = level;
+  }
+
+  var children = node.children;
+  children && children.forEach(function (childDomNode) {
+    var childDrawNode = buildDisplayTreeNode(childDomNode, level + 1, treeInfo);
+
+    if (childDrawNode) {
+      childDrawNode.parent = displayTreeNode;
+      displayTreeNode.children.push(childDrawNode);
+    }
+  });
+  return displayTreeNode;
+}
+
+function correctDisplayTreeNode(displayTreeNode, maxLevel) {
+  if (!displayTreeNode) {
+    return null;
+  }
+
+  var children = displayTreeNode.children,
+      level = displayTreeNode.level;
+
+  if (children && children.length > 0) {
+    if (children.length % 2 === 0) {
+      var midDisplayTreeNode = {
+        node: null,
+        parent: displayTreeNode,
+        children: [],
+        isMiddleChild: true,
+        index: 0,
+        level: level + 1
+      };
+      children.splice(children.length / 2, 0, midDisplayTreeNode);
+    }
+
+    children[(children.length - 1) / 2].isMiddleChild = true;
+    children.forEach(function (childDrawNode) {
+      correctDisplayTreeNode(childDrawNode, maxLevel);
+    });
+  } else {
+    if (level < maxLevel) {
+      var _midDisplayTreeNode = {
+        node: null,
+        parent: displayTreeNode,
+        children: [],
+        isMiddleChild: true,
+        index: 0,
+        level: level + 1
+      };
+      displayTreeNode.children.push(_midDisplayTreeNode);
+      correctDisplayTreeNode(_midDisplayTreeNode, maxLevel);
+    }
+  }
+}
+
+function layoutDisplayTreeNode(node, treeInfo) {
+  if (!node) {
+    return null;
+  }
+
+  var displayTreeNode = buildDisplayTreeNode(node, 0, treeInfo); // console.log('SSU', 'buildLayoutDomNodeTree', {layoutDomNode, treeInfo});
+
+  correctDisplayTreeNode(displayTreeNode, treeInfo.maxLevel); // console.log('SSU', 'correctLayoutDomNodeTree', {layoutDomNode, treeInfo});
+
+  var queue = [];
+  queue.push(displayTreeNode);
+  var index = 0;
+
+  while (queue.length > 0) {
+    var queueNode = queue.shift();
+    var children = queueNode.children;
+
+    if (children && children.length) {
+      children.forEach(function (childDrawNode) {
+        queue.push(childDrawNode);
+      });
+    } else {
+      queueNode.index = index;
+      var parent = queueNode.isMiddleChild ? queueNode.parent : null;
+
+      while (parent) {
+        parent.index = index;
+        parent = parent.isMiddleChild ? parent.parent : null;
+      }
+
+      index++;
+
+      if (index > treeInfo.maxIndex) {
+        treeInfo.maxIndex = index;
+      }
+    }
+  }
+
+  return displayTreeNode;
+}
+
+function getDisplayTreeNodeXY(displayTreeNode, offsetLeafCount) {
+  var horizontal = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+  var index = displayTreeNode.index,
+      level = displayTreeNode.level;
+  var x, y;
+
+  if (horizontal) {
+    x = DOMInitY + level * 3 * DOMYStep;
+    y = DOMInitX + (offsetLeafCount + index) * DOMXStep;
+  } else {
+    x = DOMInitX + (offsetLeafCount + index) * DOMXStep;
+    y = DOMInitY + level * DOMYStep;
+  }
+
+  return {
+    x: x,
+    y: y
+  };
+}
+
+function drawDisplayTreeNode(cxt, displayTreeNode, offsetLeafCount) {
+  var horizontal = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+  if (!displayTreeNode || !displayTreeNode.node) {
+    return;
+  }
+
+  var title = displayTreeNode.title,
+      children = displayTreeNode.children,
+      highLight = displayTreeNode.highLight,
+      boxColor = displayTreeNode.boxColor,
+      isPatch = displayTreeNode.isPatch; // const styleStr = style ? `(${style.width ? style.width : 'w'}, ${style.height ? style.height : 'h'}) ${style.text ? style.text : ''}` : '';
+
+  var _getDisplayTreeNodeXY = getDisplayTreeNodeXY(displayTreeNode, offsetLeafCount, horizontal),
+      x = _getDisplayTreeNodeXY.x,
+      y = _getDisplayTreeNodeXY.y; // line
+
+
+  cxt.strokeStyle = DOMNodeChildLineColor;
+  cxt.lineWidth = 1;
+  children && children.forEach(function (childDisplayTreeNode) {
+    if (childDisplayTreeNode && childDisplayTreeNode.node) {
+      var _getDisplayTreeNodeXY2 = getDisplayTreeNodeXY(childDisplayTreeNode, offsetLeafCount, horizontal),
+          xx = _getDisplayTreeNodeXY2.x,
+          yy = _getDisplayTreeNodeXY2.y;
+
+      cxt.beginPath();
+      cxt.moveTo(x, y);
+      cxt.lineTo(xx, yy);
+      cxt.stroke();
+    }
+  }); // console.log('SSU', 'drawDomNode', {x, y, domNode});
+
+  cxt.lineWidth = 1;
+  cxt.fillStyle = highLight ? HighLightRunRecordNodeColor : RunRecordNodeColor;
+  cxt.beginPath();
+  cxt.rect(x - 3 * DOMRadius, y - DOMRadius / 2, 6 * DOMRadius, DOMRadius);
+  cxt.closePath();
+  cxt.fill();
+
+  if (boxColor) {
+    cxt.lineWidth = 2;
+    cxt.strokeStyle = boxColor;
+    cxt.beginPath();
+    cxt.rect(x - 3 * DOMRadius, y - DOMRadius / 2, 6 * DOMRadius, DOMRadius);
+    cxt.closePath();
+    cxt.stroke();
+  }
+
+  if (isPatch) {
+    cxt.lineWidth = 2;
+    cxt.strokeStyle = 'purple';
+    cxt.beginPath();
+    cxt.rect(x - 3.2 * DOMRadius, y - 0.6 * DOMRadius, 6.4 * DOMRadius, 1.2 * DOMRadius);
+    cxt.closePath();
+    cxt.stroke();
+  }
+
+  cxt.fillStyle = FontColor;
+  cxt.font = RunRecordFont;
+  cxt.fillText(title, x - cxt.measureText(title).width / 2, y + 0.3 * DOMFontSize);
+  children && children.forEach(function (childDisplayTreeNode) {
+    drawDisplayTreeNode(cxt, childDisplayTreeNode, offsetLeafCount, horizontal);
+  });
+}
+
+function drawTree(cxt, node) {
+  var treeInfo = {
+    maxLevel: 0,
+    maxIndex: 0
+  };
+  var displayTreeNode = layoutDisplayTreeNode(node, treeInfo);
+  drawDisplayTreeNode(cxt, displayTreeNode, 0, true);
+  console.log('SSU', 'drawTree', displayTreeNode);
+}
+
+function drawFiberTree(currentFiberID, fibers, doms, runRecordRootNode, ratio) {
   var canvas = document.getElementById('myCanvas');
 
   if (!canvas) {
@@ -48915,9 +49135,14 @@ function drawFiberTree(currentFiberID, fibers, doms, ratio) {
   cxt.save();
   console.log('SSU', 'drawFiberTree', {
     fibers: fibers,
-    doms: doms
+    doms: doms,
+    runRecordRootNode: runRecordRootNode
   }); // console.log('SSU', 'drawFiberTree', {fibers, doms}, JSON.stringify(fibers), JSON.stringify(doms));
-  // fibers
+  // runRecordRootNode
+
+  drawTree(cxt, runRecordRootNode); // fibers
+
+  cxt.translate(0, DOMYOffset);
 
   if (fibers) {
     var fiberXYObj = {};
@@ -49220,6 +49445,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var InitRatio = 1.0 * 0.48;
 var RatioStep = InitRatio * 0.2;
+var LifecycleMethods = ['constructor', 'getDerivedStateFromProps', 'componentWillMount', 'UNSAFE_componentWillMount', 'componentWillReceiveProps', 'UNSAFE_componentWillReceiveProps', 'shouldComponentUpdate', 'componentWillUpdate', 'UNSAFE_componentWillUpdate', 'render', 'getSnapshotBeforeUpdate', 'componentDidMount', 'componentDidUpdate', 'componentWillUnmount'];
 
 var FiberTreeTab =
 /*#__PURE__*/
@@ -49276,13 +49502,6 @@ function (_React$Component) {
         case 38:
           //上
           recordIndex--;
-
-          if (recordIndex >= 0) {
-            _this.setState({
-              recordIndex: recordIndex
-            });
-          }
-
           break;
 
         case 39: //右
@@ -49290,15 +49509,15 @@ function (_React$Component) {
         case 40:
           //下
           recordIndex++;
-
-          if (recordIndex < _this.props.fiberTreeInfos.length) {
-            _this.setState({
-              recordIndex: recordIndex
-            });
-          }
-
           break;
       }
+
+      recordIndex += _this.props.fiberTreeInfos.length;
+      recordIndex %= _this.props.fiberTreeInfos.length;
+
+      _this.setState({
+        recordIndex: recordIndex
+      });
     });
 
     _this.state = {
@@ -49310,9 +49529,9 @@ function (_React$Component) {
 
   _createClass(FiberTreeTab, [{
     key: "draw",
-    value: function draw(currentFiberID, fibers, doms, ratio) {
+    value: function draw(currentFiberID, fibers, doms, runRecordRootNode, ratio) {
       // console.log('SSU', 'drawFiberTree', JSON.stringify(fibers));
-      Object(_FiberTree__WEBPACK_IMPORTED_MODULE_2__["default"])(currentFiberID, fibers, doms, ratio);
+      Object(_FiberTree__WEBPACK_IMPORTED_MODULE_2__["default"])(currentFiberID, fibers, doms, runRecordRootNode, ratio);
     }
   }, {
     key: "componentWillReceiveProps",
@@ -49335,6 +49554,99 @@ function (_React$Component) {
       document.removeEventListener('keydown', this.onKeyDown);
     }
   }, {
+    key: "buildRunRecordHistoryTree",
+    // buildRunRecordTree(fiberTreeInfos, recordIndex) {
+    //   let runRecordRootNode = {
+    //     title: '起点',
+    //     parent: null,
+    //     children: [],
+    //   };
+    //   if (fiberTreeInfos && recordIndex >= 0 && recordIndex < fiberTreeInfos.length) {
+    //     for (let i = 0; i <= recordIndex; i++) {
+    //       let parentRunRecordNode = runRecordRootNode;
+    //       const {runRecordStack} = fiberTreeInfos[i];
+    //       const highLight = (i === recordIndex);
+    //       runRecordStack && runRecordStack.forEach((runRecord) => {
+    //         let runRecordNode = parentRunRecordNode.children.find((child) => (child.title === runRecord));
+    //         if (runRecordNode) {
+    //           runRecordNode.highLight = highLight;
+    //         } else {
+    //           runRecordNode = {
+    //             title: runRecord,
+    //             parent: parentRunRecordNode,
+    //             children: [],
+    //             highLight,
+    //           };
+    //           parentRunRecordNode.children.push(runRecordNode);
+    //         }
+    //         parentRunRecordNode = runRecordNode;
+    //       });
+    //     }
+    //   }
+    //
+    //   return runRecordRootNode;
+    // }
+    value: function buildRunRecordHistoryTree(runRecordHistory, preHistoryCount) {
+      var runRecordRootNode = null; // let runRecordRootNode = {
+      //     title: '起点',
+      //     parent: null,
+      //     children: [],
+      // };
+
+      var runRecordParentNode = runRecordRootNode;
+
+      if (runRecordHistory && runRecordHistory.length) {
+        runRecordHistory.forEach(function (runRecord, index) {
+          var boxColor = LifecycleMethods.includes(runRecord) ? 'red' : runRecord.startsWith('UIManager.') ? 'blue' : null;
+          var isPatch = index > preHistoryCount;
+          var runRecordNode;
+
+          if ('pop()' === runRecord) {
+            runRecordNode = runRecordParentNode;
+            runRecordNode.highLight = false;
+            runRecordNode.isPatch = isPatch;
+            runRecordParentNode = runRecordNode.parent;
+          } else {
+            if (runRecordParentNode) {
+              runRecordNode = runRecordParentNode.children.find(function (child) {
+                return child.title === runRecord;
+              });
+
+              if (runRecordNode) {// do nothing
+              } else {
+                runRecordNode = {
+                  title: runRecord,
+                  parent: runRecordParentNode,
+                  children: [],
+                  highLight: true,
+                  boxColor: boxColor,
+                  isPatch: false
+                };
+                runRecordParentNode.children.push(runRecordNode);
+              }
+
+              runRecordNode.highLight = true;
+              runRecordNode.isPatch = false;
+              runRecordParentNode = runRecordNode;
+            } else {
+              runRecordNode = {
+                title: runRecord,
+                parent: null,
+                children: [],
+                highLight: true,
+                boxColor: boxColor,
+                isPatch: false
+              };
+              runRecordRootNode = runRecordNode;
+              runRecordParentNode = runRecordNode;
+            }
+          }
+        });
+      }
+
+      return runRecordRootNode;
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this2 = this;
@@ -49346,12 +49658,17 @@ function (_React$Component) {
           fibers = _ref$fibers === void 0 ? null : _ref$fibers,
           _ref$doms = _ref.doms,
           doms = _ref$doms === void 0 ? null : _ref$doms,
+          _ref$runRecordHistory = _ref.runRecordHistory,
+          runRecordHistory = _ref$runRecordHistory === void 0 ? null : _ref$runRecordHistory,
           _ref$desc = _ref.desc,
-          desc = _ref$desc === void 0 ? null : _ref$desc; // console.log('SSU', 'FiberTreeTab#render', JSON.stringify(fibers));
+          desc = _ref$desc === void 0 ? null : _ref$desc; // const runRecordRootNode = this.buildRunRecordTree(this.props.fiberTreeInfos, this.state.recordIndex);
 
+
+      var preRunRecordHistory = this.props.fiberTreeInfos && this.state.recordIndex > 0 && this.state.recordIndex < this.props.fiberTreeInfos.length ? this.props.fiberTreeInfos[this.state.recordIndex - 1].runRecordHistory : null;
+      var runRecordRootNode = this.buildRunRecordHistoryTree(runRecordHistory, preRunRecordHistory ? preRunRecordHistory.length : -1); // console.log('SSU', 'FiberTreeTab#render', JSON.stringify(fibers));
 
       setTimeout(function () {
-        return _this2.draw(currentFiberID, fibers, doms, _this2.state.ratio);
+        return _this2.draw(currentFiberID, fibers, doms, runRecordRootNode, _this2.state.ratio);
       }, 0);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: {
@@ -49406,7 +49723,7 @@ function (_React$Component) {
           color: 'red'
         },
         onClick: this.onPressPlay
-      }, "Play"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, desc)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "Play"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "".concat(desc, "  \u3010").concat(this.state.recordIndex, " / ").concat(this.props.fiberTreeInfos ? this.props.fiberTreeInfos.length - 1 : 0, "\u3011"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: {
           display: 'flex',
           overflow: 'scroll'
@@ -49429,8 +49746,8 @@ function (_React$Component) {
         }, ((Array(3).join('~') + fiberTreeInfo.index).slice(-3) + Array(3).join('~')).slice(0, 5));
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("canvas", {
         id: "myCanvas",
-        width: "5000",
-        height: "5000"
+        width: "10000",
+        height: "10000"
       }, "Your browser does not support the canvas element."));
     }
   }]);
@@ -54730,7 +55047,20 @@ function initialize(socket) {
   var listeners = [];
 
   socket.onmessage = function (evt) {
-    var data = JSON.parse(evt.data); // console.log('SSU', 'socket.onmessage', data);
+    console.log('SSU', 'socket.onmessage', evt.data);
+    var data = JSON.parse(evt.data);
+    var _data$type = data.type,
+        type = _data$type === void 0 ? null : _data$type,
+        _data$events = data.events,
+        events = _data$events === void 0 ? null : _data$events;
+
+    if (type === 'many-events' && Array.isArray(events)) {
+      events.filter(function (event) {
+        return event.evt === 'sendFiberTree';
+      }).forEach(function (event) {
+        console.log('SSU', 'socket.onmessage#sendFiberTree', event);
+      });
+    }
 
     listeners.forEach(function (fn) {
       return fn(data);

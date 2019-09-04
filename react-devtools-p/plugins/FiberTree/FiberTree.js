@@ -3,11 +3,13 @@ let Radius;
 let DOMRadius;
 let FontSize;
 let DOMFontSize;
+let RunRecordFontSize;
 let DescFontSize;
 let FontColor;
 let DescFontColor;
 let Font;
 let DOMFont;
+let RunRecordFont;
 let DescFont;
 let XStep;
 let RootXStep;
@@ -15,6 +17,7 @@ let YStep;
 let InitX;
 let InitY;
 let DOMXOffset;
+let DOMYOffset;
 let DOMXStep;
 let DOMRootXStep;
 let DOMYStep;
@@ -28,9 +31,11 @@ function init(ratio) {
     DOMRadius = 50 * ratio;
     FontSize = 20 * ratio;
     DOMFontSize = 20 * ratio;
+    RunRecordFont = 25 * ratio;
     FontColor = 'black';
     Font = FontSize + 'px  Arial';
     DOMFont = DOMFontSize + 'px  Arial';
+    RunRecordFont = RunRecordFont + 'px  Arial';
     DescFontColor = 'gray';
     DescFontSize = 10;
     DescFont = DescFontSize + 'px  Arial';
@@ -40,7 +45,8 @@ function init(ratio) {
     InitX = 5 * Radius;
     InitY = 2 * Radius;
     DOMXOffset = 3 * RootXStep;
-    DOMXStep = 5 * DOMRadius;
+    DOMYOffset = 3 * RootXStep;
+    DOMXStep = 1.5 * DOMRadius;
     DOMRootXStep = 2 * DOMXStep;
     DOMYStep = 3 * DOMRadius;
     DOMInitX = 3 * DOMRadius;
@@ -52,6 +58,8 @@ function init(ratio) {
 const HighLightColor = 'purple';
 const NodeColor = '#FF0000';
 const RealDOMNodeColor = '#32cd32';
+const RunRecordNodeColor = 'yellow';
+const HighLightRunRecordNodeColor = 'purple';
 const NodeAlternateLineColor = 'purple';
 const NodeChildLineColor = 'green';
 const DOMNodeChildLineColor = 'black';
@@ -292,7 +300,7 @@ function layoutDomNode(domNode, treeInfo) {
     const node = queue.shift();
     const {children} = node;
     if (children) {
-      children && children.forEach((childLayoutDomNode, childIndex) => {
+      children.forEach((childLayoutDomNode, childIndex) => {
         queue.push(childLayoutDomNode);
       });
     } else {
@@ -357,7 +365,7 @@ function correctLayoutDomNodeTree(layoutDomNode, maxLevel) {
   }
 
   const {children, level} = layoutDomNode;
-  if (children) {
+  if (children && children.length) {
     if (children.length % 2 === 0) {
       const midChildLayoutDomNode = {
         domNode: null,
@@ -391,7 +399,190 @@ function correctLayoutDomNodeTree(layoutDomNode, maxLevel) {
   }
 }
 
-export default function drawFiberTree(currentFiberID, fibers, doms, ratio) {
+function buildDisplayTreeNode(node, level, treeInfo) {
+  if (!node) {
+    return null;
+  }
+  const displayTreeNode = {
+    node,
+    title: node.title,
+    highLight: node.highLight,
+    boxColor: node.boxColor,
+    isPatch: node.isPatch,
+    parent: null,
+    children: [],
+    isMiddleChild: false,
+    index: 0,
+    level,
+  };
+  if (level > treeInfo.maxLevel) {
+    treeInfo.maxLevel = level;
+  }
+  const {children} = node;
+  children && children.forEach((childDomNode) => {
+    const childDrawNode = buildDisplayTreeNode(childDomNode, level + 1, treeInfo);
+    if (childDrawNode) {
+      childDrawNode.parent = displayTreeNode;
+      displayTreeNode.children.push(childDrawNode);
+    }
+  });
+  return displayTreeNode;
+}
+
+function correctDisplayTreeNode(displayTreeNode, maxLevel) {
+  if (!displayTreeNode) {
+    return null;
+  }
+
+  const {children, level} = displayTreeNode;
+  if (children && children.length > 0) {
+    if (children.length % 2 === 0) {
+      const midDisplayTreeNode = {
+        node: null,
+        parent: displayTreeNode,
+        children: [],
+        isMiddleChild: true,
+        index: 0,
+        level: level + 1,
+      };
+      children.splice(children.length / 2, 0, midDisplayTreeNode);
+    }
+    children[(children.length - 1) / 2].isMiddleChild = true;
+
+    children.forEach((childDrawNode) => {
+      correctDisplayTreeNode(childDrawNode, maxLevel);
+    });
+  } else {
+    if (level < maxLevel) {
+      const midDisplayTreeNode = {
+        node: null,
+        parent: displayTreeNode,
+        children: [],
+        isMiddleChild: true,
+        index: 0,
+        level: level + 1,
+      };
+      displayTreeNode.children.push(midDisplayTreeNode);
+
+      correctDisplayTreeNode(midDisplayTreeNode, maxLevel);
+    }
+  }
+}
+
+
+function layoutDisplayTreeNode(node, treeInfo) {
+  if (!node) {
+    return null;
+  }
+  const displayTreeNode = buildDisplayTreeNode(node, 0, treeInfo);
+  // console.log('SSU', 'buildLayoutDomNodeTree', {layoutDomNode, treeInfo});
+  correctDisplayTreeNode(displayTreeNode, treeInfo.maxLevel);
+  // console.log('SSU', 'correctLayoutDomNodeTree', {layoutDomNode, treeInfo});
+  const queue = [];
+  queue.push(displayTreeNode);
+  let index = 0;
+  while (queue.length > 0) {
+    const queueNode = queue.shift();
+    const {children} = queueNode;
+    if (children && children.length) {
+      children.forEach((childDrawNode) => {
+        queue.push(childDrawNode);
+      });
+    } else {
+      queueNode.index = index;
+      let parent = queueNode.isMiddleChild ? queueNode.parent : null;
+      while (parent) {
+        parent.index = index;
+        parent = parent.isMiddleChild ? parent.parent : null;
+      }
+      index ++;
+
+      if (index > treeInfo.maxIndex) {
+        treeInfo.maxIndex = index;
+      }
+    }
+  }
+
+  return displayTreeNode;
+}
+
+function getDisplayTreeNodeXY(displayTreeNode, offsetLeafCount, horizontal = false) {
+  const {index, level} = displayTreeNode;
+  let x, y;
+  if (horizontal) {
+    x = DOMInitY + level * 3 * DOMYStep;
+    y = DOMInitX + (offsetLeafCount + index) * DOMXStep;
+  } else {
+    x = DOMInitX + (offsetLeafCount + index) * DOMXStep;
+    y = DOMInitY + level * DOMYStep;
+  }
+
+  return {x, y};
+}
+
+function drawDisplayTreeNode(cxt, displayTreeNode, offsetLeafCount, horizontal = false) {
+  if (!displayTreeNode || !displayTreeNode.node) {
+    return;
+  }
+  const { title, children, highLight, boxColor, isPatch } = displayTreeNode;
+  // const styleStr = style ? `(${style.width ? style.width : 'w'}, ${style.height ? style.height : 'h'}) ${style.text ? style.text : ''}` : '';
+  const {x, y} = getDisplayTreeNodeXY(displayTreeNode, offsetLeafCount, horizontal);
+  // line
+  cxt.strokeStyle = DOMNodeChildLineColor;
+  cxt.lineWidth = 1;
+  children && children.forEach((childDisplayTreeNode) => {
+    if (childDisplayTreeNode && childDisplayTreeNode.node) {
+      const {x: xx, y: yy} = getDisplayTreeNodeXY(childDisplayTreeNode, offsetLeafCount, horizontal);
+      cxt.beginPath();
+      cxt.moveTo(x, y);
+      cxt.lineTo(xx, yy);
+      cxt.stroke();
+    }
+  });
+
+
+  // console.log('SSU', 'drawDomNode', {x, y, domNode});
+  cxt.lineWidth = 1;
+  cxt.fillStyle = highLight ? HighLightRunRecordNodeColor : RunRecordNodeColor;
+  cxt.beginPath();
+  cxt.rect(x - 3 * DOMRadius, y - DOMRadius / 2, 6 * DOMRadius, DOMRadius);
+  cxt.closePath();
+  cxt.fill();
+
+  if (boxColor) {
+    cxt.lineWidth = 2;
+    cxt.strokeStyle = boxColor;
+    cxt.beginPath();
+    cxt.rect(x - 3 * DOMRadius, y - DOMRadius / 2, 6 * DOMRadius, DOMRadius);
+    cxt.closePath();
+    cxt.stroke();
+  }
+
+  if (isPatch) {
+    cxt.lineWidth = 2;
+    cxt.strokeStyle = 'purple';
+    cxt.beginPath();
+    cxt.rect(x - 3.2 * DOMRadius, y - 0.6 * DOMRadius, 6.4 * DOMRadius, 1.2 * DOMRadius);
+    cxt.closePath();
+    cxt.stroke();
+  }
+
+  cxt.fillStyle = FontColor;
+  cxt.font = RunRecordFont;
+  cxt.fillText(title, x - cxt.measureText(title).width / 2, y + 0.3 * DOMFontSize);
+  children && children.forEach((childDisplayTreeNode) => {
+    drawDisplayTreeNode(cxt, childDisplayTreeNode, offsetLeafCount, horizontal);
+  });
+}
+
+function drawTree(cxt, node) {
+  const treeInfo = {maxLevel: 0, maxIndex: 0};
+  const displayTreeNode = layoutDisplayTreeNode(node, treeInfo);
+  drawDisplayTreeNode(cxt, displayTreeNode, 0, true);
+  console.log('SSU', 'drawTree', displayTreeNode);
+}
+
+export default function drawFiberTree(currentFiberID, fibers, doms, runRecordRootNode, ratio) {
   const canvas = document.getElementById('myCanvas');
   if (!canvas) {
     return;
@@ -400,9 +591,12 @@ export default function drawFiberTree(currentFiberID, fibers, doms, ratio) {
   const cxt = canvas.getContext('2d');
   cxt.clearRect(0, 0, canvas.width, canvas.height);
   cxt.save();
-  console.log('SSU', 'drawFiberTree', {fibers, doms});
+  console.log('SSU', 'drawFiberTree', {fibers, doms, runRecordRootNode});
   // console.log('SSU', 'drawFiberTree', {fibers, doms}, JSON.stringify(fibers), JSON.stringify(doms));
+  // runRecordRootNode
+  drawTree(cxt, runRecordRootNode);
   // fibers
+  cxt.translate(0, DOMYOffset);
   if (fibers) {
     const fiberXYObj = {};
     const fiberRoots = [];

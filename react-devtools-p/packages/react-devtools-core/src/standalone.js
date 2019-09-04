@@ -73,8 +73,15 @@ function onError(e) {
 function initialize(socket) {
   var listeners = [];
   socket.onmessage = (evt) => {
+    console.log('SSU', 'socket.onmessage', evt.data);
     var data = JSON.parse(evt.data);
-      // console.log('SSU', 'socket.onmessage', data);
+    const {type = null, events = null} = data;
+    if (type === 'many-events' && Array.isArray(events)) {
+      events.filter(event => (event.evt === 'sendFiberTree'))
+        .forEach(event => {
+          console.log('SSU', 'socket.onmessage#sendFiberTree', event);
+        });
+    }
     listeners.forEach((fn) => fn(data));
   };
 
