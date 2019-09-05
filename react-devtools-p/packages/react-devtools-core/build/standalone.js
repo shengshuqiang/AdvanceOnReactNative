@@ -48515,7 +48515,7 @@ function init(ratio) {
     DOMRootXStep = 2 * DOMXStep;
     DOMYStep = 3 * DOMRadius;
     DOMInitX = 3 * DOMRadius;
-    DOMInitY = 2 * DOMRadius;
+    DOMInitY = 4 * DOMRadius;
     InvalidID = -1;
   }
 }
@@ -49061,8 +49061,10 @@ function drawDisplayTreeNode(cxt, displayTreeNode, offsetLeafCount) {
 
   var _getDisplayTreeNodeXY = getDisplayTreeNodeXY(displayTreeNode, offsetLeafCount, horizontal),
       x = _getDisplayTreeNodeXY.x,
-      y = _getDisplayTreeNodeXY.y; // line
+      y = _getDisplayTreeNodeXY.y;
 
+  var width = 6 * DOMRadius;
+  var height = DOMRadius; // line
 
   cxt.strokeStyle = DOMNodeChildLineColor;
   cxt.lineWidth = 1;
@@ -49073,8 +49075,8 @@ function drawDisplayTreeNode(cxt, displayTreeNode, offsetLeafCount) {
           yy = _getDisplayTreeNodeXY2.y;
 
       cxt.beginPath();
-      cxt.moveTo(x, y);
-      cxt.lineTo(xx, yy);
+      cxt.moveTo(x + width / 2, y);
+      cxt.lineTo(xx - width / 2, yy);
       cxt.stroke();
     }
   }); // console.log('SSU', 'drawDomNode', {x, y, domNode});
@@ -49082,7 +49084,7 @@ function drawDisplayTreeNode(cxt, displayTreeNode, offsetLeafCount) {
   cxt.lineWidth = 1;
   cxt.fillStyle = highLight ? HighLightRunRecordNodeColor : RunRecordNodeColor;
   cxt.beginPath();
-  cxt.rect(x - 3 * DOMRadius, y - DOMRadius / 2, 6 * DOMRadius, DOMRadius);
+  cxt.rect(x - width / 2, y - height / 2, width, height);
   cxt.closePath();
   cxt.fill();
 
@@ -49090,16 +49092,17 @@ function drawDisplayTreeNode(cxt, displayTreeNode, offsetLeafCount) {
     cxt.lineWidth = 2;
     cxt.strokeStyle = boxColor;
     cxt.beginPath();
-    cxt.rect(x - 3 * DOMRadius, y - DOMRadius / 2, 6 * DOMRadius, DOMRadius);
+    cxt.rect(x - width / 2, y - height / 2, width, height);
     cxt.closePath();
     cxt.stroke();
   }
 
   if (isPatch) {
-    cxt.lineWidth = 2;
+    var lineWidth = 3;
+    cxt.lineWidth = lineWidth;
     cxt.strokeStyle = 'purple';
     cxt.beginPath();
-    cxt.rect(x - 3.2 * DOMRadius, y - 0.6 * DOMRadius, 6.4 * DOMRadius, 1.2 * DOMRadius);
+    cxt.rect(x - width / 2 - lineWidth, y - height / 2 - lineWidth, width + 2 * lineWidth, height + 2 * lineWidth);
     cxt.closePath();
     cxt.stroke();
   }
@@ -49446,6 +49449,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var InitRatio = 1.0 * 0.48;
 var RatioStep = InitRatio * 0.2;
 var LifecycleMethods = ['constructor', 'getDerivedStateFromProps', 'componentWillMount', 'UNSAFE_componentWillMount', 'componentWillReceiveProps', 'UNSAFE_componentWillReceiveProps', 'shouldComponentUpdate', 'componentWillUpdate', 'UNSAFE_componentWillUpdate', 'render', 'getSnapshotBeforeUpdate', 'componentDidMount', 'componentDidUpdate', 'componentWillUnmount'];
+var ComponentPrototypes = ['isReactComponent', 'setState', 'forceUpdate'];
 
 var FiberTreeTab =
 /*#__PURE__*/
@@ -49554,7 +49558,7 @@ function (_React$Component) {
       document.removeEventListener('keydown', this.onKeyDown);
     }
   }, {
-    key: "buildRunRecordHistoryTree",
+    key: "getMatchRunRecordTitle",
     // buildRunRecordTree(fiberTreeInfos, recordIndex) {
     //   let runRecordRootNode = {
     //     title: '起点',
@@ -49586,7 +49590,42 @@ function (_React$Component) {
     //
     //   return runRecordRootNode;
     // }
+    value: function getMatchRunRecordTitle(title) {
+      if (title) {
+        var index = title.indexOf('(');
+
+        if (index != -1) {
+          return title.substring(0, index);
+        }
+      }
+
+      return title;
+    }
+  }, {
+    key: "isRunRecordTitleEqual",
+    value: function isRunRecordTitleEqual(title1, title2) {
+      return this.getMatchRunRecordTitle(title1) === this.getMatchRunRecordTitle(title2);
+    }
+  }, {
+    key: "buildRunRecordBoxColor",
+    value: function buildRunRecordBoxColor(runRecord) {
+      if (LifecycleMethods.includes(runRecord)) {
+        return 'red';
+      } else if (ComponentPrototypes.includes(runRecord)) {
+        return 'darkorange';
+      } else if (runRecord.startsWith('UIManager.')) {
+        return 'blue';
+      } else if (runRecord.includes('.effectTag')) {
+        return 'green';
+      }
+
+      return null;
+    }
+  }, {
+    key: "buildRunRecordHistoryTree",
     value: function buildRunRecordHistoryTree(runRecordHistory, preHistoryCount) {
+      var _this2 = this;
+
       var runRecordRootNode = null; // let runRecordRootNode = {
       //     title: '起点',
       //     parent: null,
@@ -49597,7 +49636,8 @@ function (_React$Component) {
 
       if (runRecordHistory && runRecordHistory.length) {
         runRecordHistory.forEach(function (runRecord, index) {
-          var boxColor = LifecycleMethods.includes(runRecord) ? 'red' : runRecord.startsWith('UIManager.') ? 'blue' : null;
+          var boxColor = _this2.buildRunRecordBoxColor(runRecord);
+
           var isPatch = index > preHistoryCount;
           var runRecordNode;
 
@@ -49609,10 +49649,12 @@ function (_React$Component) {
           } else {
             if (runRecordParentNode) {
               runRecordNode = runRecordParentNode.children.find(function (child) {
-                return child.title === runRecord;
+                return _this2.isRunRecordTitleEqual(child.title, runRecord);
               });
 
-              if (runRecordNode) {// do nothing
+              if (runRecordNode) {
+                // do nothing
+                runRecordNode.title = runRecord;
               } else {
                 runRecordNode = {
                   title: runRecord,
@@ -49649,7 +49691,7 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       // const {fibers = null} = this.state.recordIndex >= 0 ? this.fiberTreeInfos[this.state.recordIndex] : {};
       var _ref = this.props.fiberTreeInfos ? this.state.recordIndex >= 0 && this.state.recordIndex < this.props.fiberTreeInfos.length ? this.props.fiberTreeInfos[this.state.recordIndex] : this.props.fiberTreeInfos[this.props.fiberTreeInfos.length - 1] : {},
@@ -49668,7 +49710,7 @@ function (_React$Component) {
       var runRecordRootNode = this.buildRunRecordHistoryTree(runRecordHistory, preRunRecordHistory ? preRunRecordHistory.length : -1); // console.log('SSU', 'FiberTreeTab#render', JSON.stringify(fibers));
 
       setTimeout(function () {
-        return _this2.draw(currentFiberID, fibers, doms, runRecordRootNode, _this2.state.ratio);
+        return _this3.draw(currentFiberID, fibers, doms, runRecordRootNode, _this3.state.ratio);
       }, 0);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: {
@@ -49733,7 +49775,7 @@ function (_React$Component) {
           style: {
             width: 60,
             height: 30,
-            backgroundColor: _this2.state.recordIndex === recordIndex ? 'purple' : 'gray',
+            backgroundColor: _this3.state.recordIndex === recordIndex ? 'purple' : 'gray',
             borderRadius: 15,
             fontSize: 25,
             textAlign: 'center',
@@ -49741,7 +49783,7 @@ function (_React$Component) {
             color: 'blue'
           },
           onClick: function onClick() {
-            _this2.onPressRecord(recordIndex);
+            _this3.onPressRecord(recordIndex);
           }
         }, ((Array(3).join('~') + fiberTreeInfo.index).slice(-3) + Array(3).join('~')).slice(0, 5));
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("canvas", {

@@ -50,7 +50,7 @@ function init(ratio) {
     DOMRootXStep = 2 * DOMXStep;
     DOMYStep = 3 * DOMRadius;
     DOMInitX = 3 * DOMRadius;
-    DOMInitY = 2 * DOMRadius;
+    DOMInitY = 4 * DOMRadius;
     InvalidID = -1;
   }
 }
@@ -527,15 +527,17 @@ function drawDisplayTreeNode(cxt, displayTreeNode, offsetLeafCount, horizontal =
   const { title, children, highLight, boxColor, isPatch } = displayTreeNode;
   // const styleStr = style ? `(${style.width ? style.width : 'w'}, ${style.height ? style.height : 'h'}) ${style.text ? style.text : ''}` : '';
   const {x, y} = getDisplayTreeNodeXY(displayTreeNode, offsetLeafCount, horizontal);
-  // line
+  const width = 6 * DOMRadius;
+  const height = DOMRadius;
+    // line
   cxt.strokeStyle = DOMNodeChildLineColor;
   cxt.lineWidth = 1;
   children && children.forEach((childDisplayTreeNode) => {
     if (childDisplayTreeNode && childDisplayTreeNode.node) {
       const {x: xx, y: yy} = getDisplayTreeNodeXY(childDisplayTreeNode, offsetLeafCount, horizontal);
       cxt.beginPath();
-      cxt.moveTo(x, y);
-      cxt.lineTo(xx, yy);
+      cxt.moveTo(x + width / 2, y);
+      cxt.lineTo(xx - width / 2, yy);
       cxt.stroke();
     }
   });
@@ -545,7 +547,7 @@ function drawDisplayTreeNode(cxt, displayTreeNode, offsetLeafCount, horizontal =
   cxt.lineWidth = 1;
   cxt.fillStyle = highLight ? HighLightRunRecordNodeColor : RunRecordNodeColor;
   cxt.beginPath();
-  cxt.rect(x - 3 * DOMRadius, y - DOMRadius / 2, 6 * DOMRadius, DOMRadius);
+  cxt.rect(x - width / 2, y - height / 2, width, height);
   cxt.closePath();
   cxt.fill();
 
@@ -553,16 +555,17 @@ function drawDisplayTreeNode(cxt, displayTreeNode, offsetLeafCount, horizontal =
     cxt.lineWidth = 2;
     cxt.strokeStyle = boxColor;
     cxt.beginPath();
-    cxt.rect(x - 3 * DOMRadius, y - DOMRadius / 2, 6 * DOMRadius, DOMRadius);
+    cxt.rect(x - width / 2, y - height / 2, width, height);
     cxt.closePath();
     cxt.stroke();
   }
 
   if (isPatch) {
-    cxt.lineWidth = 2;
+    const lineWidth = 3;
+    cxt.lineWidth = lineWidth;
     cxt.strokeStyle = 'purple';
     cxt.beginPath();
-    cxt.rect(x - 3.2 * DOMRadius, y - 0.6 * DOMRadius, 6.4 * DOMRadius, 1.2 * DOMRadius);
+    cxt.rect(x - width / 2 - lineWidth, y - height / 2 - lineWidth, width + 2 * lineWidth, height + 2 * lineWidth);
     cxt.closePath();
     cxt.stroke();
   }

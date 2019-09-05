@@ -15,7 +15,7 @@ admindeMacBook-Pro-5:react-devtools shengshuqiang$ npm start
 
 逐级拆解细化图，展开收起脑图
 
-completeroot？
+60？
 
 
 # 考考你
@@ -110,6 +110,43 @@ completeroot？
 29. NB的架构，可扩展，不需要知道整体框架实现原理，对着其中一个功能复制黏贴即可扩展。
 30. 调用关系
 	31. React
+
+1. Js2native 通信
+    1. 初始态
+        1. invoke    UIManager.createView    [3,"RCTRawText",11,{"text":"点击数0"}]
+        2. invoke    UIManager.createView    [5,"RCTText",11,{"ellipsizeMode":"tail","allowFontScaling":true,"accessible":true,"fontSize":30,"color":-1,"textAlignVertical":"center","textAlign":"center"}]
+        3. invoke    UIManager.setChildren    [5,[3]]
+        4. invoke    UIManager.createView    [7,"RCTView",11,{"backgroundColor":-65536,"height":150,"width":300,"accessible":true}]
+        5. invoke    UIManager.setChildren    [7,[5]]
+        6. invoke    UIManager.createView    [9,"RCTView",11,{"flex":1,"pointerEvents":"box-none","collapsable":true}]
+        7. invoke    UIManager.setChildren    [9,[7]]
+        8. 
+        9. invoke    UIManager.createView    [13,"RCTView",11,{"pointerEvents":"box-none","flex":1}]
+        10. invoke    UIManager.setChildren    [13,[9]]
+        11. 
+        12. invoke    UIManager.setChildren    [11,[13]]
+    2. 点击
+        1. invoke    UIManager.measure    [7,27]
+        1. invoke    UIManager.playTouchSound    []
+        2. invoke    UIManager.updateView    [3,"RCTRawText",{"text":"点击数1"}]
+        3. invoke    UIManager.updateView    [5,"RCTText",{"opacity":0.85}]
+        4. invoke    UIManager.updateView    [7,"RCTView",{"backgroundColor":-16777216}]
+        5. invoke    UIManager.updateView    [5,"RCTText",{"opacity":null}]
+        6. invoke    UIManager.updateView    [7,"RCTView",{"backgroundColor":-65536}]
+    1. 切换图片
+        1. invoke    UIManager.measure    [7,27]
+        1. invoke    UIManager.playTouchSound    []
+        2. invoke    UIManager.createView    [15,"RCTImageView",11,{"loadingIndicatorSrc":null,"defaultSrc":null,"src":[{"uri":"http://demo.sc.chinaz.com/Files/pic/icons/5918/c12.png"}],"shouldNotifyLoadEvents":false,"opacity":0.85,"overflow":"hidden","height":100,"width":100}]
+        3. invoke    UIManager.manageChildren    [7,[],[],[],[],[0]]
+        4. invoke    UIManager.manageChildren    [7,[],[],[15],[0],[]]
+        5. invoke    UIManager.updateView    [7,"RCTView",{"backgroundColor":-16777216}]
+        1. invoke    UIManager.updateView    [15,"RCTImageView",{"opacity":null}]
+        2. invoke    UIManager.updateView    [7,"RCTView",{"backgroundColor":-65536}]
+3. Native
+	4. UIManagerModule.attachRootViewToInstance
+		5. 
+	4. WebSocketModule.send
+
 
 - renderApplication.js#renderApplication
   - ReactNativeRenderer-dev.js#render

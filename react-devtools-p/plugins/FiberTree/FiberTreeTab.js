@@ -36,6 +36,12 @@ const LifecycleMethods: string[] = ['constructor',
   'componentDidUpdate',
   'componentWillUnmount'];
 
+const ComponentPrototypes: string[] = [
+  'isReactComponent',
+  'setState',
+  'forceUpdate',
+];
+
 class FiberTreeTab extends React.Component<Props, State> {
 
   constructor(props: Props) {
@@ -157,6 +163,34 @@ class FiberTreeTab extends React.Component<Props, State> {
   //   return runRecordRootNode;
   // }
 
+  getMatchRunRecordTitle(title) {
+    if (title) {
+      const index = title.indexOf('(');
+      if (index != -1) {
+        return title.substring(0, index);
+      }
+    }
+
+    return title;
+  }
+  isRunRecordTitleEqual(title1: string, title2: string) {
+    return this.getMatchRunRecordTitle(title1) === this.getMatchRunRecordTitle(title2);
+  }
+
+  buildRunRecordBoxColor(runRecord: string) {
+    if (LifecycleMethods.includes(runRecord)) {
+      return 'red';
+    } else if (ComponentPrototypes.includes(runRecord)) {
+      return 'darkorange';
+    } else if (runRecord.startsWith('UIManager.')) {
+      return 'blue';
+    } else if (runRecord.includes('.effectTag')) {
+      return 'green';
+    }
+
+    return null;
+  }
+
   buildRunRecordHistoryTree(runRecordHistory, preHistoryCount) {
     let runRecordRootNode = null;
     // let runRecordRootNode = {
@@ -167,7 +201,7 @@ class FiberTreeTab extends React.Component<Props, State> {
     let runRecordParentNode = runRecordRootNode;
     if (runRecordHistory && runRecordHistory.length) {
       runRecordHistory.forEach((runRecord, index) => {
-        const boxColor = LifecycleMethods.includes(runRecord) ? 'red' : (runRecord.startsWith('UIManager.') ? 'blue' : null);
+        const boxColor = this.buildRunRecordBoxColor(runRecord);
         const isPatch = index > preHistoryCount;
         let runRecordNode;
         if ('pop()' === runRecord) {
@@ -177,9 +211,10 @@ class FiberTreeTab extends React.Component<Props, State> {
           runRecordParentNode = runRecordNode.parent;
         } else {
           if (runRecordParentNode) {
-            runRecordNode = runRecordParentNode.children.find((child) => (child.title === runRecord));
+            runRecordNode = runRecordParentNode.children.find((child) => (this.isRunRecordTitleEqual(child.title,runRecord)));
             if (runRecordNode) {
               // do nothing
+              runRecordNode.title = runRecord;
             } else {
               runRecordNode = {
                 title: runRecord,

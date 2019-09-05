@@ -97,9 +97,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ({
 
 /***/ "../../agent/Agent.js":
-/*!***************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/agent/Agent.js ***!
-  \***************************************************************/
+/*!***************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/agent/Agent.js ***!
+  \***************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -781,9 +781,9 @@ module.exports = Agent;
 /***/ }),
 
 /***/ "../../agent/Bridge.js":
-/*!****************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/agent/Bridge.js ***!
-  \****************************************************************/
+/*!****************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/agent/Bridge.js ***!
+  \****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1339,9 +1339,9 @@ module.exports = Bridge;
 /***/ }),
 
 /***/ "../../agent/consts.js":
-/*!****************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/agent/consts.js ***!
-  \****************************************************************/
+/*!****************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/agent/consts.js ***!
+  \****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1371,9 +1371,9 @@ module.exports = {
 /***/ }),
 
 /***/ "../../agent/dehydrate.js":
-/*!*******************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/agent/dehydrate.js ***!
-  \*******************************************************************/
+/*!*******************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/agent/dehydrate.js ***!
+  \*******************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1401,7 +1401,7 @@ module.exports = {
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-var LEVEL_THRESHOLD = 2;
+var LEVEL_THRESHOLD = 10;
 /**
  * Get a enhanced/artificial type string based on the object instance
  */
@@ -1578,9 +1578,9 @@ module.exports = dehydrate;
 /***/ }),
 
 /***/ "../../agent/getIn.js":
-/*!***************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/agent/getIn.js ***!
-  \***************************************************************/
+/*!***************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/agent/getIn.js ***!
+  \***************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -1631,9 +1631,9 @@ module.exports = getIn;
 /***/ }),
 
 /***/ "../../agent/hydrate.js":
-/*!*****************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/agent/hydrate.js ***!
-  \*****************************************************************/
+/*!*****************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/agent/hydrate.js ***!
+  \*****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1677,9 +1677,9 @@ module.exports = hydrate;
 /***/ }),
 
 /***/ "../../agent/inject.js":
-/*!****************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/agent/inject.js ***!
-  \****************************************************************/
+/*!****************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/agent/inject.js ***!
+  \****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1761,9 +1761,9 @@ module.exports = function (hook, agent) {
 /***/ }),
 
 /***/ "../../backend/ReactDebugHooks.js":
-/*!***************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/backend/ReactDebugHooks.js ***!
-  \***************************************************************************/
+/*!***************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/backend/ReactDebugHooks.js ***!
+  \***************************************************************************************************/
 /*! exports provided: inspectHooks, inspectHooksOfFiber */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2331,9 +2331,9 @@ function inspectHooksOfFiber(fiber, currentDispatcher) {
 /***/ }),
 
 /***/ "../../backend/attachRenderer.js":
-/*!**************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/backend/attachRenderer.js ***!
-  \**************************************************************************/
+/*!**************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/backend/attachRenderer.js ***!
+  \**************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2610,9 +2610,9 @@ module.exports = attachRenderer;
 /***/ }),
 
 /***/ "../../backend/attachRendererFiber.js":
-/*!*******************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/backend/attachRendererFiber.js ***!
-  \*******************************************************************************/
+/*!*******************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/backend/attachRendererFiber.js ***!
+  \*******************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3520,9 +3520,9 @@ module.exports = attachRendererFiber;
 /***/ }),
 
 /***/ "../../backend/backend.js":
-/*!*******************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/backend/backend.js ***!
-  \*******************************************************************/
+/*!*******************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/backend/backend.js ***!
+  \*******************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3597,9 +3597,9 @@ module.exports = function setupBackend(hook) {
 /***/ }),
 
 /***/ "../../backend/copyWithSet.js":
-/*!***********************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/backend/copyWithSet.js ***!
-  \***********************************************************************/
+/*!***********************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/backend/copyWithSet.js ***!
+  \***********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3641,9 +3641,9 @@ module.exports = copyWithSet;
 /***/ }),
 
 /***/ "../../backend/getData.js":
-/*!*******************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/backend/getData.js ***!
-  \*******************************************************************/
+/*!*******************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/backend/getData.js ***!
+  \*******************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3885,9 +3885,9 @@ module.exports = getData;
 /***/ }),
 
 /***/ "../../backend/getData012.js":
-/*!**********************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/backend/getData012.js ***!
-  \**********************************************************************/
+/*!**********************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/backend/getData012.js ***!
+  \**********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4047,9 +4047,9 @@ module.exports = getData012;
 /***/ }),
 
 /***/ "../../backend/getDisplayName.js":
-/*!**************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/backend/getDisplayName.js ***!
-  \**************************************************************************/
+/*!**************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/backend/getDisplayName.js ***!
+  \**************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4113,9 +4113,9 @@ module.exports = getDisplayName;
 /***/ }),
 
 /***/ "../../backend/installGlobalHook.js":
-/*!*****************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/backend/installGlobalHook.js ***!
-  \*****************************************************************************/
+/*!*****************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/backend/installGlobalHook.js ***!
+  \*****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4381,9 +4381,9 @@ module.exports = installGlobalHook;
 /***/ }),
 
 /***/ "../../backend/traverseAllChildrenImpl.js":
-/*!***********************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/backend/traverseAllChildrenImpl.js ***!
-  \***********************************************************************************/
+/*!***********************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/backend/traverseAllChildrenImpl.js ***!
+  \***********************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4519,9 +4519,9 @@ module.exports = traverseAllChildrenImpl;
 /***/ }),
 
 /***/ "../../frontend/Highlighter/Highlighter.js":
-/*!************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/frontend/Highlighter/Highlighter.js ***!
-  \************************************************************************************/
+/*!************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/frontend/Highlighter/Highlighter.js ***!
+  \************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4733,9 +4733,9 @@ module.exports = Highlighter;
 /***/ }),
 
 /***/ "../../frontend/Highlighter/MultiOverlay.js":
-/*!*************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/frontend/Highlighter/MultiOverlay.js ***!
-  \*************************************************************************************/
+/*!*************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/frontend/Highlighter/MultiOverlay.js ***!
+  \*************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4834,9 +4834,9 @@ module.exports = MultiOverlay;
 /***/ }),
 
 /***/ "../../frontend/Highlighter/Overlay.js":
-/*!********************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/frontend/Highlighter/Overlay.js ***!
-  \********************************************************************************/
+/*!********************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/frontend/Highlighter/Overlay.js ***!
+  \********************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5142,9 +5142,9 @@ module.exports = Overlay;
 /***/ }),
 
 /***/ "../../frontend/Highlighter/setup.js":
-/*!******************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/frontend/Highlighter/setup.js ***!
-  \******************************************************************************/
+/*!******************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/frontend/Highlighter/setup.js ***!
+  \******************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5193,9 +5193,9 @@ module.exports = function setup(agent) {
 /***/ }),
 
 /***/ "../../frontend/Themes/Fonts.js":
-/*!*************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/frontend/Themes/Fonts.js ***!
-  \*************************************************************************/
+/*!*************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/frontend/Themes/Fonts.js ***!
+  \*************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5233,9 +5233,9 @@ module.exports = {
 /***/ }),
 
 /***/ "../../node_modules/assert/assert.js":
-/*!******************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/assert/assert.js ***!
-  \******************************************************************************/
+/*!******************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/assert/assert.js ***!
+  \******************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5730,9 +5730,9 @@ var objectKeys = Object.keys || function (obj) {
 /***/ }),
 
 /***/ "../../node_modules/d/index.js":
-/*!************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/d/index.js ***!
-  \************************************************************************/
+/*!************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/d/index.js ***!
+  \************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5822,9 +5822,9 @@ d.gs = function (dscr, get, set
 /***/ }),
 
 /***/ "../../node_modules/error-stack-parser/error-stack-parser.js":
-/*!******************************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/error-stack-parser/error-stack-parser.js ***!
-  \******************************************************************************************************/
+/*!******************************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/error-stack-parser/error-stack-parser.js ***!
+  \******************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6010,9 +6010,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /***/ }),
 
 /***/ "../../node_modules/es5-ext/object/assign/index.js":
-/*!********************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/es5-ext/object/assign/index.js ***!
-  \********************************************************************************************/
+/*!********************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/es5-ext/object/assign/index.js ***!
+  \********************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6024,9 +6024,9 @@ module.exports = __webpack_require__(/*! ./is-implemented */ "../../node_modules
 /***/ }),
 
 /***/ "../../node_modules/es5-ext/object/assign/is-implemented.js":
-/*!*****************************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/es5-ext/object/assign/is-implemented.js ***!
-  \*****************************************************************************************************/
+/*!*****************************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/es5-ext/object/assign/is-implemented.js ***!
+  \*****************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6051,9 +6051,9 @@ module.exports = function () {
 /***/ }),
 
 /***/ "../../node_modules/es5-ext/object/assign/shim.js":
-/*!*******************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/es5-ext/object/assign/shim.js ***!
-  \*******************************************************************************************/
+/*!*******************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/es5-ext/object/assign/shim.js ***!
+  \*******************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6093,9 +6093,9 @@ module.exports = function (dest, src
 /***/ }),
 
 /***/ "../../node_modules/es5-ext/object/is-callable.js":
-/*!*******************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/es5-ext/object/is-callable.js ***!
-  \*******************************************************************************************/
+/*!*******************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/es5-ext/object/is-callable.js ***!
+  \*******************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6110,9 +6110,9 @@ module.exports = function (obj) {
 /***/ }),
 
 /***/ "../../node_modules/es5-ext/object/keys/index.js":
-/*!******************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/es5-ext/object/keys/index.js ***!
-  \******************************************************************************************/
+/*!******************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/es5-ext/object/keys/index.js ***!
+  \******************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6124,9 +6124,9 @@ module.exports = __webpack_require__(/*! ./is-implemented */ "../../node_modules
 /***/ }),
 
 /***/ "../../node_modules/es5-ext/object/keys/is-implemented.js":
-/*!***************************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/es5-ext/object/keys/is-implemented.js ***!
-  \***************************************************************************************************/
+/*!***************************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/es5-ext/object/keys/is-implemented.js ***!
+  \***************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6145,9 +6145,9 @@ module.exports = function () {
 /***/ }),
 
 /***/ "../../node_modules/es5-ext/object/keys/shim.js":
-/*!*****************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/es5-ext/object/keys/shim.js ***!
-  \*****************************************************************************************/
+/*!*****************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/es5-ext/object/keys/shim.js ***!
+  \*****************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6163,9 +6163,9 @@ module.exports = function (object) {
 /***/ }),
 
 /***/ "../../node_modules/es5-ext/object/normalize-options.js":
-/*!*************************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/es5-ext/object/normalize-options.js ***!
-  \*************************************************************************************************/
+/*!*************************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/es5-ext/object/normalize-options.js ***!
+  \*************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6197,9 +6197,9 @@ module.exports = function (options
 /***/ }),
 
 /***/ "../../node_modules/es5-ext/object/valid-value.js":
-/*!*******************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/es5-ext/object/valid-value.js ***!
-  \*******************************************************************************************/
+/*!*******************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/es5-ext/object/valid-value.js ***!
+  \*******************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6214,9 +6214,9 @@ module.exports = function (value) {
 /***/ }),
 
 /***/ "../../node_modules/es5-ext/string/#/contains/index.js":
-/*!************************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/es5-ext/string/#/contains/index.js ***!
-  \************************************************************************************************/
+/*!************************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/es5-ext/string/#/contains/index.js ***!
+  \************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6228,9 +6228,9 @@ module.exports = __webpack_require__(/*! ./is-implemented */ "../../node_modules
 /***/ }),
 
 /***/ "../../node_modules/es5-ext/string/#/contains/is-implemented.js":
-/*!*********************************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/es5-ext/string/#/contains/is-implemented.js ***!
-  \*********************************************************************************************************/
+/*!*********************************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/es5-ext/string/#/contains/is-implemented.js ***!
+  \*********************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6247,9 +6247,9 @@ module.exports = function () {
 /***/ }),
 
 /***/ "../../node_modules/es5-ext/string/#/contains/shim.js":
-/*!***********************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/es5-ext/string/#/contains/shim.js ***!
-  \***********************************************************************************************/
+/*!***********************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/es5-ext/string/#/contains/shim.js ***!
+  \***********************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6267,9 +6267,9 @@ module.exports = function (searchString
 /***/ }),
 
 /***/ "../../node_modules/es6-symbol/index.js":
-/*!*********************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/es6-symbol/index.js ***!
-  \*********************************************************************************/
+/*!*********************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/es6-symbol/index.js ***!
+  \*********************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6281,9 +6281,9 @@ module.exports = __webpack_require__(/*! ./is-implemented */ "../../node_modules
 /***/ }),
 
 /***/ "../../node_modules/es6-symbol/is-implemented.js":
-/*!******************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/es6-symbol/is-implemented.js ***!
-  \******************************************************************************************/
+/*!******************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/es6-symbol/is-implemented.js ***!
+  \******************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6316,9 +6316,9 @@ module.exports = function () {
 /***/ }),
 
 /***/ "../../node_modules/es6-symbol/is-symbol.js":
-/*!*************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/es6-symbol/is-symbol.js ***!
-  \*************************************************************************************/
+/*!*************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/es6-symbol/is-symbol.js ***!
+  \*************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6334,9 +6334,9 @@ module.exports = function (x) {
 /***/ }),
 
 /***/ "../../node_modules/es6-symbol/polyfill.js":
-/*!************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/es6-symbol/polyfill.js ***!
-  \************************************************************************************/
+/*!************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/es6-symbol/polyfill.js ***!
+  \************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6464,9 +6464,9 @@ defineProperty(HiddenSymbol.prototype, SymbolPolyfill.toPrimitive, d('c', Symbol
 /***/ }),
 
 /***/ "../../node_modules/es6-symbol/validate-symbol.js":
-/*!*******************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/es6-symbol/validate-symbol.js ***!
-  \*******************************************************************************************/
+/*!*******************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/es6-symbol/validate-symbol.js ***!
+  \*******************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6483,9 +6483,9 @@ module.exports = function (value) {
 /***/ }),
 
 /***/ "../../node_modules/events/events.js":
-/*!******************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/events/events.js ***!
-  \******************************************************************************/
+/*!******************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/events/events.js ***!
+  \******************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -6749,9 +6749,9 @@ function isUndefined(arg) {
 /***/ }),
 
 /***/ "../../node_modules/fbjs/lib/ExecutionEnvironment.js":
-/*!**********************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/fbjs/lib/ExecutionEnvironment.js ***!
-  \**********************************************************************************************/
+/*!**********************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/fbjs/lib/ExecutionEnvironment.js ***!
+  \**********************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6789,9 +6789,9 @@ module.exports = ExecutionEnvironment;
 /***/ }),
 
 /***/ "../../node_modules/fbjs/lib/invariant.js":
-/*!***********************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/fbjs/lib/invariant.js ***!
-  \***********************************************************************************/
+/*!***********************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/fbjs/lib/invariant.js ***!
+  \***********************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6850,9 +6850,9 @@ module.exports = invariant;
 /***/ }),
 
 /***/ "../../node_modules/fbjs/lib/performance.js":
-/*!*************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/fbjs/lib/performance.js ***!
-  \*************************************************************************************/
+/*!*************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/fbjs/lib/performance.js ***!
+  \*************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6883,9 +6883,9 @@ module.exports = performance || {};
 /***/ }),
 
 /***/ "../../node_modules/fbjs/lib/performanceNow.js":
-/*!****************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/fbjs/lib/performanceNow.js ***!
-  \****************************************************************************************/
+/*!****************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/fbjs/lib/performanceNow.js ***!
+  \****************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6927,9 +6927,9 @@ module.exports = performanceNow;
 /***/ }),
 
 /***/ "../../node_modules/inherits/inherits_browser.js":
-/*!******************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/inherits/inherits_browser.js ***!
-  \******************************************************************************************/
+/*!******************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/inherits/inherits_browser.js ***!
+  \******************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -6962,9 +6962,9 @@ if (typeof Object.create === 'function') {
 /***/ }),
 
 /***/ "../../node_modules/nullthrows/nullthrows.js":
-/*!**************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/nullthrows/nullthrows.js ***!
-  \**************************************************************************************/
+/*!**************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/nullthrows/nullthrows.js ***!
+  \**************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6986,9 +6986,9 @@ exports.default = function nullthrows(x) {
 /***/ }),
 
 /***/ "../../node_modules/object-assign/index.js":
-/*!************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/object-assign/index.js ***!
-  \************************************************************************************/
+/*!************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/object-assign/index.js ***!
+  \************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7038,9 +7038,9 @@ module.exports = Object.assign || function (target, source) {
 /***/ }),
 
 /***/ "../../node_modules/process/browser.js":
-/*!********************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/process/browser.js ***!
-  \********************************************************************************/
+/*!********************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/process/browser.js ***!
+  \********************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -7256,9 +7256,9 @@ process.umask = function () {
 /***/ }),
 
 /***/ "../../node_modules/semver/semver.js":
-/*!******************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/semver/semver.js ***!
-  \******************************************************************************/
+/*!******************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/semver/semver.js ***!
+  \******************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8414,9 +8414,9 @@ function coerce(version) {
 /***/ }),
 
 /***/ "../../node_modules/stackframe/stackframe.js":
-/*!**************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/stackframe/stackframe.js ***!
-  \**************************************************************************************/
+/*!**************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/stackframe/stackframe.js ***!
+  \**************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8539,9 +8539,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /***/ }),
 
 /***/ "../../node_modules/util/support/isBufferBrowser.js":
-/*!*********************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/util/support/isBufferBrowser.js ***!
-  \*********************************************************************************************/
+/*!*********************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/util/support/isBufferBrowser.js ***!
+  \*********************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -8554,9 +8554,9 @@ module.exports = function isBuffer(arg) {
 /***/ }),
 
 /***/ "../../node_modules/util/util.js":
-/*!**************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/node_modules/util/util.js ***!
-  \**************************************************************************/
+/*!**************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/node_modules/util/util.js ***!
+  \**************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9186,9 +9186,9 @@ module.exports = g;
 /***/ }),
 
 /***/ "../../plugins/HooksInspector/backend.js":
-/*!**********************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/plugins/HooksInspector/backend.js ***!
-  \**********************************************************************************/
+/*!**********************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/plugins/HooksInspector/backend.js ***!
+  \**********************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -9275,9 +9275,9 @@ function setupHooksInspector(bridge, agent) {
 /***/ }),
 
 /***/ "../../plugins/Profiler/ProfileCollector.js":
-/*!*************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/plugins/Profiler/ProfileCollector.js ***!
-  \*************************************************************************************/
+/*!*************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/plugins/Profiler/ProfileCollector.js ***!
+  \*************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9427,9 +9427,9 @@ module.exports = {
 /***/ }),
 
 /***/ "../../plugins/Profiler/backend.js":
-/*!****************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/plugins/Profiler/backend.js ***!
-  \****************************************************************************/
+/*!****************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/plugins/Profiler/backend.js ***!
+  \****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9477,9 +9477,9 @@ module.exports = function (bridge, agent, hook) {
 /***/ }),
 
 /***/ "../../plugins/ReactNativeStyle/resolveBoxStyle.js":
-/*!********************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/plugins/ReactNativeStyle/resolveBoxStyle.js ***!
-  \********************************************************************************************/
+/*!********************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/plugins/ReactNativeStyle/resolveBoxStyle.js ***!
+  \********************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -9553,9 +9553,9 @@ module.exports = resolveBoxStyle;
 /***/ }),
 
 /***/ "../../plugins/ReactNativeStyle/setupBackend.js":
-/*!*****************************************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/plugins/ReactNativeStyle/setupBackend.js ***!
-  \*****************************************************************************************/
+/*!*****************************************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/plugins/ReactNativeStyle/setupBackend.js ***!
+  \*****************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9798,9 +9798,9 @@ function setStyle(agent, id, attr, val) {
 /***/ }),
 
 /***/ "../../utils/guid.js":
-/*!**************************************************************!*\
-  !*** /Users/shengshuqiang/work/react-devtools/utils/guid.js ***!
-  \**************************************************************/
+/*!**************************************************************************************!*\
+  !*** /Users/shengshuqiang/dream/AdvanceOnReactNative/react-devtools-p/utils/guid.js ***!
+  \**************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
