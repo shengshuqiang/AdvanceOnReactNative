@@ -48921,6 +48921,7 @@ function buildDisplayTreeNode(node, level, treeInfo) {
     highLight: node.highLight,
     boxColor: node.boxColor,
     isPatch: node.isPatch,
+    count: node.count,
     parent: null,
     children: [],
     isMiddleChild: false,
@@ -49054,6 +49055,7 @@ function drawDisplayTreeNode(cxt, displayTreeNode, offsetLeafCount) {
   }
 
   var title = displayTreeNode.title,
+      count = displayTreeNode.count,
       children = displayTreeNode.children,
       highLight = displayTreeNode.highLight,
       boxColor = displayTreeNode.boxColor,
@@ -49107,9 +49109,10 @@ function drawDisplayTreeNode(cxt, displayTreeNode, offsetLeafCount) {
     cxt.stroke();
   }
 
+  var text = "".concat(title, "*").concat(count);
   cxt.fillStyle = FontColor;
   cxt.font = RunRecordFont;
-  cxt.fillText(title, x - cxt.measureText(title).width / 2, y + 0.3 * DOMFontSize);
+  cxt.fillText(text, x - cxt.measureText(text).width / 2, y + 0.3 * DOMFontSize);
   children && children.forEach(function (childDisplayTreeNode) {
     drawDisplayTreeNode(cxt, childDisplayTreeNode, offsetLeafCount, horizontal);
   });
@@ -49655,12 +49658,14 @@ function (_React$Component) {
               if (runRecordNode) {
                 // do nothing
                 runRecordNode.title = runRecord;
+                runRecordNode.count++;
               } else {
                 runRecordNode = {
                   title: runRecord,
                   parent: runRecordParentNode,
                   children: [],
                   highLight: true,
+                  count: 1,
                   boxColor: boxColor,
                   isPatch: false
                 };
@@ -49676,6 +49681,7 @@ function (_React$Component) {
                 parent: null,
                 children: [],
                 highLight: true,
+                count: 1,
                 boxColor: boxColor,
                 isPatch: false
               };

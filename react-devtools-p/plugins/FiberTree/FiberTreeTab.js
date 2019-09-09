@@ -215,12 +215,14 @@ class FiberTreeTab extends React.Component<Props, State> {
             if (runRecordNode) {
               // do nothing
               runRecordNode.title = runRecord;
+              runRecordNode.count ++;
             } else {
               runRecordNode = {
                 title: runRecord,
                 parent: runRecordParentNode,
                 children: [],
                 highLight: true,
+                count: 1,
                 boxColor,
                 isPatch: false,
               };
@@ -235,6 +237,7 @@ class FiberTreeTab extends React.Component<Props, State> {
               parent: null,
               children: [],
               highLight: true,
+              count: 1,
               boxColor,
               isPatch: false,
             };

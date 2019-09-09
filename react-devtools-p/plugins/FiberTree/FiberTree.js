@@ -409,6 +409,7 @@ function buildDisplayTreeNode(node, level, treeInfo) {
     highLight: node.highLight,
     boxColor: node.boxColor,
     isPatch: node.isPatch,
+    count: node.count,
     parent: null,
     children: [],
     isMiddleChild: false,
@@ -524,7 +525,7 @@ function drawDisplayTreeNode(cxt, displayTreeNode, offsetLeafCount, horizontal =
   if (!displayTreeNode || !displayTreeNode.node) {
     return;
   }
-  const { title, children, highLight, boxColor, isPatch } = displayTreeNode;
+  const { title, count, children, highLight, boxColor, isPatch } = displayTreeNode;
   // const styleStr = style ? `(${style.width ? style.width : 'w'}, ${style.height ? style.height : 'h'}) ${style.text ? style.text : ''}` : '';
   const {x, y} = getDisplayTreeNodeXY(displayTreeNode, offsetLeafCount, horizontal);
   const width = 6 * DOMRadius;
@@ -570,9 +571,10 @@ function drawDisplayTreeNode(cxt, displayTreeNode, offsetLeafCount, horizontal =
     cxt.stroke();
   }
 
+  const text = `${title}*${count}`;
   cxt.fillStyle = FontColor;
   cxt.font = RunRecordFont;
-  cxt.fillText(title, x - cxt.measureText(title).width / 2, y + 0.3 * DOMFontSize);
+  cxt.fillText(text, x - cxt.measureText(text).width / 2, y + 0.3 * DOMFontSize);
   children && children.forEach((childDisplayTreeNode) => {
     drawDisplayTreeNode(cxt, childDisplayTreeNode, offsetLeafCount, horizontal);
   });
