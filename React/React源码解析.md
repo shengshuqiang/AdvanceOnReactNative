@@ -17,7 +17,7 @@ admindeMacBook-Pro-5:react-devtools shengshuqiang$ npm start
 
 60？
 
-commitAllHostEffects 第三个节点setchildren？
+commitAllHostEffects 第三个节点setchildren？ reactrootview
 
 
 # 考考你

@@ -124,8 +124,9 @@ class FiberTreeTab extends React.Component<Props, State> {
         break;
     }
 
-    recordIndex += this.props.fiberTreeInfos.length;
-    recordIndex %= this.props.fiberTreeInfos.length;
+    const fiberTreeInfosLength = this.props.fiberTreeInfos ? this.props.fiberTreeInfos.length : 0;
+    recordIndex += fiberTreeInfosLength;
+    recordIndex %= fiberTreeInfosLength;
     this.setState({
       recordIndex,
     });

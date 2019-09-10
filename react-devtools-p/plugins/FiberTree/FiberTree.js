@@ -73,15 +73,35 @@ function drawFiberLine(cxt, id, fiberXYObj, alternateIDSet) {
     const {x, y} = fiber;
     cxt.lineWidth = LineWidth;
     // alternate line
-    if (fiber.alternate !== InvalidID && !alternateIDSet.has(id) && !alternateIDSet.has(fiber.alternate)) {
+    if (fiber.alternate !== InvalidID) {
       alternateIDSet.add(id);
       alternateIDSet.add(fiber.alternate);
       const alternateFiber = fiberXYObj[fiber.alternate];
+      // console.log('SSU', 'drawFiberLine', {id, x, y}, {id: alternateFiber.id, x: alternateFiber.x, y: alternateFiber.y});
       cxt.strokeStyle = NodeAlternateLineColor;
-      cxt.beginPath();
-      cxt.moveTo(x, y);
-      cxt.bezierCurveTo(x, y - 2 * Radius, alternateFiber.x, alternateFiber.y - 2 * Radius, alternateFiber.x, alternateFiber.y);
-      cxt.stroke();
+      if (alternateFiber.x && alternateFiber.y) {
+        cxt.beginPath();
+        cxt.moveTo(x, y);
+        cxt.bezierCurveTo(x, y - 2 * Radius, alternateFiber.x, alternateFiber.y - 2 * Radius, alternateFiber.x, alternateFiber.y);
+        cxt.stroke();
+        cxt.beginPath();
+        const [middleX, middleY] = [(x + alternateFiber.x) / 2, (y + alternateFiber.y) / 2 - 3 / 2 * Radius];
+        const director = x < alternateFiber.x ? -1 : 1;
+        cxt.moveTo(middleX + director * Radius / 2, middleY - Radius / 2);
+        cxt.lineTo(middleX, middleY);
+        cxt.lineTo(middleX + director * Radius / 2, middleY + Radius / 2);
+        cxt.stroke();
+      } else {
+        const [exdX, endY] = [x - 2 * Radius, y - Radius];
+        // 虚线
+        cxt.setLineDash([ 2 * LineWidth]);
+        cxt.beginPath();
+        cxt.moveTo(x, y);
+        cxt.bezierCurveTo(x, y - 2 * Radius, exdX, endY - Radius, exdX, endY);
+        cxt.stroke();
+        // 还原实线
+        cxt.setLineDash([]);
+      }
     }
     // child line
     if (fiber.child !== InvalidID) {
@@ -105,58 +125,90 @@ function drawFiberLine(cxt, id, fiberXYObj, alternateIDSet) {
     if (fiber.nextEffect !== InvalidID) {
       const nextEffectFiber = fiberXYObj[fiber.nextEffect];
       cxt.strokeStyle = NodeNextEffectLineColor;
-      cxt.beginPath();
-      cxt.moveTo(x, y);
-      let cp1x = x;
-      let cp1y = y;
-      let cp2x = nextEffectFiber.x;
-      let cp2y = nextEffectFiber.y;
-      const deltaX = x - nextEffectFiber.x;
-      const deltaY = y - nextEffectFiber.y;
-      const offsetX = deltaX === 0 ? 2 * Radius : deltaX / 2;
-      const offsetY = deltaY === 0 ? 2 * Radius : deltaY / 2;
-      if (deltaX === 0) {
-        if (deltaY === 0) {
-          cp1x -= offsetX;
-          cp1y -= offsetY;
-          cp2x += offsetX;
-          cp2y += offsetY;
-        } else if (deltaY > 0) {
-          cp1x -= offsetX;
-          cp2x -= offsetX;
+      if (nextEffectFiber.x && nextEffectFiber.y) {
+        cxt.beginPath();
+        cxt.moveTo(x, y);
+        let cp1x = x;
+        let cp1y = y;
+        let cp2x = nextEffectFiber.x;
+        let cp2y = nextEffectFiber.y;
+        const deltaX = x - nextEffectFiber.x;
+        const deltaY = y - nextEffectFiber.y;
+        const offsetX = deltaX === 0 ? 2 * Radius : deltaX / 2;
+        const offsetY = deltaY === 0 ? 2 * Radius : deltaY / 2;
+        if (deltaX === 0) {
+          if (deltaY === 0) {
+            cp1x -= offsetX;
+            cp1y -= offsetY;
+            cp2x += offsetX;
+            cp2y += offsetY;
+          } else if (deltaY > 0) {
+            cp1x -= offsetX;
+            cp2x -= offsetX;
+          } else {
+            cp1x -= offsetX;
+            cp2x -= offsetX;
+          }
+          ;
+        } else if (deltaX > 0) {
+          if (deltaY === 0) {
+            cp1y += offsetY;
+            cp2y += offsetY;
+          } else if (deltaY > 0) {
+            cp1x -= offsetX;
+            cp2x += offsetX;
+          } else {
+            cp1x -= offsetX;
+            cp2x += offsetX;
+          }
+          ;
         } else {
-          cp1x -= offsetX;
-          cp2x -= offsetX;
+          if (deltaY === 0) {
+            cp1y += offsetY;
+            cp2y += offsetY;
+          } else if (deltaY > 0) {
+            cp1x -= offsetX;
+            cp2x += offsetX;
+          } else {
+            cp1x -= offsetX;
+            cp2x += offsetX;
+          }
+          ;
         }
         ;
-      } else if (deltaX > 0) {
-        if (deltaY === 0) {
-          cp1y += offsetY;
-          cp2y += offsetY;
-        } else if (deltaY > 0) {
-          cp1x -= offsetX;
-          cp2x += offsetX;
-        } else {
-          cp1x -= offsetX;
-          cp2x += offsetX;
+        cxt.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, nextEffectFiber.x, nextEffectFiber.y);
+        cxt.stroke();
+        let [middleX, middleY] = [(x + nextEffectFiber.x) / 2, (y + nextEffectFiber.y) / 2];
+        if (x === nextEffectFiber.x) {
+          middleX -= 3 * offsetX / 4;
         }
-        ;
+        if (y === nextEffectFiber.y) {
+          middleY -= 3 * offsetY / 4;
+        }
+        if (y !== nextEffectFiber.y) {
+          const director = y < nextEffectFiber.y ? -1 : 1;
+          cxt.moveTo(middleX - Radius / 2, middleY + director * Radius / 2);
+          cxt.lineTo(middleX, middleY);
+          cxt.lineTo(middleX + Radius / 2, middleY + director * Radius / 2);
+          cxt.stroke();
+        } else {
+          const director = x < nextEffectFiber.x ? -1 : 1;
+          cxt.moveTo(middleX + director * Radius / 2, middleY - Radius / 2);
+          cxt.lineTo(middleX, middleY);
+          cxt.lineTo(middleX + director * Radius / 2, middleY + Radius / 2);
+          cxt.stroke();
+        }
       } else {
-        if (deltaY === 0) {
-          cp1y += offsetY;
-          cp2y += offsetY;
-        } else if (deltaY > 0) {
-          cp1x -= offsetX;
-          cp2x += offsetX;
-        } else {
-          cp1x -= offsetX;
-          cp2x += offsetX;
-        }
-        ;
+        const [exdX, endY] = [x - 2 * Radius, y - Radius];
+        // 虚线
+        cxt.setLineDash([2 * LineWidth]);
+        cxt.beginPath();
+        cxt.moveTo(x, y);
+        cxt.bezierCurveTo(x - Radius, y, exdX, endY - Radius, exdX, endY);
+        cxt.stroke();
+        // 还原实线
+        cxt.setLineDash([]);
       }
-      ;
-      cxt.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, nextEffectFiber.x, nextEffectFiber.y);
-      cxt.stroke();
     }
 
     drawFiberLine(cxt, fiber.child, fiberXYObj, alternateIDSet);
@@ -610,6 +662,9 @@ export default function drawFiberTree(currentFiberID, fibers, doms, runRecordRoo
       if (fiber.return === InvalidID) {
         fiberRoots.push(fiber.id);
       }
+
+      fiber.x = 0;
+      fiber.y = 0;
     });
     fiberRoots.forEach((id, index) => {
       layoutFiberNode(id, fiberXYObj, InitX + index * RootXStep, InitY);
@@ -621,7 +676,7 @@ export default function drawFiberTree(currentFiberID, fibers, doms, runRecordRoo
     fiberRoots.forEach((id) => {
       drawFiberNode(cxt, id, fiberXYObj, currentFiberID);
     });
-    // console.log('SSU', 'drawFiberTree.fibers', {fiberXYObj, fiberRoots});
+    console.log('SSU', 'drawFiberTree.fibers', {fiberXYObj, fiberRoots});
   }
 
   cxt.translate(DOMXOffset, 0);
