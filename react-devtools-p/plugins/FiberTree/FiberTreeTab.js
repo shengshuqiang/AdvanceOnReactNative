@@ -41,8 +41,62 @@ const ComponentPrototypes: string[] = [
   'setState',
   'forceUpdate',
 ];
+const IndexComponent = ({runRecordRootNodes, onPress, curRecordIndex}) => {
+  let component = null;
+  if (runRecordRootNodes) {
+    const groups = [];
+    let items = [];
+    let rootRecord = null;
+    runRecordRootNodes.forEach((runRecordRootNode, recordIndex) => {
+      if (rootRecord === null || runRecordRootNode.title !== rootRecord) {
+        rootRecord = runRecordRootNode.title;
+        if (items.length > 0) {
+          groups.push(
+            <div style={{display: 'flex', overflow: 'scroll'}}>
+              {items}
+            </div>
+          );
+          items = [];
+        }
+      } else {
+        items.push(
+          <div style={{
+            width: 60,
+            height: 30,
+            backgroundColor: curRecordIndex === recordIndex ? 'purple' : 'gray',
+            borderRadius: 15,
+            fontSize: 25,
+            textAlign: 'center',
+            marginLeft: 10,
+            color: 'blue',
+          }} onClick={() => (onPress(recordIndex))}>
+            {((Array(3).join('~') + recordIndex).slice(-3) + Array(3).join('~')).slice(0, 5)}
+          </div>
+        );
+      }
+    });
+
+    if (items.length > 0) {
+      groups.push(
+        <div style={{display: 'flex', overflow: 'scroll'}}>
+          {items}
+        </div>,
+      );
+    }
+
+    component = (
+      <div>
+        {groups}
+      </div>
+    );
+  }
+
+  console.log('SSU', 'IndexComponent', component);
+  return component;
+};
 
 class FiberTreeTab extends React.Component<Props, State> {
+  runRecordRootNodes: any[];
 
   constructor(props: Props) {
     super(props);
@@ -50,7 +104,7 @@ class FiberTreeTab extends React.Component<Props, State> {
       ratio: InitRatio,
       recordIndex: this.props.fiberTreeInfos ? this.props.fiberTreeInfos.length - 1 : -1,
     };
-
+    this.refershRunRecordRootNodes(props.fiberTreeInfos);
   }
 
   draw(currentFiberID, fibers, doms, runRecordRootNode, ratio) {
@@ -100,6 +154,10 @@ class FiberTreeTab extends React.Component<Props, State> {
       this.setState({
         recordIndex: nextProps.fiberTreeInfos.length - 1,
       });
+    }
+
+    if (this.props.fiberTreeInfos !== nextProps.fiberTreeInfos) {
+      this.refershRunRecordRootNodes(nextProps.fiberTreeInfos);
     }
   }
 
@@ -174,6 +232,7 @@ class FiberTreeTab extends React.Component<Props, State> {
 
     return title;
   }
+
   isRunRecordTitleEqual(title1: string, title2: string) {
     return this.getMatchRunRecordTitle(title1) === this.getMatchRunRecordTitle(title2);
   }
@@ -190,6 +249,16 @@ class FiberTreeTab extends React.Component<Props, State> {
     }
 
     return null;
+  }
+
+  refershRunRecordRootNodes(fiberTreeInfos) {
+    this.runRecordRootNodes = [];
+    fiberTreeInfos && fiberTreeInfos.forEach((fiberTreeInfo, index) => {
+      const preRunRecordHistory = index > 0 ? fiberTreeInfos[index - 1].runRecordHistory : null;
+      const {runRecordHistory} = fiberTreeInfo;
+      const runRecordRootNode = this.buildRunRecordHistoryTree(runRecordHistory, preRunRecordHistory ? preRunRecordHistory.length : -1);
+      this.runRecordRootNodes.push(runRecordRootNode);
+    });
   }
 
   buildRunRecordHistoryTree(runRecordHistory, preHistoryCount) {
@@ -212,11 +281,11 @@ class FiberTreeTab extends React.Component<Props, State> {
           runRecordParentNode = runRecordNode.parent;
         } else {
           if (runRecordParentNode) {
-            runRecordNode = runRecordParentNode.children.find((child) => (this.isRunRecordTitleEqual(child.title,runRecord)));
+            runRecordNode = runRecordParentNode.children.find((child) => (this.isRunRecordTitleEqual(child.title, runRecord)));
             if (runRecordNode) {
               // do nothing
               runRecordNode.title = runRecord;
-              runRecordNode.count ++;
+              runRecordNode.count++;
             } else {
               runRecordNode = {
                 title: runRecord,
@@ -255,12 +324,11 @@ class FiberTreeTab extends React.Component<Props, State> {
   render() {
     // const {fibers = null} = this.state.recordIndex >= 0 ? this.fiberTreeInfos[this.state.recordIndex] : {};
 
-    const {currentFiberID, fibers = null, doms = null, runRecordHistory = null, desc = null} = this.props.fiberTreeInfos ?
+    const {currentFiberID, fibers = null, doms = null, desc = null} = this.props.fiberTreeInfos ?
       (this.state.recordIndex >= 0 && this.state.recordIndex < this.props.fiberTreeInfos.length ? this.props.fiberTreeInfos[this.state.recordIndex] : this.props.fiberTreeInfos[this.props.fiberTreeInfos.length - 1])
       : {};
     // const runRecordRootNode = this.buildRunRecordTree(this.props.fiberTreeInfos, this.state.recordIndex);
-    const preRunRecordHistory = this.props.fiberTreeInfos && this.state.recordIndex > 0 && this.state.recordIndex < this.props.fiberTreeInfos.length ? this.props.fiberTreeInfos[this.state.recordIndex - 1].runRecordHistory : null;
-    const runRecordRootNode = this.buildRunRecordHistoryTree(runRecordHistory, preRunRecordHistory ? preRunRecordHistory.length : -1);
+    const runRecordRootNode = this.state.recordIndex >= 0 ? this.runRecordRootNodes[this.state.recordIndex] : null;
     // console.log('SSU', 'FiberTreeTab#render', JSON.stringify(fibers));
     setTimeout(() => this.draw(currentFiberID, fibers, doms, runRecordRootNode, this.state.ratio), 0);
     return (
@@ -308,26 +376,7 @@ class FiberTreeTab extends React.Component<Props, State> {
           </div>
           <div>{`${desc}  【${this.state.recordIndex} / ${this.props.fiberTreeInfos ? this.props.fiberTreeInfos.length - 1 : 0}】`}</div>
         </div>
-        <div style={{display: 'flex', overflow: 'scroll'}}>
-          {this.props.fiberTreeInfos && this.props.fiberTreeInfos.map((fiberTreeInfo, recordIndex) => {
-            return (
-              <div style={{
-                width: 60,
-                height: 30,
-                backgroundColor: this.state.recordIndex === recordIndex ? 'purple' : 'gray',
-                borderRadius: 15,
-                fontSize: 25,
-                textAlign: 'center',
-                marginLeft: 10,
-                color: 'blue',
-              }} onClick={() => {
-                this.onPressRecord(recordIndex);
-              }}>
-                {((Array(3).join('~') + fiberTreeInfo.index).slice(-3) + Array(3).join('~')).slice(0, 5)}
-              </div>
-            );
-          })}
-        </div>
+        <IndexComponent runRecordRootNodes={this.runRecordRootNodes} onPress={this.onPressRecord} curRecordIndex={this.state.recordIndex}/>
         <canvas id="myCanvas" width="10000" height="10000">
           Your browser does not support the canvas element.
         </canvas>

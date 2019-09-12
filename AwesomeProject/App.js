@@ -81,7 +81,7 @@ export default class App extends Component<Props, State> {
     }
 
     onPress = () => {
-        debugger;
+        // debugger;
         console.log('SSU', 'App#onPress()');
 
         this.setState({

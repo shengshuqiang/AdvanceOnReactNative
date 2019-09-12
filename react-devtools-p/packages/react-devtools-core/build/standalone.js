@@ -48781,7 +48781,7 @@ function layoutFiberNode(id, fiberXYObj, x, y) {
 function getDomNodeXY(domNode, offsetLeafCount) {
   var index = domNode.index,
       level = domNode.level;
-  var x = DOMInitX + (offsetLeafCount + index) * DOMXStep;
+  var x = DOMInitX + (5 * offsetLeafCount + index) * DOMXStep;
   var y = DOMInitY + level * DOMYStep;
   return {
     x: x,
@@ -49209,11 +49209,7 @@ function drawFiberTree(currentFiberID, fibers, doms, runRecordRootNode, ratio) {
     doms: doms,
     runRecordRootNode: runRecordRootNode
   }); // console.log('SSU', 'drawFiberTree', {fibers, doms}, JSON.stringify(fibers), JSON.stringify(doms));
-  // runRecordRootNode
-
-  drawTree(cxt, runRecordRootNode); // fibers
-
-  cxt.translate(0, DOMYOffset);
+  // fibers
 
   if (fibers) {
     var fiberXYObj = {};
@@ -49228,7 +49224,25 @@ function drawFiberTree(currentFiberID, fibers, doms, runRecordRootNode, ratio) {
       fiber.x = 0;
       fiber.y = 0;
     });
-    fiberRoots.forEach(function (id, index) {
+    fiberRoots.sort(function (idA, idB) {
+      if (fiberXYObj[idA] && fiberXYObj[idA].tag && fiberXYObj[idA].tag.indexOf('current') !== -1) {
+        return false;
+      }
+
+      if (fiberXYObj[idB] && fiberXYObj[idB].tag && fiberXYObj[idB].tag.indexOf('current') !== -1) {
+        return true;
+      }
+
+      if (fiberXYObj[idA] && fiberXYObj[idA].tag && fiberXYObj[idA].tag.indexOf('finishedWork') !== -1) {
+        return false;
+      }
+
+      if (fiberXYObj[idB] && fiberXYObj[idB].tag && fiberXYObj[idB].tag.indexOf('finishedWork') !== -1) {
+        return true;
+      }
+
+      return idA - idB > 0;
+    }).forEach(function (id, index) {
       layoutFiberNode(id, fiberXYObj, InitX + index * RootXStep, InitY);
     });
     var alternateIDSet = new Set();
@@ -49295,6 +49309,9 @@ function drawFiberTree(currentFiberID, fibers, doms, runRecordRootNode, ratio) {
     });
   }
 
+  cxt.translate(DOMXOffset, 0); // runRecordRootNode
+
+  drawTree(cxt, runRecordRootNode);
   cxt.restore();
 }
 ;
@@ -49526,6 +49543,64 @@ var RatioStep = InitRatio * 0.2;
 var LifecycleMethods = ['constructor', 'getDerivedStateFromProps', 'componentWillMount', 'UNSAFE_componentWillMount', 'componentWillReceiveProps', 'UNSAFE_componentWillReceiveProps', 'shouldComponentUpdate', 'componentWillUpdate', 'UNSAFE_componentWillUpdate', 'render', 'getSnapshotBeforeUpdate', 'componentDidMount', 'componentDidUpdate', 'componentWillUnmount'];
 var ComponentPrototypes = ['isReactComponent', 'setState', 'forceUpdate'];
 
+var IndexComponent = function IndexComponent(_ref) {
+  var runRecordRootNodes = _ref.runRecordRootNodes,
+      onPress = _ref.onPress,
+      curRecordIndex = _ref.curRecordIndex;
+  var component = null;
+
+  if (runRecordRootNodes) {
+    var groups = [];
+    var items = [];
+    var rootRecord = null;
+    runRecordRootNodes.forEach(function (runRecordRootNode, recordIndex) {
+      if (rootRecord === null || runRecordRootNode.title !== rootRecord) {
+        rootRecord = runRecordRootNode.title;
+
+        if (items.length > 0) {
+          groups.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+            style: {
+              display: 'flex',
+              overflow: 'scroll'
+            }
+          }, items));
+          items = [];
+        }
+      } else {
+        items.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          style: {
+            width: 60,
+            height: 30,
+            backgroundColor: curRecordIndex === recordIndex ? 'purple' : 'gray',
+            borderRadius: 15,
+            fontSize: 25,
+            textAlign: 'center',
+            marginLeft: 10,
+            color: 'blue'
+          },
+          onClick: function onClick() {
+            return onPress(recordIndex);
+          }
+        }, ((Array(3).join('~') + recordIndex).slice(-3) + Array(3).join('~')).slice(0, 5)));
+      }
+    });
+
+    if (items.length > 0) {
+      groups.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        style: {
+          display: 'flex',
+          overflow: 'scroll'
+        }
+      }, items));
+    }
+
+    component = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, groups);
+  }
+
+  console.log('SSU', 'IndexComponent', component);
+  return component;
+};
+
 var FiberTreeTab =
 /*#__PURE__*/
 function (_React$Component) {
@@ -49604,6 +49679,9 @@ function (_React$Component) {
       ratio: InitRatio,
       recordIndex: _this.props.fiberTreeInfos ? _this.props.fiberTreeInfos.length - 1 : -1
     };
+
+    _this.refershRunRecordRootNodes(props.fiberTreeInfos);
+
     return _this;
   }
 
@@ -49621,6 +49699,10 @@ function (_React$Component) {
         this.setState({
           recordIndex: nextProps.fiberTreeInfos.length - 1
         });
+      }
+
+      if (this.props.fiberTreeInfos !== nextProps.fiberTreeInfos) {
+        this.refershRunRecordRootNodes(nextProps.fiberTreeInfos);
       }
     }
   }, {
@@ -49698,9 +49780,24 @@ function (_React$Component) {
       return null;
     }
   }, {
+    key: "refershRunRecordRootNodes",
+    value: function refershRunRecordRootNodes(fiberTreeInfos) {
+      var _this2 = this;
+
+      this.runRecordRootNodes = [];
+      fiberTreeInfos && fiberTreeInfos.forEach(function (fiberTreeInfo, index) {
+        var preRunRecordHistory = index > 0 ? fiberTreeInfos[index - 1].runRecordHistory : null;
+        var runRecordHistory = fiberTreeInfo.runRecordHistory;
+
+        var runRecordRootNode = _this2.buildRunRecordHistoryTree(runRecordHistory, preRunRecordHistory ? preRunRecordHistory.length : -1);
+
+        _this2.runRecordRootNodes.push(runRecordRootNode);
+      });
+    }
+  }, {
     key: "buildRunRecordHistoryTree",
     value: function buildRunRecordHistoryTree(runRecordHistory, preHistoryCount) {
-      var _this2 = this;
+      var _this3 = this;
 
       var runRecordRootNode = null; // let runRecordRootNode = {
       //     title: '起点',
@@ -49712,7 +49809,7 @@ function (_React$Component) {
 
       if (runRecordHistory && runRecordHistory.length) {
         runRecordHistory.forEach(function (runRecord, index) {
-          var boxColor = _this2.buildRunRecordBoxColor(runRecord);
+          var boxColor = _this3.buildRunRecordBoxColor(runRecord);
 
           var isPatch = index > preHistoryCount;
           var runRecordNode;
@@ -49725,7 +49822,7 @@ function (_React$Component) {
           } else {
             if (runRecordParentNode) {
               runRecordNode = runRecordParentNode.children.find(function (child) {
-                return _this2.isRunRecordTitleEqual(child.title, runRecord);
+                return _this3.isRunRecordTitleEqual(child.title, runRecord);
               });
 
               if (runRecordNode) {
@@ -49770,26 +49867,23 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
       // const {fibers = null} = this.state.recordIndex >= 0 ? this.fiberTreeInfos[this.state.recordIndex] : {};
-      var _ref = this.props.fiberTreeInfos ? this.state.recordIndex >= 0 && this.state.recordIndex < this.props.fiberTreeInfos.length ? this.props.fiberTreeInfos[this.state.recordIndex] : this.props.fiberTreeInfos[this.props.fiberTreeInfos.length - 1] : {},
-          currentFiberID = _ref.currentFiberID,
-          _ref$fibers = _ref.fibers,
-          fibers = _ref$fibers === void 0 ? null : _ref$fibers,
-          _ref$doms = _ref.doms,
-          doms = _ref$doms === void 0 ? null : _ref$doms,
-          _ref$runRecordHistory = _ref.runRecordHistory,
-          runRecordHistory = _ref$runRecordHistory === void 0 ? null : _ref$runRecordHistory,
-          _ref$desc = _ref.desc,
-          desc = _ref$desc === void 0 ? null : _ref$desc; // const runRecordRootNode = this.buildRunRecordTree(this.props.fiberTreeInfos, this.state.recordIndex);
+      var _ref2 = this.props.fiberTreeInfos ? this.state.recordIndex >= 0 && this.state.recordIndex < this.props.fiberTreeInfos.length ? this.props.fiberTreeInfos[this.state.recordIndex] : this.props.fiberTreeInfos[this.props.fiberTreeInfos.length - 1] : {},
+          currentFiberID = _ref2.currentFiberID,
+          _ref2$fibers = _ref2.fibers,
+          fibers = _ref2$fibers === void 0 ? null : _ref2$fibers,
+          _ref2$doms = _ref2.doms,
+          doms = _ref2$doms === void 0 ? null : _ref2$doms,
+          _ref2$desc = _ref2.desc,
+          desc = _ref2$desc === void 0 ? null : _ref2$desc; // const runRecordRootNode = this.buildRunRecordTree(this.props.fiberTreeInfos, this.state.recordIndex);
 
 
-      var preRunRecordHistory = this.props.fiberTreeInfos && this.state.recordIndex > 0 && this.state.recordIndex < this.props.fiberTreeInfos.length ? this.props.fiberTreeInfos[this.state.recordIndex - 1].runRecordHistory : null;
-      var runRecordRootNode = this.buildRunRecordHistoryTree(runRecordHistory, preRunRecordHistory ? preRunRecordHistory.length : -1); // console.log('SSU', 'FiberTreeTab#render', JSON.stringify(fibers));
+      var runRecordRootNode = this.state.recordIndex >= 0 ? this.runRecordRootNodes[this.state.recordIndex] : null; // console.log('SSU', 'FiberTreeTab#render', JSON.stringify(fibers));
 
       setTimeout(function () {
-        return _this3.draw(currentFiberID, fibers, doms, runRecordRootNode, _this3.state.ratio);
+        return _this4.draw(currentFiberID, fibers, doms, runRecordRootNode, _this4.state.ratio);
       }, 0);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: {
@@ -49844,28 +49938,11 @@ function (_React$Component) {
           color: 'red'
         },
         onClick: this.onPressPlay
-      }, "Play"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "".concat(desc, "  \u3010").concat(this.state.recordIndex, " / ").concat(this.props.fiberTreeInfos ? this.props.fiberTreeInfos.length - 1 : 0, "\u3011"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        style: {
-          display: 'flex',
-          overflow: 'scroll'
-        }
-      }, this.props.fiberTreeInfos && this.props.fiberTreeInfos.map(function (fiberTreeInfo, recordIndex) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          style: {
-            width: 60,
-            height: 30,
-            backgroundColor: _this3.state.recordIndex === recordIndex ? 'purple' : 'gray',
-            borderRadius: 15,
-            fontSize: 25,
-            textAlign: 'center',
-            marginLeft: 10,
-            color: 'blue'
-          },
-          onClick: function onClick() {
-            _this3.onPressRecord(recordIndex);
-          }
-        }, ((Array(3).join('~') + fiberTreeInfo.index).slice(-3) + Array(3).join('~')).slice(0, 5));
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("canvas", {
+      }, "Play"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "".concat(desc, "  \u3010").concat(this.state.recordIndex, " / ").concat(this.props.fiberTreeInfos ? this.props.fiberTreeInfos.length - 1 : 0, "\u3011"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(IndexComponent, {
+        runRecordRootNodes: this.runRecordRootNodes,
+        onPress: this.onPressRecord,
+        curRecordIndex: this.state.recordIndex
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("canvas", {
         id: "myCanvas",
         width: "10000",
         height: "10000"

@@ -282,7 +282,7 @@ function layoutFiberNode(id, fiberXYObj, x, y) {
 
 function getDomNodeXY(domNode, offsetLeafCount) {
   const {index, level} = domNode;
-  const x = DOMInitX + (offsetLeafCount + index) * DOMXStep;
+  const x = DOMInitX + (5 * offsetLeafCount + index) * DOMXStep;
   const y = DOMInitY + level * DOMYStep;
 
   return {x, y};
@@ -650,10 +650,7 @@ export default function drawFiberTree(currentFiberID, fibers, doms, runRecordRoo
   cxt.save();
   console.log('SSU', 'drawFiberTree', {fibers, doms, runRecordRootNode});
   // console.log('SSU', 'drawFiberTree', {fibers, doms}, JSON.stringify(fibers), JSON.stringify(doms));
-  // runRecordRootNode
-  drawTree(cxt, runRecordRootNode);
   // fibers
-  cxt.translate(0, DOMYOffset);
   if (fibers) {
     const fiberXYObj = {};
     const fiberRoots = [];
@@ -666,9 +663,25 @@ export default function drawFiberTree(currentFiberID, fibers, doms, runRecordRoo
       fiber.x = 0;
       fiber.y = 0;
     });
-    fiberRoots.forEach((id, index) => {
-      layoutFiberNode(id, fiberXYObj, InitX + index * RootXStep, InitY);
-    });
+    fiberRoots
+      .sort((idA , idB) => {
+        if (fiberXYObj[idA] && fiberXYObj[idA].tag && fiberXYObj[idA].tag.indexOf('current') !== -1) {
+          return false;
+        }
+        if (fiberXYObj[idB] && fiberXYObj[idB].tag && fiberXYObj[idB].tag.indexOf('current') !== -1) {
+          return true;
+        }
+        if (fiberXYObj[idA] && fiberXYObj[idA].tag && fiberXYObj[idA].tag.indexOf('finishedWork') !== -1) {
+          return false;
+        }
+        if (fiberXYObj[idB] && fiberXYObj[idB].tag && fiberXYObj[idB].tag.indexOf('finishedWork') !== -1) {
+          return true;
+        }
+        return idA - idB > 0;
+      })
+      .forEach((id, index) => {
+        layoutFiberNode(id, fiberXYObj, InitX + index * RootXStep, InitY);
+      });
     const alternateIDSet = new Set();
     fiberRoots.forEach((id) => {
       drawFiberLine(cxt, id, fiberXYObj, alternateIDSet);
@@ -721,6 +734,10 @@ export default function drawFiberTree(currentFiberID, fibers, doms, runRecordRoo
       drawDomNode(cxt, domNode, rootDomNodeOffsetLeafCount, currentFiberID);
     });
   }
+
+  cxt.translate(DOMXOffset, 0);
+  // runRecordRootNode
+  drawTree(cxt, runRecordRootNode);
   cxt.restore();
 };
 
