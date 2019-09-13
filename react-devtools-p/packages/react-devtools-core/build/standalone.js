@@ -49556,6 +49556,7 @@ var IndexComponent = function IndexComponent(_ref) {
     runRecordRootNodes.forEach(function (runRecordRootNode, recordIndex) {
       if (rootRecord === null || runRecordRootNode.title !== rootRecord) {
         rootRecord = runRecordRootNode.title;
+        console.log('SSU', 'IndexComponent', "".concat(recordIndex, "-").concat(rootRecord), 'groups.push');
 
         if (items.length > 0) {
           groups.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -49582,10 +49583,12 @@ var IndexComponent = function IndexComponent(_ref) {
             return onPress(recordIndex);
           }
         }, ((Array(3).join('~') + recordIndex).slice(-3) + Array(3).join('~')).slice(0, 5)));
+        console.log('SSU', 'IndexComponent', "".concat(recordIndex, "-").concat(rootRecord), 'items.push');
       }
     });
 
     if (items.length > 0) {
+      console.log('SSU', 'IndexComponent', "".concat(-1, "-").concat(rootRecord), 'groups.push');
       groups.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: {
           display: 'flex',
@@ -49612,6 +49615,8 @@ function (_React$Component) {
     _classCallCheck(this, FiberTreeTab);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(FiberTreeTab).call(this, props));
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "runRecordRootNodes", []);
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onPressRatioAdd", function () {
       _this.setState({
@@ -49701,7 +49706,7 @@ function (_React$Component) {
         });
       }
 
-      if (this.props.fiberTreeInfos !== nextProps.fiberTreeInfos) {
+      if (this.runRecordRootNodes.length !== nextProps.fiberTreeInfos.length) {
         this.refershRunRecordRootNodes(nextProps.fiberTreeInfos);
       }
     }
@@ -49786,12 +49791,14 @@ function (_React$Component) {
 
       this.runRecordRootNodes = [];
       fiberTreeInfos && fiberTreeInfos.forEach(function (fiberTreeInfo, index) {
-        var preRunRecordHistory = index > 0 ? fiberTreeInfos[index - 1].runRecordHistory : null;
-        var runRecordHistory = fiberTreeInfo.runRecordHistory;
+        if (index >= _this2.runRecordRootNodes.length) {
+          var preRunRecordHistory = index > 0 ? fiberTreeInfos[index - 1].runRecordHistory : null;
+          var runRecordHistory = fiberTreeInfo.runRecordHistory;
 
-        var runRecordRootNode = _this2.buildRunRecordHistoryTree(runRecordHistory, preRunRecordHistory ? preRunRecordHistory.length : -1);
+          var runRecordRootNode = _this2.buildRunRecordHistoryTree(runRecordHistory, preRunRecordHistory ? preRunRecordHistory.length : -1);
 
-        _this2.runRecordRootNodes.push(runRecordRootNode);
+          _this2.runRecordRootNodes.push(runRecordRootNode);
+        }
       });
     }
   }, {

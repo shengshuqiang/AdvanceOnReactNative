@@ -50,6 +50,7 @@ const IndexComponent = ({runRecordRootNodes, onPress, curRecordIndex}) => {
     runRecordRootNodes.forEach((runRecordRootNode, recordIndex) => {
       if (rootRecord === null || runRecordRootNode.title !== rootRecord) {
         rootRecord = runRecordRootNode.title;
+        console.log('SSU', 'IndexComponent', `${recordIndex}-${rootRecord}`, 'groups.push');
         if (items.length > 0) {
           groups.push(
             <div style={{display: 'flex', overflow: 'scroll'}}>
@@ -73,14 +74,16 @@ const IndexComponent = ({runRecordRootNodes, onPress, curRecordIndex}) => {
             {((Array(3).join('~') + recordIndex).slice(-3) + Array(3).join('~')).slice(0, 5)}
           </div>
         );
+        console.log('SSU', 'IndexComponent', `${recordIndex}-${rootRecord}`, 'items.push');
       }
     });
 
     if (items.length > 0) {
+      console.log('SSU', 'IndexComponent', `${-1}-${rootRecord}`, 'groups.push');
       groups.push(
         <div style={{display: 'flex', overflow: 'scroll'}}>
           {items}
-        </div>,
+        </div>
       );
     }
 
@@ -96,7 +99,7 @@ const IndexComponent = ({runRecordRootNodes, onPress, curRecordIndex}) => {
 };
 
 class FiberTreeTab extends React.Component<Props, State> {
-  runRecordRootNodes: any[];
+  runRecordRootNodes: any[] = [];
 
   constructor(props: Props) {
     super(props);
@@ -156,7 +159,7 @@ class FiberTreeTab extends React.Component<Props, State> {
       });
     }
 
-    if (this.props.fiberTreeInfos !== nextProps.fiberTreeInfos) {
+    if (this.runRecordRootNodes.length !== nextProps.fiberTreeInfos.length) {
       this.refershRunRecordRootNodes(nextProps.fiberTreeInfos);
     }
   }
@@ -254,10 +257,12 @@ class FiberTreeTab extends React.Component<Props, State> {
   refershRunRecordRootNodes(fiberTreeInfos) {
     this.runRecordRootNodes = [];
     fiberTreeInfos && fiberTreeInfos.forEach((fiberTreeInfo, index) => {
-      const preRunRecordHistory = index > 0 ? fiberTreeInfos[index - 1].runRecordHistory : null;
-      const {runRecordHistory} = fiberTreeInfo;
-      const runRecordRootNode = this.buildRunRecordHistoryTree(runRecordHistory, preRunRecordHistory ? preRunRecordHistory.length : -1);
-      this.runRecordRootNodes.push(runRecordRootNode);
+      if (index >= this.runRecordRootNodes.length) {
+        const preRunRecordHistory = index > 0 ? fiberTreeInfos[index - 1].runRecordHistory : null;
+        const {runRecordHistory} = fiberTreeInfo;
+        const runRecordRootNode = this.buildRunRecordHistoryTree(runRecordHistory, preRunRecordHistory ? preRunRecordHistory.length : -1);
+        this.runRecordRootNodes.push(runRecordRootNode);
+      }
     });
   }
 
