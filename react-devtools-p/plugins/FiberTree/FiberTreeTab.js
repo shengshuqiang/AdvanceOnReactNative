@@ -22,7 +22,7 @@ type State = {
   ratio: number;
   recordIndex: number;
 };
-const InitRatio = 1.0 * 0.48;
+const InitRatio = 1.0 * 0.58;
 const RatioStep = InitRatio * 0.2;
 const LifecycleMethods: string[] = ['constructor',
   'getDerivedStateFromProps',
@@ -59,23 +59,24 @@ const IndexComponent = ({runRecordRootNodes, onPress, curRecordIndex}) => {
           );
           items = [];
         }
-      } else {
-        items.push(
-          <div style={{
-            width: 60,
-            height: 30,
-            backgroundColor: curRecordIndex === recordIndex ? 'purple' : 'gray',
-            borderRadius: 15,
-            fontSize: 25,
-            textAlign: 'center',
-            marginLeft: 10,
-            color: 'blue',
-          }} onClick={() => (onPress(recordIndex))}>
-            {((Array(3).join('~') + recordIndex).slice(-3) + Array(3).join('~')).slice(0, 5)}
-          </div>
-        );
-        console.log('SSU', 'IndexComponent', `${recordIndex}-${rootRecord}`, 'items.push');
       }
+      items.push(
+        <div style={{
+          backgroundColor: curRecordIndex === recordIndex ? 'purple' : 'gray',
+          borderRadius: 15,
+          fontSize: 25,
+          textAlign: 'center',
+          verticalAlign: 'middle',
+          padding: 15,
+          display:'inline-block',
+          marginLeft: 10,
+          color: 'blue',
+        }} onClick={() => (onPress(recordIndex))}>
+          {/*{((Array(3).join(' ') + recordIndex).slice(-3) + Array(3).join(' ')).slice(0, 5)}*/}
+          {recordIndex}
+        </div>
+      );
+      console.log('SSU', 'IndexComponent', `${recordIndex}-${rootRecord}`, 'items.push');
     });
 
     if (items.length > 0) {

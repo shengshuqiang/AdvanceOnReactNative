@@ -48504,13 +48504,13 @@ function init(ratio) {
     DescFontColor = 'gray';
     DescFontSize = 10;
     DescFont = DescFontSize + 'px  Arial';
-    XStep = 4 * Radius;
-    RootXStep = 4 * XStep;
-    YStep = 3 * Radius;
+    XStep = 6 * Radius;
+    RootXStep = 3 * XStep;
+    YStep = 4 * Radius;
     InitX = 5 * Radius;
-    InitY = 2 * Radius;
-    DOMXOffset = 3 * RootXStep;
-    DOMYOffset = 3 * RootXStep;
+    InitY = 3 * Radius;
+    DOMXOffset = 2 * RootXStep;
+    DOMYOffset = 2 * RootXStep;
     DOMXStep = 1.5 * DOMRadius;
     DOMRootXStep = 2 * DOMXStep;
     DOMYStep = 3 * DOMRadius;
@@ -48552,9 +48552,9 @@ function drawFiberLine(cxt, id, fiberXYObj, alternateIDSet) {
         cxt.bezierCurveTo(x, y - 2 * Radius, alternateFiber.x, alternateFiber.y - 2 * Radius, alternateFiber.x, alternateFiber.y);
         cxt.stroke();
         cxt.beginPath();
-        var middleX = (x + alternateFiber.x) / 2,
-            middleY = (y + alternateFiber.y) / 2 - 3 / 2 * Radius;
         var director = x < alternateFiber.x ? -1 : 1;
+        var middleX = (x + alternateFiber.x) / 2 + director * 5,
+            middleY = (y + alternateFiber.y) / 2 - 3 / 2 * Radius;
         cxt.moveTo(middleX + director * Radius / 2, middleY - Radius / 2);
         cxt.lineTo(middleX, middleY);
         cxt.lineTo(middleX + director * Radius / 2, middleY + Radius / 2);
@@ -48665,7 +48665,7 @@ function drawFiberLine(cxt, id, fiberXYObj, alternateIDSet) {
         }
 
         if (y === nextEffectFiber.y) {
-          _middleY -= 3 * offsetY / 4;
+          _middleY += 3 * offsetY / 4;
         }
 
         if (y !== nextEffectFiber.y) {
@@ -48713,7 +48713,9 @@ function drawFiberNode(cxt, id, fiberXYObj, currentFiberID) {
         tag = fiber.tag,
         effectTag = fiber.effectTag,
         type = fiber.type,
-        nativeTag = fiber.nativeTag; // circle
+        nativeTag = fiber.nativeTag,
+        expirationTime = fiber.expirationTime,
+        childExpirationTime = fiber.childExpirationTime; // circle
 
     if (id === currentFiberID) {
       // highlight currentFiberID
@@ -48746,10 +48748,9 @@ function drawFiberNode(cxt, id, fiberXYObj, currentFiberID) {
 
     cxt.fillStyle = DescFontColor;
     cxt.font = DescFont;
-    cxt.fillText(tag, x - cxt.measureText(tag).width / 2, y + 0.7 * FontSize);
-    cxt.fillText(type, x - cxt.measureText(type).width / 2, y + 1.4 * FontSize);
-    nativeTag && cxt.fillText(nativeTag, x - cxt.measureText(nativeTag).width / 2, y + 2.1 * FontSize);
-    effectTag && cxt.fillText(effectTag, x - cxt.measureText(effectTag).width / 2, y + 2.8 * FontSize);
+    [tag, "".concat(expirationTime, ", ").concat(childExpirationTime), type, nativeTag, effectTag].forEach(function (desc, index) {
+      return cxt.fillText(desc, x - cxt.measureText(desc).width / 2, y + 0.8 * (index + 1) * FontSize);
+    });
     drawFiberNode(cxt, fiber.child, fiberXYObj, currentFiberID);
     drawFiberNode(cxt, fiber.sibling, fiberXYObj, currentFiberID);
   }
@@ -48766,13 +48767,14 @@ function isRealDOMElement(fiber) {
   return false;
 }
 
-function layoutFiberNode(id, fiberXYObj, x, y) {
-  if (id !== InvalidID) {
+function layoutFiberNode(id, fiberXYObj, x, y, layoutFiberIDSet) {
+  if (id !== InvalidID && !layoutFiberIDSet.has(id)) {
+    layoutFiberIDSet.add(id);
     var fiber = fiberXYObj[id];
     fiberXYObj[id].x = x;
     fiberXYObj[id].y = y;
-    layoutFiberNode(fiber.child, fiberXYObj, x, y + YStep);
-    layoutFiberNode(fiber.sibling, fiberXYObj, x + XStep, y);
+    layoutFiberNode(fiber.child, fiberXYObj, x, y + YStep, layoutFiberIDSet);
+    layoutFiberNode(fiber.sibling, fiberXYObj, x + XStep, y, layoutFiberIDSet);
   }
 }
 
@@ -49224,6 +49226,7 @@ function drawFiberTree(currentFiberID, fibers, doms, runRecordRootNode, ratio) {
       fiber.x = 0;
       fiber.y = 0;
     });
+    var layoutFiberIDSet = new Set();
     fiberRoots.sort(function (idA, idB) {
       if (fiberXYObj[idA] && fiberXYObj[idA].tag && fiberXYObj[idA].tag.indexOf('current') !== -1) {
         return false;
@@ -49243,7 +49246,7 @@ function drawFiberTree(currentFiberID, fibers, doms, runRecordRootNode, ratio) {
 
       return idA - idB > 0;
     }).forEach(function (id, index) {
-      layoutFiberNode(id, fiberXYObj, InitX + index * RootXStep, InitY);
+      layoutFiberNode(id, fiberXYObj, InitX + index * RootXStep, InitY, layoutFiberIDSet);
     });
     var alternateIDSet = new Set();
     fiberRoots.forEach(function (id) {
@@ -49538,7 +49541,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-var InitRatio = 1.0 * 0.48;
+var InitRatio = 1.0 * 0.58;
 var RatioStep = InitRatio * 0.2;
 var LifecycleMethods = ['constructor', 'getDerivedStateFromProps', 'componentWillMount', 'UNSAFE_componentWillMount', 'componentWillReceiveProps', 'UNSAFE_componentWillReceiveProps', 'shouldComponentUpdate', 'componentWillUpdate', 'UNSAFE_componentWillUpdate', 'render', 'getSnapshotBeforeUpdate', 'componentDidMount', 'componentDidUpdate', 'componentWillUnmount'];
 var ComponentPrototypes = ['isReactComponent', 'setState', 'forceUpdate'];
@@ -49567,24 +49570,25 @@ var IndexComponent = function IndexComponent(_ref) {
           }, items));
           items = [];
         }
-      } else {
-        items.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          style: {
-            width: 60,
-            height: 30,
-            backgroundColor: curRecordIndex === recordIndex ? 'purple' : 'gray',
-            borderRadius: 15,
-            fontSize: 25,
-            textAlign: 'center',
-            marginLeft: 10,
-            color: 'blue'
-          },
-          onClick: function onClick() {
-            return onPress(recordIndex);
-          }
-        }, ((Array(3).join('~') + recordIndex).slice(-3) + Array(3).join('~')).slice(0, 5)));
-        console.log('SSU', 'IndexComponent', "".concat(recordIndex, "-").concat(rootRecord), 'items.push');
       }
+
+      items.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        style: {
+          backgroundColor: curRecordIndex === recordIndex ? 'purple' : 'gray',
+          borderRadius: 15,
+          fontSize: 25,
+          textAlign: 'center',
+          verticalAlign: 'middle',
+          padding: 15,
+          display: 'inline-block',
+          marginLeft: 10,
+          color: 'blue'
+        },
+        onClick: function onClick() {
+          return onPress(recordIndex);
+        }
+      }, recordIndex));
+      console.log('SSU', 'IndexComponent', "".concat(recordIndex, "-").concat(rootRecord), 'items.push');
     });
 
     if (items.length > 0) {

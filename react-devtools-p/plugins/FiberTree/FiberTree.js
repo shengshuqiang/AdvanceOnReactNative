@@ -39,13 +39,13 @@ function init(ratio) {
     DescFontColor = 'gray';
     DescFontSize = 10;
     DescFont = DescFontSize + 'px  Arial';
-    XStep = 4 * Radius;
-    RootXStep = 4 * XStep;
-    YStep = 3 * Radius;
+    XStep = 6 * Radius;
+    RootXStep = 3 * XStep;
+    YStep = 4 * Radius;
     InitX = 5 * Radius;
-    InitY = 2 * Radius;
-    DOMXOffset = 3 * RootXStep;
-    DOMYOffset = 3 * RootXStep;
+    InitY = 3 * Radius;
+    DOMXOffset = 2 * RootXStep;
+    DOMYOffset = 2 * RootXStep;
     DOMXStep = 1.5 * DOMRadius;
     DOMRootXStep = 2 * DOMXStep;
     DOMYStep = 3 * DOMRadius;
@@ -85,8 +85,8 @@ function drawFiberLine(cxt, id, fiberXYObj, alternateIDSet) {
         cxt.bezierCurveTo(x, y - 2 * Radius, alternateFiber.x, alternateFiber.y - 2 * Radius, alternateFiber.x, alternateFiber.y);
         cxt.stroke();
         cxt.beginPath();
-        const [middleX, middleY] = [(x + alternateFiber.x) / 2, (y + alternateFiber.y) / 2 - 3 / 2 * Radius];
         const director = x < alternateFiber.x ? -1 : 1;
+        const [middleX, middleY] = [(x + alternateFiber.x) / 2 + director * 5, (y + alternateFiber.y) / 2 - 3 / 2 * Radius];
         cxt.moveTo(middleX + director * Radius / 2, middleY - Radius / 2);
         cxt.lineTo(middleX, middleY);
         cxt.lineTo(middleX + director * Radius / 2, middleY + Radius / 2);
@@ -183,7 +183,7 @@ function drawFiberLine(cxt, id, fiberXYObj, alternateIDSet) {
           middleX -= 3 * offsetX / 4;
         }
         if (y === nextEffectFiber.y) {
-          middleY -= 3 * offsetY / 4;
+          middleY += 3 * offsetY / 4;
         }
         if (y !== nextEffectFiber.y) {
           const director = y < nextEffectFiber.y ? -1 : 1;
@@ -219,7 +219,7 @@ function drawFiberLine(cxt, id, fiberXYObj, alternateIDSet) {
 function drawFiberNode(cxt, id, fiberXYObj, currentFiberID) {
   if (id !== InvalidID) {
     const fiber = fiberXYObj[id];
-    const {x, y, tag, effectTag, type, nativeTag} = fiber;
+    const {x, y, tag, effectTag, type, nativeTag, expirationTime, childExpirationTime} = fiber;
     // circle
     if (id === currentFiberID) {
       // highlight currentFiberID
@@ -251,11 +251,8 @@ function drawFiberNode(cxt, id, fiberXYObj, currentFiberID) {
     // desc
     cxt.fillStyle = DescFontColor;
     cxt.font = DescFont;
-    cxt.fillText(tag, x - cxt.measureText(tag).width / 2, y + 0.7 * FontSize);
-    cxt.fillText(type, x - cxt.measureText(type).width / 2, y + 1.4 * FontSize);
-    nativeTag && cxt.fillText(nativeTag, x - cxt.measureText(nativeTag).width / 2, y + 2.1 * FontSize);
-    effectTag && cxt.fillText(effectTag, x - cxt.measureText(effectTag).width / 2, y + 2.8 * FontSize);
-
+    [tag, `${expirationTime}, ${childExpirationTime}`, type, nativeTag, effectTag]
+      .forEach((desc, index) => (cxt.fillText(desc, x - cxt.measureText(desc).width / 2, y + 0.8 * (index + 1 ) * FontSize)));
     drawFiberNode(cxt, fiber.child, fiberXYObj, currentFiberID);
     drawFiberNode(cxt, fiber.sibling, fiberXYObj, currentFiberID);
   }
@@ -269,14 +266,15 @@ function isRealDOMElement(fiber) {
   return false;
 }
 
-function layoutFiberNode(id, fiberXYObj, x, y) {
-  if (id !== InvalidID) {
+function layoutFiberNode(id, fiberXYObj, x, y, layoutFiberIDSet) {
+  if (id !== InvalidID && !layoutFiberIDSet.has(id)) {
+    layoutFiberIDSet.add(id);
     const fiber = fiberXYObj[id];
     fiberXYObj[id].x = x;
     fiberXYObj[id].y = y;
 
-    layoutFiberNode(fiber.child, fiberXYObj, x, y + YStep);
-    layoutFiberNode(fiber.sibling, fiberXYObj, x + XStep, y);
+    layoutFiberNode(fiber.child, fiberXYObj, x, y + YStep, layoutFiberIDSet);
+    layoutFiberNode(fiber.sibling, fiberXYObj, x + XStep, y, layoutFiberIDSet);
   }
 };
 
@@ -663,6 +661,7 @@ export default function drawFiberTree(currentFiberID, fibers, doms, runRecordRoo
       fiber.x = 0;
       fiber.y = 0;
     });
+    const layoutFiberIDSet = new Set();
     fiberRoots
       .sort((idA , idB) => {
         if (fiberXYObj[idA] && fiberXYObj[idA].tag && fiberXYObj[idA].tag.indexOf('current') !== -1) {
@@ -680,7 +679,7 @@ export default function drawFiberTree(currentFiberID, fibers, doms, runRecordRoo
         return idA - idB > 0;
       })
       .forEach((id, index) => {
-        layoutFiberNode(id, fiberXYObj, InitX + index * RootXStep, InitY);
+        layoutFiberNode(id, fiberXYObj, InitX + index * RootXStep, InitY, layoutFiberIDSet);
       });
     const alternateIDSet = new Set();
     fiberRoots.forEach((id) => {
