@@ -2,15 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="064d6e88-ade0-419c-8547-9296a26eccef" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/Renderer/oss/GreateNavigationArt.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/Components/Touchable/Touchable.js" beforeDir="false" afterPath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/Components/Touchable/Touchable.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/Components/Touchable/TouchableWithoutFeedback.js" beforeDir="false" afterPath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/Components/Touchable/TouchableWithoutFeedback.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/ReactNative/AppRegistry.js" beforeDir="false" afterPath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/ReactNative/AppRegistry.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/ReactNative/renderApplication.js" beforeDir="false" afterPath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/ReactNative/renderApplication.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/Renderer/oss/GreateNavigationArt.js" beforeDir="false" afterPath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/Renderer/oss/GreateNavigationArt.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/Renderer/oss/ReactNativeRenderer-dev.js" beforeDir="false" afterPath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/Renderer/oss/ReactNativeRenderer-dev.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/Renderer/oss/ReactNativeRenderer-prod.js" beforeDir="false" afterPath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/Renderer/oss/ReactNativeRenderer-prod.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../React/React源码解析.md" beforeDir="false" afterPath="$PROJECT_DIR$/../React/React源码解析.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/react-devtools-core/src/standalone.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/react-devtools-core/src/standalone.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/FiberTree/FiberTreeTab.js" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/FiberTree/FiberTreeTab.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -36,7 +32,7 @@
         <entry file="file://$PROJECT_DIR$/plugins/FiberTree/FiberTreeTab.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="512">
-              <caret line="336" column="87" lean-forward="true" selection-start-line="336" selection-start-column="87" selection-end-line="336" selection-end-column="87" />
+              <caret line="336" column="87" selection-start-line="336" selection-start-column="87" selection-end-line="336" selection-end-column="87" />
             </state>
           </provider>
         </entry>
@@ -81,7 +77,7 @@
         <entry file="file://$PROJECT_DIR$/packages/react-devtools-core/src/standalone.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="428">
-              <caret line="91" column="44" lean-forward="true" selection-start-line="91" selection-start-column="44" selection-end-line="91" selection-end-column="44" />
+              <caret line="91" column="44" selection-start-line="91" selection-start-column="44" selection-end-line="91" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -98,8 +94,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/packages/react-devtools-core/src/backend.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="249">
-              <caret line="81" column="37" lean-forward="true" selection-start-line="81" selection-start-column="37" selection-end-line="81" selection-end-column="37" />
+            <state relative-caret-position="474">
+              <caret line="96" column="21" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -427,17 +423,17 @@
       <workItem from="1568165221641" duration="3244000" />
       <workItem from="1568251710350" duration="4850000" />
       <workItem from="1568328738107" duration="1538000" />
-      <workItem from="1568769818401" duration="1577000" />
+      <workItem from="1568769818401" duration="3131000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="104487000" />
+    <option name="totallyTimeSpent" value="106041000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="972" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14797261" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14797261" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -451,7 +447,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.19659092" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.19659092" />
       <window_info anchor="bottom" id="TypeScript" order="11" weight="0.3291714" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -632,7 +628,7 @@
     <entry file="file://$PROJECT_DIR$/plugins/FiberTree/FiberTreeTab.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="512">
-          <caret line="336" column="87" lean-forward="true" selection-start-line="336" selection-start-column="87" selection-end-line="336" selection-end-column="87" />
+          <caret line="336" column="87" selection-start-line="336" selection-start-column="87" selection-end-line="336" selection-end-column="87" />
         </state>
       </provider>
     </entry>
@@ -646,14 +642,14 @@
     <entry file="file://$PROJECT_DIR$/packages/react-devtools-core/src/standalone.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="428">
-          <caret line="91" column="44" lean-forward="true" selection-start-line="91" selection-start-column="44" selection-end-line="91" selection-end-column="44" />
+          <caret line="91" column="44" selection-start-line="91" selection-start-column="44" selection-end-line="91" selection-end-column="44" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/packages/react-devtools-core/src/backend.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="81" column="37" lean-forward="true" selection-start-line="81" selection-start-column="37" selection-end-line="81" selection-end-column="37" />
+        <state relative-caret-position="474">
+          <caret line="96" column="21" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="21" />
         </state>
       </provider>
     </entry>
