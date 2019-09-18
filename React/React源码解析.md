@@ -1,5 +1,14 @@
 <!--# React源码解析-->
 
+# 序
+* 日照大海现双龙
+* 记住，永远不要只满足于世界的表象，要敢于探寻未知的可能。
+* 头脑活一点的童靴可能再想，能不能不还？
+* 青锋剑在手，总感觉缺了点什么？
+* 恨苍天不早生吾，剑道亘古如长夜。
+* 如果迎着风，就飞。
+* 是时候该我出手了。
+
 admindeMacBook-Pro-5:react-devtools-core shengshuqiang$ pwd
 /Users/shengshuqiang/work/react-devtools/packages/react-devtools-core
 admindeMacBook-Pro-5:react-devtools-core shengshuqiang$ yarn run standalone
@@ -101,8 +110,11 @@ beginwork updateExpirationTime < renderExpirationTime 费解
 	24. 工作中才有双树，稳态后只维持系统容器部分的双树(不变)和用户容器的单树。
 21. React和ReactDevTools通信
 	21. React -> ReactDevTools
-		22. React: backend.js ws.send(JSON.stringify(data));
-		23. ReactDevTools: standalone.js socket.onmessage
+		22. React: backend.js(node_modules/react-devtools-core/build)
+			23. ws.send(JSON.stringify(data));
+		23. ReactDevTools: standalone.js (react-devtools-p/packages/react-devtools-core/src)
+			24. socket.onmessage
+			25. socket.onmessage#sendFiberTree
 	22. ReactDevTools -> React: 
 23. 坑爹
 	24. backend.js dehydrate.js LEVEL_THRESHOLD 导致数据解析错误

@@ -50,7 +50,7 @@ const IndexComponent = ({runRecordRootNodes, onPress, curRecordIndex}) => {
     runRecordRootNodes.forEach((runRecordRootNode, recordIndex) => {
       if (rootRecord === null || runRecordRootNode.title !== rootRecord) {
         rootRecord = runRecordRootNode.title;
-        console.log('SSU', 'IndexComponent', `${recordIndex}-${rootRecord}`, 'groups.push');
+        // console.log('SSU', 'IndexComponent', `${recordIndex}-${rootRecord}`, 'groups.push');
         if (items.length > 0) {
           groups.push(
             <div style={{display: 'flex', overflow: 'scroll'}}>
@@ -76,11 +76,11 @@ const IndexComponent = ({runRecordRootNodes, onPress, curRecordIndex}) => {
           {recordIndex}
         </div>
       );
-      console.log('SSU', 'IndexComponent', `${recordIndex}-${rootRecord}`, 'items.push');
+      // console.log('SSU', 'IndexComponent', `${recordIndex}-${rootRecord}`, 'items.push');
     });
 
     if (items.length > 0) {
-      console.log('SSU', 'IndexComponent', `${-1}-${rootRecord}`, 'groups.push');
+      // console.log('SSU', 'IndexComponent', `${-1}-${rootRecord}`, 'groups.push');
       groups.push(
         <div style={{display: 'flex', overflow: 'scroll'}}>
           {items}
@@ -95,7 +95,7 @@ const IndexComponent = ({runRecordRootNodes, onPress, curRecordIndex}) => {
     );
   }
 
-  console.log('SSU', 'IndexComponent', component);
+  // console.log('SSU', 'IndexComponent', component);
   return component;
 };
 

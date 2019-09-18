@@ -73,7 +73,7 @@ function onError(e) {
 function initialize(socket) {
   var listeners = [];
   socket.onmessage = (evt) => {
-    console.log('SSU', 'socket.onmessage', evt.data);
+    // console.log('SSU', 'socket.onmessage', evt.data);
     var data = JSON.parse(evt.data);
     const {type = null, events = null} = data;
     if (type === 'many-events' && Array.isArray(events)) {
