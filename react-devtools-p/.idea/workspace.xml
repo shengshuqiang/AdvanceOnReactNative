@@ -3,10 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="064d6e88-ade0-419c-8547-9296a26eccef" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/ReactNative/AppRegistry.js" beforeDir="false" afterPath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/ReactNative/AppRegistry.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/ReactNative/renderApplication.js" beforeDir="false" afterPath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/ReactNative/renderApplication.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/Renderer/oss/GreateNavigationArt.js" beforeDir="false" afterPath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/Renderer/oss/GreateNavigationArt.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/Renderer/oss/ReactNativeRenderer-dev.js" beforeDir="false" afterPath="$PROJECT_DIR$/../AwesomeProject/node_modules/react-native/Libraries/Renderer/oss/ReactNativeRenderer-dev.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/react-devtools-core/build/standalone.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/react-devtools-core/build/standalone.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/react-devtools-core/build/standalone.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/packages/react-devtools-core/build/standalone.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/react-devtools-core/src/standalone.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/react-devtools-core/src/standalone.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/FiberTree/FiberTree.js" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/FiberTree/FiberTree.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/FiberTree/FiberTreeTab.js" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/FiberTree/FiberTreeTab.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -19,11 +23,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.es2015.collection.d.ts">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/plugins/FiberTree/FiberTree.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="825">
-              <caret line="68" column="25" selection-start-line="68" selection-start-column="25" selection-end-line="68" selection-end-column="25" />
+            <state relative-caret-position="556">
+              <caret line="677" column="38" selection-start-line="677" selection-start-column="38" selection-end-line="677" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -31,44 +35,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/plugins/FiberTree/FiberTreeTab.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="512">
-              <caret line="336" column="87" selection-start-line="336" selection-start-column="87" selection-end-line="336" selection-end-column="87" />
+            <state relative-caret-position="4545">
+              <caret line="305" column="121" selection-start-line="305" selection-start-column="107" selection-end-line="305" selection-end-column="121" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/plugins/Profiler/views/ChartNode.js">
+        <entry file="file://$PROJECT_DIR$/node_modules/react-color/modules/tinycolor2/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1320">
-              <caret line="89" column="10" selection-start-line="89" selection-start-column="10" selection-end-line="89" selection-end-column="10" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/plugins/ReactNativeStyle/AutoSizeInput.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2655">
-              <caret line="177" column="4" selection-start-line="177" selection-start-column="4" selection-end-line="177" selection-end-column="4" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/frontend/DataView/DataView.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5715">
-              <caret line="381" column="2" selection-start-line="381" selection-start-column="2" selection-end-line="381" selection-end-column="2" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/packages/react-devtools-core/build/standalone.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="358">
-              <caret line="55258" column="24" selection-start-line="55258" selection-start-column="24" selection-end-line="55258" selection-end-column="24" />
+            <state relative-caret-position="13080">
+              <caret line="872" column="29" selection-start-line="872" selection-start-column="23" selection-end-line="872" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -76,35 +53,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/packages/react-devtools-core/src/standalone.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="428">
-              <caret line="91" column="44" selection-start-line="91" selection-start-column="44" selection-end-line="91" selection-end-column="44" />
+            <state relative-caret-position="1545">
+              <caret line="103" column="18" selection-start-line="103" selection-start-column="18" selection-end-line="103" selection-end-column="18" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/plugins/FiberTree/FiberTreePlugin.js">
+        <entry file="file://$PROJECT_DIR$/packages/react-devtools-core/build/standalone.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="780">
-              <caret line="53" column="22" selection-start-line="53" selection-start-column="13" selection-end-line="53" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/packages/react-devtools-core/src/backend.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="474">
-              <caret line="96" column="21" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/agent/dehydrate.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="780">
-              <caret line="52" column="67" selection-start-line="52" selection-start-column="67" selection-end-line="52" selection-end-column="67" />
+            <state relative-caret-position="738270">
+              <caret line="49224" selection-start-line="49224" selection-end-line="49224" />
             </state>
           </provider>
         </entry>
@@ -120,19 +79,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>children</find>
-      <find>runRecordRootNode</find>
-      <find>RealDOMNodeColor</find>
-      <find>light</find>
-      <find>RunRecordNodeColor</find>
-      <find>highlight</find>
-      <find>lineWidth</find>
-      <find>DOMYStep</find>
-      <find>DOMXStep</find>
-      <find>DOMFont</find>
-      <find>DOMFontSize</find>
-      <find>DOMYOffset</find>
-      <find>DOMInitX</find>
       <find>getMatchRunRecordTitle</find>
       <find>orange</find>
       <find>LifecycleMethods</find>
@@ -146,13 +92,27 @@
       <find>InitY</find>
       <find>layoutFiberNode</find>
       <find>alternateIDSet</find>
-      <find>socket.onmessage</find>
       <find>IndexComponent</find>
       <find>sendFiberTree</find>
       <find>ws.send</find>
+      <find>displayTreeNode</find>
+      <find>buildDisplayTreeNode</find>
+      <find>socket.onmessage</find>
+      <find>drawFiberTree</find>
+      <find>runRecordRootNode</find>
+      <find>lim</find>
+      <find>index</find>
+      <find>light</find>
+      <find>currentFiberID</find>
+      <find>currentFiberIDs</find>
+      <find>ComponentPrototypes</find>
+      <find>currentFiberIDs &amp;&amp;</find>
+      <find>cxt</find>
+      <find>cxt =</find>
     </findStrings>
     <replaceStrings>
       <replace>displayTreeNode</replace>
+      <replace>currentFiberIDs</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -166,10 +126,10 @@
         <option value="$PROJECT_DIR$/frontend/Container.js" />
         <option value="$PROJECT_DIR$/plugins/FiberTree/FiberTreeTest.html" />
         <option value="$PROJECT_DIR$/frontend/Store.js" />
-        <option value="$PROJECT_DIR$/plugins/FiberTree/FiberTree.js" />
-        <option value="$PROJECT_DIR$/plugins/FiberTree/FiberTreeTab.js" />
-        <option value="$PROJECT_DIR$/packages/react-devtools-core/src/standalone.js" />
         <option value="$PROJECT_DIR$/packages/react-devtools-core/src/backend.js" />
+        <option value="$PROJECT_DIR$/packages/react-devtools-core/src/standalone.js" />
+        <option value="$PROJECT_DIR$/plugins/FiberTree/FiberTreeTab.js" />
+        <option value="$PROJECT_DIR$/plugins/FiberTree/FiberTree.js" />
       </list>
     </option>
   </component>
@@ -179,7 +139,7 @@
     <other-services-enabled>true</other-services-enabled>
     <auto-save>true</auto-save>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="y" value="23" />
     <option name="width" value="1440" />
     <option name="height" value="803" />
@@ -424,21 +384,24 @@
       <workItem from="1568251710350" duration="4850000" />
       <workItem from="1568328738107" duration="1538000" />
       <workItem from="1568769818401" duration="3131000" />
+      <workItem from="1568857300117" duration="209000" />
+      <workItem from="1568857748895" duration="6430000" />
+      <workItem from="1568893468435" duration="750000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="106041000" />
+    <option name="totallyTimeSpent" value="113430000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1920" height="972" extended-state="6" />
+    <frame x="0" y="23" width="1920" height="973" extended-state="6" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14797261" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32954547" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3291714" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -447,7 +410,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="10" weight="0.19659092" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.19636777" />
       <window_info anchor="bottom" id="TypeScript" order="11" weight="0.3291714" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -545,13 +508,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/react-color/modules/tinycolor2/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="825" column="18" selection-start-line="825" selection-start-column="8" selection-end-line="825" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/flow/core.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4695">
@@ -573,13 +529,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="228">
           <caret line="1259" column="4" selection-start-line="1259" selection-start-column="4" selection-end-line="1259" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/plugins/FiberTree/FiberTree.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="413">
-          <caret line="278" column="2" lean-forward="true" selection-start-line="278" selection-start-column="2" selection-end-line="278" selection-end-column="2" />
         </state>
       </provider>
     </entry>
@@ -625,31 +574,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/plugins/FiberTree/FiberTreeTab.js">
+    <entry file="file://$PROJECT_DIR$/packages/react-devtools-core/src/backend.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="512">
-          <caret line="336" column="87" selection-start-line="336" selection-start-column="87" selection-end-line="336" selection-end-column="87" />
+        <state relative-caret-position="489">
+          <caret line="97" column="23" lean-forward="true" selection-start-line="97" selection-start-column="23" selection-end-line="97" selection-end-column="23" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/packages/react-devtools-core/build/standalone.js">
+    <entry file="file://$PROJECT_DIR$/plugins/FiberTree/FiberTree.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="358">
-          <caret line="55258" column="24" selection-start-line="55258" selection-start-column="24" selection-end-line="55258" selection-end-column="24" />
+        <state relative-caret-position="556">
+          <caret line="677" column="38" selection-start-line="677" selection-start-column="38" selection-end-line="677" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plugins/FiberTree/FiberTreeTab.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4545">
+          <caret line="305" column="121" selection-start-line="305" selection-start-column="107" selection-end-line="305" selection-end-column="121" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/react-color/modules/tinycolor2/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="13080">
+          <caret line="872" column="29" selection-start-line="872" selection-start-column="23" selection-end-line="872" selection-end-column="29" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/packages/react-devtools-core/src/standalone.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="428">
-          <caret line="91" column="44" selection-start-line="91" selection-start-column="44" selection-end-line="91" selection-end-column="44" />
+        <state relative-caret-position="1545">
+          <caret line="103" column="18" selection-start-line="103" selection-start-column="18" selection-end-line="103" selection-end-column="18" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/packages/react-devtools-core/src/backend.js">
+    <entry file="file://$PROJECT_DIR$/packages/react-devtools-core/build/standalone.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="474">
-          <caret line="96" column="21" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="21" />
+        <state relative-caret-position="738270">
+          <caret line="49224" selection-start-line="49224" selection-end-line="49224" />
         </state>
       </provider>
     </entry>

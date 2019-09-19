@@ -216,18 +216,21 @@ function drawFiberLine(cxt, id, fiberXYObj, alternateIDSet) {
   }
 };
 
-function drawFiberNode(cxt, id, fiberXYObj, currentFiberID) {
+function drawFiberNode(cxt, id, fiberXYObj, currentFiberIDs) {
   if (id !== InvalidID) {
     const fiber = fiberXYObj[id];
     const {x, y, tag, effectTag, type, nativeTag, expirationTime, childExpirationTime} = fiber;
     // circle
-    if (id === currentFiberID) {
+    if (currentFiberIDs && currentFiberIDs.length && currentFiberIDs.includes(id)) {
       // highlight currentFiberID
+      const globalAlpha = cxt.globalAlpha;
+      cxt.globalAlpha = 1 - currentFiberIDs.indexOf(id) / currentFiberIDs.length * 0.8;
       cxt.fillStyle = HighLightColor;
       cxt.beginPath();
       cxt.arc(x, y, 1.5 * Radius, 0, Math.PI * 2, true);
       cxt.closePath();
       cxt.fill();
+      cxt.globalAlpha = globalAlpha;
     }
     if (isRealDOMElement(fiber)) {
       cxt.fillStyle = RealDOMNodeColor;
@@ -253,8 +256,8 @@ function drawFiberNode(cxt, id, fiberXYObj, currentFiberID) {
     cxt.font = DescFont;
     [tag, `${expirationTime}, ${childExpirationTime}`, type, nativeTag, effectTag]
       .forEach((desc, index) => (cxt.fillText(desc, x - cxt.measureText(desc).width / 2, y + 0.8 * (index + 1 ) * FontSize)));
-    drawFiberNode(cxt, fiber.child, fiberXYObj, currentFiberID);
-    drawFiberNode(cxt, fiber.sibling, fiberXYObj, currentFiberID);
+    drawFiberNode(cxt, fiber.child, fiberXYObj, currentFiberIDs);
+    drawFiberNode(cxt, fiber.sibling, fiberXYObj, currentFiberIDs);
   }
 };
 
@@ -286,7 +289,7 @@ function getDomNodeXY(domNode, offsetLeafCount) {
   return {x, y};
 }
 
-function drawDomNode(cxt, domNode, offsetLeafCount, currentFiberID) {
+function drawDomNode(cxt, domNode, offsetLeafCount, currentFiberIDs) {
   if (!domNode) {
     return;
   }
@@ -310,12 +313,15 @@ function drawDomNode(cxt, domNode, offsetLeafCount, currentFiberID) {
 
   // console.log('SSU', 'drawDomNode', {x, y, domNode});
   cxt.lineWidth = LineWidth;
-  if (currentFiberID === id) {
+  if (currentFiberIDs && currentFiberIDs.length && currentFiberIDs.includes(id)) {
+    const globalAlpha = cxt.globalAlpha;
+    cxt.globalAlpha = 1 - currentFiberIDs.indexOf(id) / currentFiberIDs.length * 0.8;
     cxt.fillStyle = HighLightColor;
     cxt.beginPath();
     cxt.arc(x, y, 1.5 * DOMRadius, 0, Math.PI * 2, true);
     cxt.closePath();
     cxt.fill();
+    cxt.globalAlpha = globalAlpha;
   }
   cxt.fillStyle = RealDOMNodeColor;
   cxt.beginPath();
@@ -331,7 +337,7 @@ function drawDomNode(cxt, domNode, offsetLeafCount, currentFiberID) {
   cxt.font = DescFont;
   cxt.fillText(styleStr, x - cxt.measureText(styleStr).width / 2, y + 2 * DOMFontSize);
   children && children.forEach((childDomNode, childIndex) => {
-    drawDomNode(cxt, childDomNode, offsetLeafCount, childIndex, currentFiberID);
+    drawDomNode(cxt, childDomNode, offsetLeafCount, childIndex, currentFiberIDs);
   });
 }
 
@@ -460,9 +466,12 @@ function buildDisplayTreeNode(node, level, treeInfo) {
     boxColor: node.boxColor,
     isPatch: node.isPatch,
     count: node.count,
+    // 调用栈编号
+    callIndex: node.index,
     parent: null,
     children: [],
     isMiddleChild: false,
+    // 兄弟排行
     index: 0,
     level,
   };
@@ -575,7 +584,7 @@ function drawDisplayTreeNode(cxt, displayTreeNode, offsetLeafCount, horizontal =
   if (!displayTreeNode || !displayTreeNode.node) {
     return;
   }
-  const { title, count, children, highLight, boxColor, isPatch } = displayTreeNode;
+  const { title, count, callIndex, children, highLight, boxColor, isPatch } = displayTreeNode;
   // const styleStr = style ? `(${style.width ? style.width : 'w'}, ${style.height ? style.height : 'h'}) ${style.text ? style.text : ''}` : '';
   const {x, y} = getDisplayTreeNodeXY(displayTreeNode, offsetLeafCount, horizontal);
   const width = 6 * DOMRadius;
@@ -621,7 +630,7 @@ function drawDisplayTreeNode(cxt, displayTreeNode, offsetLeafCount, horizontal =
     cxt.stroke();
   }
 
-  const text = `${title}*${count}`;
+  const text = `${callIndex}.${title}*${count}`;
   cxt.fillStyle = FontColor;
   cxt.font = RunRecordFont;
   cxt.fillText(text, x - cxt.measureText(text).width / 2, y + 0.3 * DOMFontSize);
@@ -634,20 +643,25 @@ function drawTree(cxt, node) {
   const treeInfo = {maxLevel: 0, maxIndex: 0};
   const displayTreeNode = layoutDisplayTreeNode(node, treeInfo);
   drawDisplayTreeNode(cxt, displayTreeNode, 0, true);
-  console.log('SSU', 'drawTree', displayTreeNode);
+  // console.log('SSU', 'drawTree', displayTreeNode);
 }
 
-export default function drawFiberTree(currentFiberID, fibers, doms, runRecordRootNode, ratio) {
+export default function drawFiberTree(currentFiberIDs, fibers, doms, runRecordRootNode, ratio) {
   const canvas = document.getElementById('myCanvas');
   if (!canvas) {
     return;
   }
   init(ratio);
+  //  计算画布的宽度
+  const width = canvas.offsetWidth;
+    //  计算画布的高度
+  const height = canvas.offsetHeight;
   const cxt = canvas.getContext('2d');
+  //  设置宽高
+  canvas.width = width;
+  canvas.height = height;
   cxt.clearRect(0, 0, canvas.width, canvas.height);
   cxt.save();
-  console.log('SSU', 'drawFiberTree', {fibers, doms, runRecordRootNode});
-  // console.log('SSU', 'drawFiberTree', {fibers, doms}, JSON.stringify(fibers), JSON.stringify(doms));
   // fibers
   if (fibers) {
     const fiberXYObj = {};
@@ -686,9 +700,9 @@ export default function drawFiberTree(currentFiberID, fibers, doms, runRecordRoo
       drawFiberLine(cxt, id, fiberXYObj, alternateIDSet);
     });
     fiberRoots.forEach((id) => {
-      drawFiberNode(cxt, id, fiberXYObj, currentFiberID);
+      drawFiberNode(cxt, id, fiberXYObj, currentFiberIDs);
     });
-    console.log('SSU', 'drawFiberTree.fibers', {fiberXYObj, fiberRoots});
+    // console.log('SSU', 'drawFiberTree.fibers', {fiberXYObj, fiberRoots});
   }
 
   cxt.translate(DOMXOffset, 0);
@@ -730,7 +744,7 @@ export default function drawFiberTree(currentFiberID, fibers, doms, runRecordRoo
       const treeInfo = {maxLevel: 0, maxIndex: 0};
       layoutDomNode(domNode, treeInfo);
       rootDomNodeOffsetLeafCount += treeInfo.maxIndex;
-      drawDomNode(cxt, domNode, rootDomNodeOffsetLeafCount, currentFiberID);
+      drawDomNode(cxt, domNode, rootDomNodeOffsetLeafCount, currentFiberIDs);
     });
   }
 

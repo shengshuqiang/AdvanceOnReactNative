@@ -48705,7 +48705,7 @@ function drawFiberLine(cxt, id, fiberXYObj, alternateIDSet) {
 
 ;
 
-function drawFiberNode(cxt, id, fiberXYObj, currentFiberID) {
+function drawFiberNode(cxt, id, fiberXYObj, currentFiberIDs) {
   if (id !== InvalidID) {
     var fiber = fiberXYObj[id];
     var x = fiber.x,
@@ -48717,13 +48717,16 @@ function drawFiberNode(cxt, id, fiberXYObj, currentFiberID) {
         expirationTime = fiber.expirationTime,
         childExpirationTime = fiber.childExpirationTime; // circle
 
-    if (id === currentFiberID) {
+    if (currentFiberIDs && currentFiberIDs.length && currentFiberIDs.includes(id)) {
       // highlight currentFiberID
+      var globalAlpha = cxt.globalAlpha;
+      cxt.globalAlpha = 1 - currentFiberIDs.indexOf(id) / currentFiberIDs.length * 0.8;
       cxt.fillStyle = HighLightColor;
       cxt.beginPath();
       cxt.arc(x, y, 1.5 * Radius, 0, Math.PI * 2, true);
       cxt.closePath();
       cxt.fill();
+      cxt.globalAlpha = globalAlpha;
     }
 
     if (isRealDOMElement(fiber)) {
@@ -48751,8 +48754,8 @@ function drawFiberNode(cxt, id, fiberXYObj, currentFiberID) {
     [tag, "".concat(expirationTime, ", ").concat(childExpirationTime), type, nativeTag, effectTag].forEach(function (desc, index) {
       return cxt.fillText(desc, x - cxt.measureText(desc).width / 2, y + 0.8 * (index + 1) * FontSize);
     });
-    drawFiberNode(cxt, fiber.child, fiberXYObj, currentFiberID);
-    drawFiberNode(cxt, fiber.sibling, fiberXYObj, currentFiberID);
+    drawFiberNode(cxt, fiber.child, fiberXYObj, currentFiberIDs);
+    drawFiberNode(cxt, fiber.sibling, fiberXYObj, currentFiberIDs);
   }
 }
 
@@ -48791,7 +48794,7 @@ function getDomNodeXY(domNode, offsetLeafCount) {
   };
 }
 
-function drawDomNode(cxt, domNode, offsetLeafCount, currentFiberID) {
+function drawDomNode(cxt, domNode, offsetLeafCount, currentFiberIDs) {
   if (!domNode) {
     return;
   }
@@ -48826,12 +48829,15 @@ function drawDomNode(cxt, domNode, offsetLeafCount, currentFiberID) {
 
   cxt.lineWidth = LineWidth;
 
-  if (currentFiberID === id) {
+  if (currentFiberIDs && currentFiberIDs.length && currentFiberIDs.includes(id)) {
+    var globalAlpha = cxt.globalAlpha;
+    cxt.globalAlpha = 1 - currentFiberIDs.indexOf(id) / currentFiberIDs.length * 0.8;
     cxt.fillStyle = HighLightColor;
     cxt.beginPath();
     cxt.arc(x, y, 1.5 * DOMRadius, 0, Math.PI * 2, true);
     cxt.closePath();
     cxt.fill();
+    cxt.globalAlpha = globalAlpha;
   }
 
   cxt.fillStyle = RealDOMNodeColor;
@@ -48847,7 +48853,7 @@ function drawDomNode(cxt, domNode, offsetLeafCount, currentFiberID) {
   cxt.font = DescFont;
   cxt.fillText(styleStr, x - cxt.measureText(styleStr).width / 2, y + 2 * DOMFontSize);
   children && children.forEach(function (childDomNode, childIndex) {
-    drawDomNode(cxt, childDomNode, offsetLeafCount, childIndex, currentFiberID);
+    drawDomNode(cxt, childDomNode, offsetLeafCount, childIndex, currentFiberIDs);
   });
 }
 
@@ -48989,9 +48995,12 @@ function buildDisplayTreeNode(node, level, treeInfo) {
     boxColor: node.boxColor,
     isPatch: node.isPatch,
     count: node.count,
+    // 调用栈编号
+    callIndex: node.index,
     parent: null,
     children: [],
     isMiddleChild: false,
+    // 兄弟排行
     index: 0,
     level: level
   };
@@ -49123,6 +49132,7 @@ function drawDisplayTreeNode(cxt, displayTreeNode, offsetLeafCount) {
 
   var title = displayTreeNode.title,
       count = displayTreeNode.count,
+      callIndex = displayTreeNode.callIndex,
       children = displayTreeNode.children,
       highLight = displayTreeNode.highLight,
       boxColor = displayTreeNode.boxColor,
@@ -49176,7 +49186,7 @@ function drawDisplayTreeNode(cxt, displayTreeNode, offsetLeafCount) {
     cxt.stroke();
   }
 
-  var text = "".concat(title, "*").concat(count);
+  var text = "".concat(callIndex, ".").concat(title, "*").concat(count);
   cxt.fillStyle = FontColor;
   cxt.font = RunRecordFont;
   cxt.fillText(text, x - cxt.measureText(text).width / 2, y + 0.3 * DOMFontSize);
@@ -49191,27 +49201,27 @@ function drawTree(cxt, node) {
     maxIndex: 0
   };
   var displayTreeNode = layoutDisplayTreeNode(node, treeInfo);
-  drawDisplayTreeNode(cxt, displayTreeNode, 0, true);
-  console.log('SSU', 'drawTree', displayTreeNode);
+  drawDisplayTreeNode(cxt, displayTreeNode, 0, true); // console.log('SSU', 'drawTree', displayTreeNode);
 }
 
-function drawFiberTree(currentFiberID, fibers, doms, runRecordRootNode, ratio) {
+function drawFiberTree(currentFiberIDs, fibers, doms, runRecordRootNode, ratio) {
   var canvas = document.getElementById('myCanvas');
 
   if (!canvas) {
     return;
   }
 
-  init(ratio);
-  var cxt = canvas.getContext('2d');
+  init(ratio); //  计算画布的宽度
+
+  var width = canvas.offsetWidth; //  计算画布的高度
+
+  var height = canvas.offsetHeight;
+  var cxt = canvas.getContext('2d'); //  设置宽高
+
+  canvas.width = width;
+  canvas.height = height;
   cxt.clearRect(0, 0, canvas.width, canvas.height);
-  cxt.save();
-  console.log('SSU', 'drawFiberTree', {
-    fibers: fibers,
-    doms: doms,
-    runRecordRootNode: runRecordRootNode
-  }); // console.log('SSU', 'drawFiberTree', {fibers, doms}, JSON.stringify(fibers), JSON.stringify(doms));
-  // fibers
+  cxt.save(); // fibers
 
   if (fibers) {
     var fiberXYObj = {};
@@ -49253,12 +49263,8 @@ function drawFiberTree(currentFiberID, fibers, doms, runRecordRootNode, ratio) {
       drawFiberLine(cxt, id, fiberXYObj, alternateIDSet);
     });
     fiberRoots.forEach(function (id) {
-      drawFiberNode(cxt, id, fiberXYObj, currentFiberID);
-    });
-    console.log('SSU', 'drawFiberTree.fibers', {
-      fiberXYObj: fiberXYObj,
-      fiberRoots: fiberRoots
-    });
+      drawFiberNode(cxt, id, fiberXYObj, currentFiberIDs);
+    }); // console.log('SSU', 'drawFiberTree.fibers', {fiberXYObj, fiberRoots});
   }
 
   cxt.translate(DOMXOffset, 0); // doms
@@ -49308,7 +49314,7 @@ function drawFiberTree(currentFiberID, fibers, doms, runRecordRootNode, ratio) {
       };
       layoutDomNode(domNode, treeInfo);
       rootDomNodeOffsetLeafCount += treeInfo.maxIndex;
-      drawDomNode(cxt, domNode, rootDomNodeOffsetLeafCount, currentFiberID);
+      drawDomNode(cxt, domNode, rootDomNodeOffsetLeafCount, currentFiberIDs);
     });
   }
 
@@ -49558,8 +49564,7 @@ var IndexComponent = function IndexComponent(_ref) {
     var rootRecord = null;
     runRecordRootNodes.forEach(function (runRecordRootNode, recordIndex) {
       if (rootRecord === null || runRecordRootNode.title !== rootRecord) {
-        rootRecord = runRecordRootNode.title;
-        console.log('SSU', 'IndexComponent', "".concat(recordIndex, "-").concat(rootRecord), 'groups.push');
+        rootRecord = runRecordRootNode.title; // console.log('SSU', 'IndexComponent', `${recordIndex}-${rootRecord}`, 'groups.push');
 
         if (items.length > 0) {
           groups.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -49587,12 +49592,11 @@ var IndexComponent = function IndexComponent(_ref) {
         onClick: function onClick() {
           return onPress(recordIndex);
         }
-      }, recordIndex));
-      console.log('SSU', 'IndexComponent', "".concat(recordIndex, "-").concat(rootRecord), 'items.push');
+      }, recordIndex)); // console.log('SSU', 'IndexComponent', `${recordIndex}-${rootRecord}`, 'items.push');
     });
 
     if (items.length > 0) {
-      console.log('SSU', 'IndexComponent', "".concat(-1, "-").concat(rootRecord), 'groups.push');
+      // console.log('SSU', 'IndexComponent', `${-1}-${rootRecord}`, 'groups.push');
       groups.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: {
           display: 'flex',
@@ -49602,9 +49606,9 @@ var IndexComponent = function IndexComponent(_ref) {
     }
 
     component = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, groups);
-  }
+  } // console.log('SSU', 'IndexComponent', component);
 
-  console.log('SSU', 'IndexComponent', component);
+
   return component;
 };
 
@@ -49696,9 +49700,9 @@ function (_React$Component) {
 
   _createClass(FiberTreeTab, [{
     key: "draw",
-    value: function draw(currentFiberID, fibers, doms, runRecordRootNode, ratio) {
+    value: function draw(currentFiberIDs, fibers, doms, runRecordRootNode, ratio) {
       // console.log('SSU', 'drawFiberTree', JSON.stringify(fibers));
-      Object(_FiberTree__WEBPACK_IMPORTED_MODULE_2__["default"])(currentFiberID, fibers, doms, runRecordRootNode, ratio);
+      Object(_FiberTree__WEBPACK_IMPORTED_MODULE_2__["default"])(currentFiberIDs, fibers, doms, runRecordRootNode, ratio);
     }
   }, {
     key: "componentWillReceiveProps",
@@ -49726,37 +49730,6 @@ function (_React$Component) {
     }
   }, {
     key: "getMatchRunRecordTitle",
-    // buildRunRecordTree(fiberTreeInfos, recordIndex) {
-    //   let runRecordRootNode = {
-    //     title: '起点',
-    //     parent: null,
-    //     children: [],
-    //   };
-    //   if (fiberTreeInfos && recordIndex >= 0 && recordIndex < fiberTreeInfos.length) {
-    //     for (let i = 0; i <= recordIndex; i++) {
-    //       let parentRunRecordNode = runRecordRootNode;
-    //       const {runRecordStack} = fiberTreeInfos[i];
-    //       const highLight = (i === recordIndex);
-    //       runRecordStack && runRecordStack.forEach((runRecord) => {
-    //         let runRecordNode = parentRunRecordNode.children.find((child) => (child.title === runRecord));
-    //         if (runRecordNode) {
-    //           runRecordNode.highLight = highLight;
-    //         } else {
-    //           runRecordNode = {
-    //             title: runRecord,
-    //             parent: parentRunRecordNode,
-    //             children: [],
-    //             highLight,
-    //           };
-    //           parentRunRecordNode.children.push(runRecordNode);
-    //         }
-    //         parentRunRecordNode = runRecordNode;
-    //       });
-    //     }
-    //   }
-    //
-    //   return runRecordRootNode;
-    // }
     value: function getMatchRunRecordTitle(title) {
       if (title) {
         var index = title.indexOf('(');
@@ -49779,7 +49752,11 @@ function (_React$Component) {
       if (LifecycleMethods.includes(runRecord)) {
         return 'red';
       } else if (ComponentPrototypes.includes(runRecord)) {
-        return 'darkorange';
+        return '#ff8c00';
+      } else if (runRecord.startsWith('createFiber(')) {
+        return '#32cd32';
+      } else if (runRecord.startsWith('expirationTime=(') || runRecord.startsWith('childExpirationTime=(')) {
+        return '#87cefa';
       } else if (runRecord.startsWith('UIManager.')) {
         return 'blue';
       } else if (runRecord.includes('.effectTag')) {
@@ -49839,6 +49816,7 @@ function (_React$Component) {
               if (runRecordNode) {
                 // do nothing
                 runRecordNode.title = runRecord;
+                runRecordNode.index = index;
                 runRecordNode.count++;
               } else {
                 runRecordNode = {
@@ -49847,6 +49825,7 @@ function (_React$Component) {
                   children: [],
                   highLight: true,
                   count: 1,
+                  index: index,
                   boxColor: boxColor,
                   isPatch: false
                 };
@@ -49863,6 +49842,7 @@ function (_React$Component) {
                 children: [],
                 highLight: true,
                 count: 1,
+                index: index,
                 boxColor: boxColor,
                 isPatch: false
               };
@@ -49880,21 +49860,26 @@ function (_React$Component) {
     value: function render() {
       var _this4 = this;
 
-      // const {fibers = null} = this.state.recordIndex >= 0 ? this.fiberTreeInfos[this.state.recordIndex] : {};
       var _ref2 = this.props.fiberTreeInfos ? this.state.recordIndex >= 0 && this.state.recordIndex < this.props.fiberTreeInfos.length ? this.props.fiberTreeInfos[this.state.recordIndex] : this.props.fiberTreeInfos[this.props.fiberTreeInfos.length - 1] : {},
-          currentFiberID = _ref2.currentFiberID,
+          currentFiberIDs = _ref2.currentFiberIDs,
           _ref2$fibers = _ref2.fibers,
           fibers = _ref2$fibers === void 0 ? null : _ref2$fibers,
           _ref2$doms = _ref2.doms,
           doms = _ref2$doms === void 0 ? null : _ref2$doms,
+          _ref2$runRecordHistor = _ref2.runRecordHistory,
+          runRecordHistory = _ref2$runRecordHistor === void 0 ? null : _ref2$runRecordHistor,
           _ref2$desc = _ref2.desc,
-          desc = _ref2$desc === void 0 ? null : _ref2$desc; // const runRecordRootNode = this.buildRunRecordTree(this.props.fiberTreeInfos, this.state.recordIndex);
+          desc = _ref2$desc === void 0 ? null : _ref2$desc;
 
-
-      var runRecordRootNode = this.state.recordIndex >= 0 ? this.runRecordRootNodes[this.state.recordIndex] : null; // console.log('SSU', 'FiberTreeTab#render', JSON.stringify(fibers));
-
+      var runRecordRootNode = this.state.recordIndex >= 0 ? this.runRecordRootNodes[this.state.recordIndex] : null;
+      console.log('SSU', 'render', 'fiberTreeInfos', {
+        fibers: fibers,
+        doms: doms,
+        runRecordHistory: runRecordHistory,
+        runRecordRootNode: runRecordRootNode
+      });
       setTimeout(function () {
-        return _this4.draw(currentFiberID, fibers, doms, runRecordRootNode, _this4.state.ratio);
+        return _this4.draw(currentFiberIDs, fibers, doms, runRecordRootNode, _this4.state.ratio);
       }, 0);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: {
@@ -55256,7 +55241,7 @@ function initialize(socket) {
   var listeners = [];
 
   socket.onmessage = function (evt) {
-    console.log('SSU', 'socket.onmessage', evt.data);
+    // console.log('SSU', 'socket.onmessage', evt.data);
     var data = JSON.parse(evt.data);
     var _data$type = data.type,
         type = _data$type === void 0 ? null : _data$type,
@@ -55266,8 +55251,7 @@ function initialize(socket) {
     if (type === 'many-events' && Array.isArray(events)) {
       events.filter(function (event) {
         return event.evt === 'sendFiberTree';
-      }).forEach(function (event) {
-        console.log('SSU', 'socket.onmessage#sendFiberTree', event);
+      }).forEach(function (event) {// console.log('SSU', 'socket.onmessage#sendFiberTree', event);
       });
     }
 

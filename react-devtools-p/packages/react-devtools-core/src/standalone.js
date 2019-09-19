@@ -79,7 +79,7 @@ function initialize(socket) {
     if (type === 'many-events' && Array.isArray(events)) {
       events.filter(event => (event.evt === 'sendFiberTree'))
         .forEach(event => {
-          console.log('SSU', 'socket.onmessage#sendFiberTree', event);
+          // console.log('SSU', 'socket.onmessage#sendFiberTree', event);
         });
     }
     listeners.forEach((fn) => fn(data));

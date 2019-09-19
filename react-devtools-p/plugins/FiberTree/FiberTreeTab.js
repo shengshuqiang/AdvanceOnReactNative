@@ -111,9 +111,9 @@ class FiberTreeTab extends React.Component<Props, State> {
     this.refershRunRecordRootNodes(props.fiberTreeInfos);
   }
 
-  draw(currentFiberID, fibers, doms, runRecordRootNode, ratio) {
+  draw(currentFiberIDs, fibers, doms, runRecordRootNode, ratio) {
     // console.log('SSU', 'drawFiberTree', JSON.stringify(fibers));
-    drawFiberTree(currentFiberID, fibers, doms, runRecordRootNode, ratio);
+    drawFiberTree(currentFiberIDs, fibers, doms, runRecordRootNode, ratio);
   };
 
   onPressRatioAdd = () => {
@@ -194,38 +194,6 @@ class FiberTreeTab extends React.Component<Props, State> {
     });
   };
 
-  // buildRunRecordTree(fiberTreeInfos, recordIndex) {
-  //   let runRecordRootNode = {
-  //     title: '起点',
-  //     parent: null,
-  //     children: [],
-  //   };
-  //   if (fiberTreeInfos && recordIndex >= 0 && recordIndex < fiberTreeInfos.length) {
-  //     for (let i = 0; i <= recordIndex; i++) {
-  //       let parentRunRecordNode = runRecordRootNode;
-  //       const {runRecordStack} = fiberTreeInfos[i];
-  //       const highLight = (i === recordIndex);
-  //       runRecordStack && runRecordStack.forEach((runRecord) => {
-  //         let runRecordNode = parentRunRecordNode.children.find((child) => (child.title === runRecord));
-  //         if (runRecordNode) {
-  //           runRecordNode.highLight = highLight;
-  //         } else {
-  //           runRecordNode = {
-  //             title: runRecord,
-  //             parent: parentRunRecordNode,
-  //             children: [],
-  //             highLight,
-  //           };
-  //           parentRunRecordNode.children.push(runRecordNode);
-  //         }
-  //         parentRunRecordNode = runRecordNode;
-  //       });
-  //     }
-  //   }
-  //
-  //   return runRecordRootNode;
-  // }
-
   getMatchRunRecordTitle(title) {
     if (title) {
       const index = title.indexOf('(');
@@ -245,7 +213,11 @@ class FiberTreeTab extends React.Component<Props, State> {
     if (LifecycleMethods.includes(runRecord)) {
       return 'red';
     } else if (ComponentPrototypes.includes(runRecord)) {
-      return 'darkorange';
+      return '#ff8c00';
+    } else if (runRecord.startsWith('createFiber(')) {
+      return '#32cd32';
+    } else if (runRecord.startsWith('expirationTime=(') || runRecord.startsWith('childExpirationTime=(')) {
+      return '#87cefa';
     } else if (runRecord.startsWith('UIManager.')) {
       return 'blue';
     } else if (runRecord.includes('.effectTag')) {
@@ -291,6 +263,7 @@ class FiberTreeTab extends React.Component<Props, State> {
             if (runRecordNode) {
               // do nothing
               runRecordNode.title = runRecord;
+              runRecordNode.index = index;
               runRecordNode.count++;
             } else {
               runRecordNode = {
@@ -299,6 +272,7 @@ class FiberTreeTab extends React.Component<Props, State> {
                 children: [],
                 highLight: true,
                 count: 1,
+                index: index,
                 boxColor,
                 isPatch: false,
               };
@@ -314,6 +288,7 @@ class FiberTreeTab extends React.Component<Props, State> {
               children: [],
               highLight: true,
               count: 1,
+              index: index,
               boxColor,
               isPatch: false,
             };
@@ -328,15 +303,12 @@ class FiberTreeTab extends React.Component<Props, State> {
   }
 
   render() {
-    // const {fibers = null} = this.state.recordIndex >= 0 ? this.fiberTreeInfos[this.state.recordIndex] : {};
-
-    const {currentFiberID, fibers = null, doms = null, desc = null} = this.props.fiberTreeInfos ?
+    const {currentFiberIDs, fibers = null, doms = null, runRecordHistory = null, desc = null} = this.props.fiberTreeInfos ?
       (this.state.recordIndex >= 0 && this.state.recordIndex < this.props.fiberTreeInfos.length ? this.props.fiberTreeInfos[this.state.recordIndex] : this.props.fiberTreeInfos[this.props.fiberTreeInfos.length - 1])
       : {};
-    // const runRecordRootNode = this.buildRunRecordTree(this.props.fiberTreeInfos, this.state.recordIndex);
     const runRecordRootNode = this.state.recordIndex >= 0 ? this.runRecordRootNodes[this.state.recordIndex] : null;
-    // console.log('SSU', 'FiberTreeTab#render', JSON.stringify(fibers));
-    setTimeout(() => this.draw(currentFiberID, fibers, doms, runRecordRootNode, this.state.ratio), 0);
+    console.log('SSU', 'render', 'fiberTreeInfos', {fibers, doms, runRecordHistory, runRecordRootNode});
+    setTimeout(() => this.draw(currentFiberIDs, fibers, doms, runRecordRootNode, this.state.ratio), 0);
     return (
       <div style={{overflow: 'scroll'}}>
         <div style={{display: 'flex', width: 2000}}>
