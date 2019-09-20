@@ -22,6 +22,7 @@ type State = {
   ratio: number;
   recordIndex: number;
 };
+const CONTENT_SIZE = 10000;
 const InitRatio = 1.0 * 0.58;
 const RatioStep = InitRatio * 0.2;
 const LifecycleMethods: string[] = ['constructor',
@@ -222,6 +223,8 @@ class FiberTreeTab extends React.Component<Props, State> {
       return 'blue';
     } else if (runRecord.includes('.effectTag')) {
       return 'green';
+    } else if (runRecord.includes('diff算法:')) {
+      return '#2f4f4f';
     }
 
     return null;
@@ -311,7 +314,7 @@ class FiberTreeTab extends React.Component<Props, State> {
     setTimeout(() => this.draw(currentFiberIDs, fibers, doms, runRecordRootNode, this.state.ratio), 0);
     return (
       <div style={{overflow: 'scroll'}}>
-        <div style={{display: 'flex', width: 2000}}>
+        <div style={{display: 'flex', width: CONTENT_SIZE}}>
           <div style={{
             width: 30,
             height: 30,
@@ -352,10 +355,10 @@ class FiberTreeTab extends React.Component<Props, State> {
             color: 'red',
           }} onClick={this.onPressPlay}>Play
           </div>
-          <div>{`${desc}  【${this.state.recordIndex} / ${this.props.fiberTreeInfos ? this.props.fiberTreeInfos.length - 1 : 0}】`}</div>
+          <div>{`【${this.state.recordIndex}/${this.props.fiberTreeInfos ? this.props.fiberTreeInfos.length - 1 : 0}】${desc}`}</div>
         </div>
         <IndexComponent runRecordRootNodes={this.runRecordRootNodes} onPress={this.onPressRecord} curRecordIndex={this.state.recordIndex}/>
-        <canvas id="myCanvas" width="10000" height="10000">
+        <canvas id="myCanvas" width={CONTENT_SIZE} height={CONTENT_SIZE}>
           Your browser does not support the canvas element.
         </canvas>
       </div>

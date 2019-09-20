@@ -48751,7 +48751,9 @@ function drawFiberNode(cxt, id, fiberXYObj, currentFiberIDs) {
 
     cxt.fillStyle = DescFontColor;
     cxt.font = DescFont;
-    [tag, "".concat(expirationTime, ", ").concat(childExpirationTime), type, nativeTag, effectTag].forEach(function (desc, index) {
+    [tag && "".concat(tag), type && "".concat(type), "expirationTime(".concat(expirationTime, ", ").concat(childExpirationTime, ")"), nativeTag && "nativeTag(".concat(nativeTag, ")"), effectTag && "effectTag(".concat(effectTag, ")")].filter(function (desc, index) {
+      return desc;
+    }).forEach(function (desc, index) {
       return cxt.fillText(desc, x - cxt.measureText(desc).width / 2, y + 0.8 * (index + 1) * FontSize);
     });
     drawFiberNode(cxt, fiber.child, fiberXYObj, currentFiberIDs);
@@ -49547,6 +49549,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+var CONTENT_SIZE = 10000;
 var InitRatio = 1.0 * 0.58;
 var RatioStep = InitRatio * 0.2;
 var LifecycleMethods = ['constructor', 'getDerivedStateFromProps', 'componentWillMount', 'UNSAFE_componentWillMount', 'componentWillReceiveProps', 'UNSAFE_componentWillReceiveProps', 'shouldComponentUpdate', 'componentWillUpdate', 'UNSAFE_componentWillUpdate', 'render', 'getSnapshotBeforeUpdate', 'componentDidMount', 'componentDidUpdate', 'componentWillUnmount'];
@@ -49761,6 +49764,8 @@ function (_React$Component) {
         return 'blue';
       } else if (runRecord.includes('.effectTag')) {
         return 'green';
+      } else if (runRecord.includes('diff算法:')) {
+        return '#2f4f4f';
       }
 
       return null;
@@ -49888,7 +49893,7 @@ function (_React$Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: {
           display: 'flex',
-          width: 2000
+          width: CONTENT_SIZE
         }
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: {
@@ -49934,14 +49939,14 @@ function (_React$Component) {
           color: 'red'
         },
         onClick: this.onPressPlay
-      }, "Play"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "".concat(desc, "  \u3010").concat(this.state.recordIndex, " / ").concat(this.props.fiberTreeInfos ? this.props.fiberTreeInfos.length - 1 : 0, "\u3011"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(IndexComponent, {
+      }, "Play"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "\u3010".concat(this.state.recordIndex, "/").concat(this.props.fiberTreeInfos ? this.props.fiberTreeInfos.length - 1 : 0, "\u3011").concat(desc))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(IndexComponent, {
         runRecordRootNodes: this.runRecordRootNodes,
         onPress: this.onPressRecord,
         curRecordIndex: this.state.recordIndex
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("canvas", {
         id: "myCanvas",
-        width: "10000",
-        height: "10000"
+        width: CONTENT_SIZE,
+        height: CONTENT_SIZE
       }, "Your browser does not support the canvas element."));
     }
   }]);

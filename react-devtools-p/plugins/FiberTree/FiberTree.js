@@ -254,7 +254,8 @@ function drawFiberNode(cxt, id, fiberXYObj, currentFiberIDs) {
     // desc
     cxt.fillStyle = DescFontColor;
     cxt.font = DescFont;
-    [tag, `${expirationTime}, ${childExpirationTime}`, type, nativeTag, effectTag]
+    [tag && `${tag}`, type && `${type}`, `expirationTime(${expirationTime}, ${childExpirationTime})`, nativeTag && `nativeTag(${nativeTag})`, effectTag && `effectTag(${effectTag})`]
+      .filter((desc, index) =>(desc))
       .forEach((desc, index) => (cxt.fillText(desc, x - cxt.measureText(desc).width / 2, y + 0.8 * (index + 1 ) * FontSize)));
     drawFiberNode(cxt, fiber.child, fiberXYObj, currentFiberIDs);
     drawFiberNode(cxt, fiber.sibling, fiberXYObj, currentFiberIDs);
