@@ -49608,7 +49608,11 @@ var IndexComponent = function IndexComponent(_ref) {
       }, items));
     }
 
-    component = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, groups);
+    component = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      style: {
+        width: CONTENT_SIZE
+      }
+    }, groups);
   } // console.log('SSU', 'IndexComponent', component);
 
 

@@ -10,6 +10,35 @@
 * 如果迎着风，就飞。
 * 是时候该我出手了。
 
+## 流程
+1. 构建组建
+	2. reconciliation（diff阶段）
+		3. 0：创建当前根Fiber节点0，详见scheduleWorkToRoot。
+		3. 1：开始工作。
+		4. 2～20：深度优先遍历，依次创建工作Fiber节点1～21，详见beginWork。
+			* 对于每一个工作节点，会根据tag类型调用diff算法生成对应子节点。
+				* ClassComponent类型tag，会调用construct或getDerivedStateFromProps、componentWillMount、componentDidMount，render。nextChildren = instance.render()，详见updateClassComponent。
+				* FunctionComponent类型tag，nextchildren=renderWithHooks()，详见updateFunctionComponent。
+				* HostRoot类型tag，nextChildren = nextState.element，详见updateHostRoot。
+				* HostComponent类型tag，nextChildren = nextProps.children，详见updateHostComponent。
+				* HostText类型tag，空操作，详见updateHostText。
+				* ForwardRef类型tag，nextChildren = renderWithHooks()，详见updateForwardRef。
+				* ContextConsumer类型tag，newChildren = newProps.children()，详见updateContextConsumer。
+				* ContextProvider类型tag，newChildren = newProps.children()，详见updateContextProvider。
+				* 其他...
+			* 设置副作用状态位effectTag。
+		5. 21～34：深度优先遍历回溯，依次执行工作节点21~7操作，调用桥UIManager创建Native View 3～9。同时生成副作用链表[17, 12, 11, 10]，详见completeUnitOfWork。
+			* 调用桥UIManager.createView创建Native View，调用桥UIManager.setChildren添加Native Child View。
+				* HostText类型tag，创建（createTextInstance）或者更新（updateHostText$1）文本实例，详见completeWork。
+				* HostComponent类型tag，创建（createInstance）&添加子节点（appendAllChildren）&添加Native子节点（finalizeInitialChildren）或者更新（updateHostComponent$1）文本实例，详见completeWork。
+				* 其他...
+			* 将有效副作用节点连接，生成副作用链表。
+		6. 35：同4，因对应YellowBox子节点为空，故未创建工作节点。
+		7. 36～41：同5，创建Native View 13。同时添加[8, 3]到副作用链表。
+	8. commit(操作DOM阶段)，副作用链表[17, 12, 11, 10, 8, 3]。
+		9. 42～47：提交前调用，对应生命周期getSnapshotBeforeUpdate、，详见commitBeforeMutationLifecycles。
+
+
 admindeMacBook-Pro-5:react-devtools-core shengshuqiang$ pwd
 /Users/shengshuqiang/work/react-devtools/packages/react-devtools-core
 admindeMacBook-Pro-5:react-devtools-core shengshuqiang$ yarn run standalone

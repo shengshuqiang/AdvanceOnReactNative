@@ -90,7 +90,7 @@ const IndexComponent = ({runRecordRootNodes, onPress, curRecordIndex}) => {
     }
 
     component = (
-      <div>
+      <div style={{width: CONTENT_SIZE}}>
         {groups}
       </div>
     );
