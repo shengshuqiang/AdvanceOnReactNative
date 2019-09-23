@@ -22,62 +22,149 @@ type State = {
     count: number
 };
 
-export default class App extends Component<Props, State> {
+const LifecycleMethods: string[] = [
+    'constructor',
+    'componentWillMount', 'UNSAFE_componentWillMount',
+    'componentWillReceiveProps', 'UNSAFE_componentWillReceiveProps',
+    'shouldComponentUpdate',
+    'componentWillUpdate', 'UNSAFE_componentWillUpdate',
+    'render',
+    'getSnapshotBeforeUpdate',
+    'componentDidMount',
+    'componentDidUpdate',
+    'componentWillUnmount'
+];
 
+const NewLifecycle: string[] = [
+    'getSnapshotBeforeUpdate',
+    'componentDidUpdate'
+];
+
+const DeprecatedLifecycle: string[] = [
+    'componentWillMount', 'UNSAFE_componentWillMount',
+    'componentWillReceiveProps', 'UNSAFE_componentWillReceiveProps',
+    'componentWillUpdate', 'UNSAFE_componentWillUpdate'
+];
+
+const ComponentLifecycle: string[] = [
+    ... NewLifecycle,
+    ... DeprecatedLifecycle,
+    'componentDidMount',
+    'shouldComponentUpdate',
+    'componentWillUnmount',
+    'componentDidCatch'
+];
+
+class NewLifecycleComponent extends Component<Props, State> {
     constructor(props: Props) {
-        console.log('SSU', 'App#constructor()');
         super(props);
-        this.state = {
-            count: 0
-        }
+        console.log('SSU', '0. App#Render Phase NormalLifecycle Methods#constructor()');
     }
 
-    componentDidMount() {
-        console.log('SSU', 'App#componentDidMount()');
-        // TODO 盛书强测试，删掉
-        console.disableYellowBox = true
+    static getDerivedStateFromProps(nextProps: Readonly<P>, prevState: S) {
+        console.log('SSU', `1. App#Render Phase NewLifecycle Methods#getDerivedStateFromProps()`, nextProps, prevState);
+        return prevState;
     }
 
-    // shouldComponentUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, nextContext: any): boolean {
-    //     debugger;
-    //     console.log('SSU', 'App#shouldComponentUpdate()');
-    //     return true;
-    // }
-
-
-    componentWillUnmount(): void {
+    shouldComponentUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, nextContext: any): boolean {
         // debugger;
-        console.log('SSU', 'App#componentWillUnmount()');
-    }
-
-    componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-        // debugger;
-        console.log('SSU', 'App#componentDidCatch()');
+        console.log('SSU', `2. App#Render Phase NormalLifecycle Methods#shouldComponentUpdate()`, nextProps, nextState, nextContext);
+        return true;
     }
 
     getSnapshotBeforeUpdate(prevProps: Readonly<P>, prevState: Readonly<S>): SS | null {
         // debugger;
-        console.log('SSU', 'App#getSnapshotBeforeUpdate()');
+        console.log('SSU', `3. App#Commit Phase NewLifecycle Methods#getSnapshotBeforeUpdate()`, prevProps, prevState);
     }
 
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot?: SS): void {
         // debugger;
-        console.log('SSU', 'App#componentDidUpdate()');
+        console.log('SSU', `4. App#Commit Phase NewLifecycle Methods#componentDidUpdate()`, prevProps, prevState, snapshot);
+    }
+
+    componentDidMount() {
+        console.log('SSU', '5. App#Commit Phase NormalLifecycle Methods#componentDidMount()');
+        // TODO 盛书强测试，删掉
+        console.disableYellowBox = true
+    }
+
+    componentWillUnmount(): void {
+        // debugger;
+        console.log('SSU', '6. App#Commit Phase NormalLifecycle Methods#componentWillUnmount()');
+    }
+
+    componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+        // debugger;
+        console.log('SSU', '7. App#Commit Phase NormalLifecycle Methods#componentDidCatch()');
+    }
+}
+
+class DeprecatedLifecycleComponent extends Component<Props, State> {
+    constructor(props: Props) {
+        super(props);
+        console.log('SSU', '0. App#Render Phase NormalLifecycle Methods#constructor()');
     }
 
     componentWillMount(): void {
         // debugger;
-        console.log('SSU', 'App#componentWillMount()');
+        console.log('SSU', '1. App#Render Phase DeprecatedLifecycle Methods#componentWillMount()');
+    }
+
+    UNSAFE_componentWillMount(): void {
+        // debugger;
+        console.log('SSU', '2. App#Render Phase DeprecatedLifecycle Methods#UNSAFE_componentWillMount()');
     }
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         // debugger;
-        console.log('SSU', 'App#componentWillReceiveProps()');
+        console.log('SSU', `3. App#Render Phase DeprecatedLifecycle Methods#componentWillReceiveProps()`, nextProps, nextContext);
+    }
+
+    UNSAFE_componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
+        // debugger;
+        console.log('SSU', `4. App#Render Phase DeprecatedLifecycle Methods#UNSAFE_componentWillReceiveProps()`, nextProps, nextContext);
+    }
+
+    shouldComponentUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, nextContext: any): boolean {
+        // debugger;
+        console.log('SSU', `5. App#Render Phase NormalLifecycle Methods#shouldComponentUpdate()`, nextProps, nextState, nextContext);
+        return true;
     }
 
     componentWillUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, nextContext: any): void {
         // debugger;
-        console.log('SSU', 'App#componentWillUpdate()');
+        console.log('SSU', `6. App#Render Phase DeprecatedLifecycle Methods#componentWillUpdate()`, nextProps, nextState, nextContext);
+    }
+
+    UNSAFE_componentWillUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, nextContext: any): void {
+        // debugger;
+        console.log('SSU', `7. App#Render Phase DeprecatedLifecycle Methods#UNSAFE_componentWillUpdate()`, nextProps, nextState, nextContext);
+    }
+
+    componentDidMount() {
+        console.log('SSU', '8. App#Commit Phase NormalLifecycle Methods#componentDidMount()');
+        // TODO 盛书强测试，删掉
+        console.disableYellowBox = true
+    }
+
+    componentWillUnmount(): void {
+        // debugger;
+        console.log('SSU', '9. App#Commit Phase NormalLifecycle Methods#componentWillUnmount()');
+    }
+
+    componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+        // debugger;
+        console.log('SSU', '10. App#Commit Phase NormalLifecycle Methods#componentDidCatch()');
+    }
+}
+
+// export default class App extends NewLifecycleComponent<Props, State> {
+export default class App extends DeprecatedLifecycleComponent<Props, State> {
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            count: 0
+        }
     }
 
     onPress = () => {
@@ -93,7 +180,7 @@ export default class App extends Component<Props, State> {
 
     // render() {
     //     debugger;
-    //     console.log('SSU', 'App#render()', {count: this.state.count});
+    //     console.log('SSU', 'LifecycleMethods#render()', {count: this.state.count});
     //     const ret = (
     //         <View style={{width: 300, height: 150, backgroundColor: 'red'}}>
     //             <View style={{width: 300, height: 150, backgroundColor: 'red'}}/>
@@ -104,7 +191,7 @@ export default class App extends Component<Props, State> {
     // }
 
     render() {
-        console.log('SSU', 'App#render()', {count: this.state.count});
+        console.log('SSU', 'App#Render Phase NormalLifecycle Methods#render()', {count: this.state.count}, this.props, this.state);
         return (
             <TouchableWithoutFeedback onPress={this.onPress}>
                 <View style={{width: 300, height: 150, backgroundColor: 'red'}}>

@@ -25,8 +25,8 @@ type State = {
 const CONTENT_SIZE = 10000;
 const InitRatio = 1.0 * 0.58;
 const RatioStep = InitRatio * 0.2;
-const LifecycleMethods: string[] = ['constructor',
-  'getDerivedStateFromProps',
+const LifecycleMethods: string[] = [
+  'constructor',
   'componentWillMount', 'UNSAFE_componentWillMount',
   'componentWillReceiveProps', 'UNSAFE_componentWillReceiveProps',
   'shouldComponentUpdate',
@@ -35,12 +35,14 @@ const LifecycleMethods: string[] = ['constructor',
   'getSnapshotBeforeUpdate',
   'componentDidMount',
   'componentDidUpdate',
-  'componentWillUnmount'];
+  'componentWillUnmount'
+];
 
 const ComponentPrototypes: string[] = [
   'isReactComponent',
   'setState',
   'forceUpdate',
+  'getDerivedStateFromProps',
 ];
 const IndexComponent = ({runRecordRootNodes, onPress, curRecordIndex}) => {
   let component = null;

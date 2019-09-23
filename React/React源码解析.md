@@ -15,7 +15,7 @@
 
 
 ## 流程
-1. 构建组建
+1. 构建组建（新建生命周期不会同时回调，所以新旧生命周期要分开）
 	2. reconciliation（diff阶段）
 		3. 0：创建当前根Fiber节点0，详见scheduleWorkToRoot。
 		3. 1：开始工作。
@@ -40,7 +40,7 @@
 		6. 35：同4，因对应YellowBox子节点为空，故未创建工作节点。
 		7. 36～41：同5，创建Native View 13。同时添加[8, 3]到副作用链表。
 	8. commit(操作DOM阶段)，副作用链表[17, 12, 11, 10, 8, 3]。
-		9. 42～47：提交前调用，对应生命周期getSnapshotBeforeUpdate、，详见commitBeforeMutationLifecycles。
+		9. 42～47：提交前调用，对应生命周期getSnapshotBeforeUpdate，详见commitBeforeMutationLifecycles。
 
 
 admindeMacBook-Pro-5:react-devtools-core shengshuqiang$ pwd
