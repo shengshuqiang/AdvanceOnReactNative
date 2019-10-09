@@ -162,6 +162,8 @@ class DeprecatedLifecycleComponent extends Component<Props, State> {
 export default class App extends DeprecatedLifecycleComponent<Props, State> {
     constructor(props: Props) {
         super(props);
+        // debugger;
+        console.log('SSU', 'App#constructor()');
         this.state = {
             count: 0
         }
