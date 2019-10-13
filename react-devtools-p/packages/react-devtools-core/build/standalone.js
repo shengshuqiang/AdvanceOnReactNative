@@ -49552,8 +49552,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var CONTENT_SIZE = 10000;
 var InitRatio = 1.0 * 0.58;
 var RatioStep = InitRatio * 0.2;
-var LifecycleMethods = ['constructor', 'getDerivedStateFromProps', 'componentWillMount', 'UNSAFE_componentWillMount', 'componentWillReceiveProps', 'UNSAFE_componentWillReceiveProps', 'shouldComponentUpdate', 'componentWillUpdate', 'UNSAFE_componentWillUpdate', 'render', 'getSnapshotBeforeUpdate', 'componentDidMount', 'componentDidUpdate', 'componentWillUnmount'];
-var ComponentPrototypes = ['isReactComponent', 'setState', 'forceUpdate'];
+var LifecycleMethods = ['constructor', 'componentWillMount', 'UNSAFE_componentWillMount', 'componentWillReceiveProps', 'UNSAFE_componentWillReceiveProps', 'shouldComponentUpdate', 'componentWillUpdate', 'UNSAFE_componentWillUpdate', 'render', 'getSnapshotBeforeUpdate', 'componentDidMount', 'componentDidUpdate', 'componentWillUnmount'];
+var ComponentPrototypes = ['isReactComponent', 'setState', 'forceUpdate', 'getDerivedStateFromProps'];
 
 var IndexComponent = function IndexComponent(_ref) {
   var runRecordRootNodes = _ref.runRecordRootNodes,
