@@ -34,7 +34,11 @@
 * 上帝视角和时间旅行双轮驱动
 * 演示diff算法区别，[React 源码剖析系列 － 不可思议的 react diff](https://zhuanlan.zhihu.com/p/20346379)
 * 但是却总是好奇react的底层实现原理，多次尝试阅读react源代码都无法读下去，确实太难了。
+<<<<<<< HEAD
 * 参考![React源码分析](https://juejin.im/post/5abe05ea5188255c61631d6c)实现自由缩放知识地图点线面事源码突围
+=======
+* 简约伪代码示意
+>>>>>>> patch
 
 
 ## 流程
