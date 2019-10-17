@@ -71,7 +71,7 @@ function Child4(x, y, g){
     this.g = g;
     Parent.call(this, x, y); //构造函数中的this就是当前实例
 }
-Child4.prototype = new Parent();
+Child4.prototype = Parent.prototype;
 Child4.prototype.constructor=Child4;
 
 var c4 = new Child4(1, 2, 3);

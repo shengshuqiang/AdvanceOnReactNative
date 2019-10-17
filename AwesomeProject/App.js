@@ -66,26 +66,26 @@ class NewLifecycleComponent extends Component<Props, State> {
         return prevState;
     }
 
+    componentDidMount() {
+        console.log('SSU', '2. App#Commit Phase NormalLifecycle Methods#componentDidMount()');
+        // TODO 盛书强测试，删掉
+        console.disableYellowBox = true
+    }
+
     shouldComponentUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, nextContext: any): boolean {
         // debugger;
-        console.log('SSU', `2. App#Render Phase NormalLifecycle Methods#shouldComponentUpdate()`, nextProps, nextState, nextContext);
+        console.log('SSU', `3. App#Render Phase NormalLifecycle Methods#shouldComponentUpdate()`, nextProps, nextState, nextContext);
         return true;
     }
 
     getSnapshotBeforeUpdate(prevProps: Readonly<P>, prevState: Readonly<S>): SS | null {
         // debugger;
-        console.log('SSU', `3. App#Commit Phase NewLifecycle Methods#getSnapshotBeforeUpdate()`, prevProps, prevState);
+        console.log('SSU', `4. App#Commit Phase NewLifecycle Methods#getSnapshotBeforeUpdate()`, prevProps, prevState);
     }
 
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot?: SS): void {
         // debugger;
-        console.log('SSU', `4. App#Commit Phase NewLifecycle Methods#componentDidUpdate()`, prevProps, prevState, snapshot);
-    }
-
-    componentDidMount() {
-        console.log('SSU', '5. App#Commit Phase NormalLifecycle Methods#componentDidMount()');
-        // TODO 盛书强测试，删掉
-        console.disableYellowBox = true
+        console.log('SSU', `5. App#Commit Phase NewLifecycle Methods#componentDidUpdate()`, prevProps, prevState, snapshot);
     }
 
     componentWillUnmount(): void {
@@ -115,46 +115,46 @@ class DeprecatedLifecycleComponent extends Component<Props, State> {
         console.log('SSU', '2. App#Render Phase DeprecatedLifecycle Methods#UNSAFE_componentWillMount()');
     }
 
+    componentDidMount() {
+        console.log('SSU', '3. App#Commit Phase NormalLifecycle Methods#componentDidMount()');
+        // TODO 盛书强测试，删掉
+        console.disableYellowBox = true
+    }
+
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         // debugger;
-        console.log('SSU', `3. App#Render Phase DeprecatedLifecycle Methods#componentWillReceiveProps()`, nextProps, nextContext);
+        console.log('SSU', `3.1. App#Render Phase DeprecatedLifecycle Methods#componentWillReceiveProps()`, nextProps, nextContext);
     }
 
     UNSAFE_componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         // debugger;
-        console.log('SSU', `4. App#Render Phase DeprecatedLifecycle Methods#UNSAFE_componentWillReceiveProps()`, nextProps, nextContext);
+        console.log('SSU', `3.2. App#Render Phase DeprecatedLifecycle Methods#UNSAFE_componentWillReceiveProps()`, nextProps, nextContext);
     }
 
     shouldComponentUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, nextContext: any): boolean {
         // debugger;
-        console.log('SSU', `5. App#Render Phase NormalLifecycle Methods#shouldComponentUpdate()`, nextProps, nextState, nextContext);
+        console.log('SSU', `4. App#Render Phase NormalLifecycle Methods#shouldComponentUpdate()`, nextProps, nextState, nextContext);
         return true;
     }
 
     componentWillUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, nextContext: any): void {
         // debugger;
-        console.log('SSU', `6. App#Render Phase DeprecatedLifecycle Methods#componentWillUpdate()`, nextProps, nextState, nextContext);
+        console.log('SSU', `5. App#Render Phase DeprecatedLifecycle Methods#componentWillUpdate()`, nextProps, nextState, nextContext);
     }
 
     UNSAFE_componentWillUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, nextContext: any): void {
         // debugger;
-        console.log('SSU', `7. App#Render Phase DeprecatedLifecycle Methods#UNSAFE_componentWillUpdate()`, nextProps, nextState, nextContext);
-    }
-
-    componentDidMount() {
-        console.log('SSU', '8. App#Commit Phase NormalLifecycle Methods#componentDidMount()');
-        // TODO 盛书强测试，删掉
-        console.disableYellowBox = true
+        console.log('SSU', `6. App#Render Phase DeprecatedLifecycle Methods#UNSAFE_componentWillUpdate()`, nextProps, nextState, nextContext);
     }
 
     componentWillUnmount(): void {
         // debugger;
-        console.log('SSU', '9. App#Commit Phase NormalLifecycle Methods#componentWillUnmount()');
+        console.log('SSU', '7. App#Commit Phase NormalLifecycle Methods#componentWillUnmount()');
     }
 
     componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
         // debugger;
-        console.log('SSU', '10. App#Commit Phase NormalLifecycle Methods#componentDidCatch()');
+        console.log('SSU', '8. App#Commit Phase NormalLifecycle Methods#componentDidCatch()');
     }
 }
 
