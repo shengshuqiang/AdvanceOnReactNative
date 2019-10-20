@@ -94,7 +94,7 @@
 
 ![](./CatonFiberTree.png)
 
-卡通图来源React的美女程序员Lin Clark在2017年React大会的演讲视频截图，这个视频太棒了，建议大家看一看![Lin Clark - A Cartoon Intro to Fiber - React Conf 2017](https://www.bilibili.com/video/av40427580/)。
+卡通图来源React的美女程序员Lin Clark在2017年React大会的演讲视频截图，这个视频太棒了，建议大家看一看[Lin Clark - A Cartoon Intro to Fiber - React Conf 2017](https://www.bilibili.com/video/av40427580/)。
 
 当然了，干打鸡血只能一时鸡血一时爽，一直鸡血的话，会迷失自己，一旦装不下去了，鸡血一停，妥妥滴至暗时刻，如果走不出来，就成自闭症了。其实，这是我瞎说的，我又不是医生【^_^】。当然，里面也有科学理论支持，毕竟我浸淫移动互联网大厂也有些年头了，没吃过猪肉但看过猪飞起来。
 ![](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571500178952&di=e99cf073f3ed19b9115c2f3b38d1976e&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20181124%2Ffe3f0a9701d546fd83a3adfb312cbf7d.jpeg)
@@ -155,22 +155,12 @@ ReactNative上层JS代码主要实现在node_modules/react-native/Libraries/Rend
 
 受限于屏幕大小，无法鸟瞰全貌，后续考虑直接生成一个网页。
 
-React源码解析，需要牢记：React组件是数据的函数，v = f(d)。抓住输入和输出，才能有的放矢。
-
-我们只有两次小小的输入，打开App进入“初始化页面布局”，点击按钮进入“点击页面组件布局”。React函数的输出是上面对应的“初始化页面布局图”和“点击页面组件布局图”，这两张图同时映射成桥UIManager的createView、setChildren、updateView指令对Native进行增删改构建Native View树。
-
-本次解析分为二段，初始渲染时间线（用户进入页面Fiber算法干啥类）、用户点击渲染时间线（用户点击按钮切换文本为图标，Fiber算法又干啥类）。这两个场景是所有Fiber算法行为的本源，万变不离其宗。然后再用简单伪代码回顾一下。
+React源码解析，需要牢记：React组件是数据的函数，v = f(d)。抓住输入和输出，才能有的放矢。本次解析分为二段，初始渲染时间线（用户进入页面Fiber算法干啥类）、用户点击渲染时间线（用户点击按钮切换文本为图标，Fiber算法又干啥类）。这两个场景是所有Fiber算法行为的本源，万变不离其宗。然后再用简单伪代码回顾一下。
 
 ### 初始渲染时间线
 
 **初始化页面布局**(里面有一堆组件，远比我们写的要多)
 ![](./初始化页面布局.png)
-
-**初始化Fiber树**
-![](./初始化Fiber树.jpg)
-
-**初始化NativeView树**
-![](./初始化NativeView树.png)
 
 **初始化JS2Native通信**(通信主要是通过桥UIManager调用createView创建、setChildren关联（增删改）和updateView更新)
 
@@ -186,6 +176,17 @@ React源码解析，需要牢记：React组件是数据的函数，v = f(d)。�
 	10. invoke    UIManager.setChildren    [13,[9]]
 	11. 
 	12. invoke    UIManager.setChildren    [11,[13]]
+
+
+**初始化Fiber树**
+![](./初始化Fiber树.jpg)
+
+**初始化NativeView树**
+![](./初始化NativeView树.png)
+
+**手机横过来看**
+
+[![](./React算法初始渲染时间线.png)	](./React算法初始渲染时间线-横版.png)
 
 ### 用户点击渲染时间线
 
@@ -203,28 +204,43 @@ React源码解析，需要牢记：React组件是数据的函数，v = f(d)。�
     1. invoke    UIManager.updateView    [15,"RCTImageView",{"opacity":null}]
     2. invoke    UIManager.updateView    [7,"RCTView",{"backgroundColor":-65536}]
 
+**用户点击Fiber树**
+![](./用户点击渲染Fiber双树图.jpg)
 
+**初始化NativeView树**
+![](./用户点击NativeView树图.png)
+
+**手机横过来看**
+
+[![](./React算法用户点击渲染时间线.png)](./React算法用户点击渲染时间线-横版.png)
 
 ### 惊回首
 
-5. 简单可依赖伪代码
-5. 讲清楚、说明白，听得懂、记得住
+#### 简约伪代码示意
 
-简约伪代码示意
+[![](./React源码解析.png)](./React源码解析.png)
 
-逐级拆解细化图，展开收起脑图
 
-参考![React源码分析](https://juejin.im/post/5abe05ea5188255c61631d6c)实现自由缩放知识地图点线面事源码突围
+
+
+参考[React源码分析](https://juejin.im/post/5abe05ea5188255c61631d6c)实现自由缩放知识地图点线面事源码突围
 
 演示diff算法区别，[React 源码剖析系列 － 不可思议的 react diff](https://zhuanlan.zhihu.com/p/20346379)
 
 
 # 拿结果
 
-4. 生命周期调用
-5. 高性能实践
-6. 问题定位利器
-5. 方法钩子
+## 生命周期调用
+![](./生命周期调用.png)
+
+## 高性能实践
+留到下期
+
+## 问题定位利器
+基于上面插件，同理研发
+
+## 方法钩子
+我的数据映射关系怎么来的，这个插件是怎么写的，这又可以再写一篇
 
 # 炼心志
 
