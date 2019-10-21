@@ -74,7 +74,7 @@ function ReactNativeRenderer_render() {
                                                     }
                                                 }
                                             } else {
-                                                // 已存在，则diff更新(为了简化，忽略resumeMountClassInstance)
+                                                // 已存在，则Diff更新(为了简化，忽略resumeMountClassInstance)
                                                 /** updateClassInstance */
                                                 {
                                                     // 更新实例
@@ -128,7 +128,7 @@ function ReactNativeRenderer_render() {
                                                 } else {
                                                     const nextChildren = instance.render();
                                                     /** reconcileChildFibers
-                                                     * 硬核diff算法
+                                                     * 硬核Diff算法
                                                      * */
                                                     {
                                                         const isObject = typeof nextChildren === "object" && nextChildren;
@@ -142,24 +142,24 @@ function ReactNativeRenderer_render() {
                                                                         // 判断类型是否相同
                                                                         const isTypeEquals = child.elementType === nextChildren.type;
                                                                         if (isTypeEquals) {
-                                                                            // diff算法:类型相同,复用子节点树&删除子节点兄弟树
+                                                                            // Diff算法:类型相同,复用子节点树&删除子节点兄弟树
                                                                             (function deleteRemainingChildren(sibling) {
                                                                             })(workInProgress.sibling);
                                                                             workInProgress.child = (function useFiber(workInProgress) {
                                                                             })(workInProgress);
                                                                         } else {
-                                                                            // diff算法:类型不相同,删除全部子节点树
+                                                                            // Diff算法:类型不相同,删除全部子节点树
                                                                             (function deleteRemainingChildren(sibling) {
                                                                             })(workInProgress);
-                                                                            // diff算法:新建子节点
+                                                                            // Diff算法:新建子节点
                                                                             workInProgress.child = (function createFiberFromElement(nextChildren) {
                                                                             })(nextChildren);
                                                                         }
                                                                     } else {
-                                                                        // diff算法:key不同,删除子节点树
+                                                                        // Diff算法:key不同,删除子节点树
                                                                         (function deleteChild(sibling) {
                                                                         })(workInProgress);
-                                                                        // diff算法:新建子节点
+                                                                        // Diff算法:新建子节点
                                                                         workInProgress.child = (function createFiberFromElement(nextChildren) {
                                                                         })(nextChildren);
                                                                     }

@@ -1,5 +1,6 @@
-<!--# 进击ReactNative-徐如林-React源码解析-->
-采扶桑 望帝乡 兵甲销为日月光
+<!--# 进击ReactNative-徐如林-React源码解析 采扶桑 望帝乡 兵甲销为日月光-->
+
+![](徐如林logo.png)
 
 # 序
 
@@ -670,7 +671,7 @@ function ReactNativeRenderer_render() {
 ## QA
 
 1. <blockquote>问：明明只写了几个组件，通过React Developer Tools看到的是一堆布局，而且还有Context.Consumer，这些都是干啥的？<br>答：查看View.js源码，发现里面会再次render出Context.Consumer。也就是我们写的<View/>最终生成的树是<blockquote>\<View><blockquote>\<Context.Consumer><br>\</Context.Consumer></blockquote>\</View></blockquote>![](view_render.png)。<br>同样，\<Text>\</Text>对应<blockquote>\<Text><blockquote>\<TouchableText><blockquote>\<Context.Consumer>\</Context.Consumer></blockquote>\</TouchableText></blockquote>\</Text></blockquote>![](text_render.png)<br>我们写的组件其实外面会被包裹一层，比方显示yellowbox提示啥的![](renderApplication.png)</blockquote>
-2. <blockquote>问：React的组件和Native看起来好像不是一一对应的，这个映射策略是什么？<br>答：**只有HostComponent和HostText会映射到Native View，其他类型不会，只是用于运算和记录状态。<blockquote>1. 我们通过react-devtools看到的reactdom树不是完全的。下面是react-devtools上显示的：![](devtools_react_dom_tree.png)，文本节点没有，实际最外层还有一个HostRoot节点。</blockquote><blockquote>2. reactdom树中只有部分dom节点(宿主节点，对应文本和Native组件)是显示在界面上的，其他的并不展示。Fiber中的tag表示类型，创建NativeView时（createInstance和createTextInstance）的tag是组件唯一标识，从数字3开始累积2生成。</blockquote>![](fiber_tag.png)![](get_fiber_tag.png)![](text_fiber_tag.png)![](allocateTag.png)。</blockquote>
+2. <blockquote>问：React的组件和Native看起来好像不是一一对应的，这个映射策略是什么？<br>答：只有HostComponent和HostText会映射到Native View，其他类型不会，只是用于运算和记录状态。<blockquote>1. 我们通过react-devtools看到的reactdom树不是完全的。下面是react-devtools上显示的：![](devtools_react_dom_tree.png)，文本节点没有，实际最外层还有一个HostRoot节点。</blockquote><blockquote>2. reactdom树中只有部分dom节点(宿主节点，对应文本和Native组件)是显示在界面上的，其他的并不展示。Fiber中的tag表示类型，创建NativeView时（createInstance和createTextInstance）的tag是组件唯一标识，从数字3开始累积2生成。</blockquote>![](fiber_tag.png)![](get_fiber_tag.png)![](text_fiber_tag.png)![](allocateTag.png)。</blockquote>
 2. <blockquote>问：Element、Instance、DOM之间关系？<br>答：![](./element_instance_dom_relation.png)![](element_instance_dom.png)![](element_instance_dom2.png)</blockquote>
 2. <blockquote>问：都说React有个diffing算法，这个在代码哪里，怎么比较的，文案变了会设计diff算法吗？<br>答：diffing算法在[reconciliation模块](https://zh-hans.reactjs.org/docs/reconciliation.html)里面，对应函数为ChildReconciler。![](reconcileSingleElement.png)，文本节点和数组见reconcileSingleTextNode和reconcileChildrenArray。更多可以参考[React 源码剖析系列 － 不可思议的 react diff](https://zhuanlan.zhihu.com/p/20346379)</blockquote>
 3. <blockquote>问：浅比较shouldComponentUpdate说的是什么，到底应该怎么用？<br>答：判断组件是否更新时调用，优先调用shouldComponentUpdate方法，无该该方法是判断是否是纯组件，是则浅比较（判断对象props和state前后是否改变，只对比一级属性是否严格相等===）![](shouldComponentUpdate.png)![](shallowEqual.png)。</blockquote>
