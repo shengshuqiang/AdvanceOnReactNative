@@ -1,3 +1,6 @@
 rootProject.name = 'AwesomeProject'
 
 include ':app'
+
+include ':react-native'
+project(':react-native').projectDir = new File('/Users/shengshuqiang/dream/react-native-0.59-stable/ReactAndroid')

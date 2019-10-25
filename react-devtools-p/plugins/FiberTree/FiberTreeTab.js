@@ -308,11 +308,12 @@ class FiberTreeTab extends React.Component<Props, State> {
   }
 
   render() {
+    // console.log('SSU', 'render', 'fiberTreeInfos', JSON.stringify(this.props.fiberTreeInfos));
     const {currentFiberIDs, fibers = null, doms = null, runRecordHistory = null, desc = null} = this.props.fiberTreeInfos ?
       (this.state.recordIndex >= 0 && this.state.recordIndex < this.props.fiberTreeInfos.length ? this.props.fiberTreeInfos[this.state.recordIndex] : this.props.fiberTreeInfos[this.props.fiberTreeInfos.length - 1])
       : {};
     const runRecordRootNode = this.state.recordIndex >= 0 ? this.runRecordRootNodes[this.state.recordIndex] : null;
-    console.log('SSU', 'render', 'fiberTreeInfos', {fibers, doms, runRecordHistory, runRecordRootNode});
+    // console.log('SSU', 'render', 'fiberTreeInfos', {fibers, doms, runRecordHistory, runRecordRootNode});
     setTimeout(() => this.draw(currentFiberIDs, fibers, doms, runRecordRootNode, this.state.ratio), 0);
     return (
       <div style={{overflow: 'scroll'}}>

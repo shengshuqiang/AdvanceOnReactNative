@@ -49869,6 +49869,7 @@ function (_React$Component) {
     value: function render() {
       var _this4 = this;
 
+      // console.log('SSU', 'render', 'fiberTreeInfos', JSON.stringify(this.props.fiberTreeInfos));
       var _ref2 = this.props.fiberTreeInfos ? this.state.recordIndex >= 0 && this.state.recordIndex < this.props.fiberTreeInfos.length ? this.props.fiberTreeInfos[this.state.recordIndex] : this.props.fiberTreeInfos[this.props.fiberTreeInfos.length - 1] : {},
           currentFiberIDs = _ref2.currentFiberIDs,
           _ref2$fibers = _ref2.fibers,
@@ -49880,13 +49881,8 @@ function (_React$Component) {
           _ref2$desc = _ref2.desc,
           desc = _ref2$desc === void 0 ? null : _ref2$desc;
 
-      var runRecordRootNode = this.state.recordIndex >= 0 ? this.runRecordRootNodes[this.state.recordIndex] : null;
-      console.log('SSU', 'render', 'fiberTreeInfos', {
-        fibers: fibers,
-        doms: doms,
-        runRecordHistory: runRecordHistory,
-        runRecordRootNode: runRecordRootNode
-      });
+      var runRecordRootNode = this.state.recordIndex >= 0 ? this.runRecordRootNodes[this.state.recordIndex] : null; // console.log('SSU', 'render', 'fiberTreeInfos', {fibers, doms, runRecordHistory, runRecordRootNode});
+
       setTimeout(function () {
         return _this4.draw(currentFiberIDs, fibers, doms, runRecordRootNode, _this4.state.ratio);
       }, 0);

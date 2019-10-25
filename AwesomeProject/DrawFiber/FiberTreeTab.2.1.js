@@ -1,15 +1,21 @@
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * @flow
+ */
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = void 0;
 
-var _react = _interopRequireDefault(require("react"));
+// var _react = _interopRequireDefault(require("react"));
 
-var _decorate = _interopRequireDefault(require("../../frontend/decorate"));
+// var _FiberTree = _interopRequireDefault(require("./FiberTree.2.0.js"));
 
-var _FiberTree = _interopRequireDefault(require("./FiberTree.2.0"));
+// var _FiberTreeInfos = require("./FiberTreeInfos");
 
 function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : { default: obj };
@@ -167,7 +173,7 @@ var IndexComponent = function IndexComponent(_ref) {
 
                 if (items.length > 0) {
                     groups.push(
-                        _react.default.createElement(
+                        React.createElement(
                             "div",
                             {
                                 style: {
@@ -183,7 +189,7 @@ var IndexComponent = function IndexComponent(_ref) {
             }
 
             items.push(
-                _react.default.createElement(
+                React.createElement(
                     "div",
                     {
                         style: {
@@ -210,7 +216,7 @@ var IndexComponent = function IndexComponent(_ref) {
         if (items.length > 0) {
             // console.log('SSU', 'IndexComponent', `${-1}-${rootRecord}`, 'groups.push');
             groups.push(
-                _react.default.createElement(
+                React.createElement(
                     "div",
                     {
                         style: {
@@ -223,7 +229,7 @@ var IndexComponent = function IndexComponent(_ref) {
             );
         }
 
-        component = _react.default.createElement(
+        component = React.createElement(
             "div",
             {
                 style: {
@@ -237,19 +243,19 @@ var IndexComponent = function IndexComponent(_ref) {
     return component;
 };
 
-var FiberTreeTab20 =
+var FiberTreeTab =
     /*#__PURE__*/
     (function(_React$Component) {
-        _inherits(FiberTreeTab20, _React$Component);
+        _inherits(FiberTreeTab, _React$Component);
 
-        function FiberTreeTab20(props) {
+        function FiberTreeTab(props) {
             var _this;
 
-            _classCallCheck(this, FiberTreeTab20);
+            _classCallCheck(this, FiberTreeTab);
 
             _this = _possibleConstructorReturn(
                 this,
-                _getPrototypeOf(FiberTreeTab20).call(this, props)
+                _getPrototypeOf(FiberTreeTab).call(this, props)
             );
 
             _defineProperty(_assertThisInitialized(_this), "runRecordRootNodes", []);
@@ -342,7 +348,7 @@ var FiberTreeTab20 =
             return _this;
         }
 
-        _createClass(FiberTreeTab20, [
+        _createClass(FiberTreeTab, [
             {
                 key: "draw",
                 value: function draw(
@@ -353,7 +359,7 @@ var FiberTreeTab20 =
                     ratio
                 ) {
                     // console.log('SSU', 'drawFiberTree', JSON.stringify(fibers));
-                    (0, _FiberTree.default)(
+                    drawFiberTree(
                         currentFiberIDs,
                         fibers,
                         doms,
@@ -584,14 +590,14 @@ var FiberTreeTab20 =
                             _this4.state.ratio
                         );
                     }, 0);
-                    return _react.default.createElement(
+                    return React.createElement(
                         "div",
                         {
                             style: {
                                 overflow: "scroll"
                             }
                         },
-                        _react.default.createElement(
+                        React.createElement(
                             "div",
                             {
                                 style: {
@@ -599,7 +605,7 @@ var FiberTreeTab20 =
                                     width: CONTENT_SIZE
                                 }
                             },
-                            _react.default.createElement(
+                            React.createElement(
                                 "div",
                                 {
                                     style: {
@@ -615,7 +621,7 @@ var FiberTreeTab20 =
                                 },
                                 "+"
                             ),
-                            _react.default.createElement(
+                            React.createElement(
                                 "div",
                                 {
                                     style: {
@@ -630,7 +636,7 @@ var FiberTreeTab20 =
                                 },
                                 this.state.ratio.toFixed(2)
                             ),
-                            _react.default.createElement(
+                            React.createElement(
                                 "div",
                                 {
                                     style: {
@@ -646,7 +652,7 @@ var FiberTreeTab20 =
                                 },
                                 "-"
                             ),
-                            _react.default.createElement(
+                            React.createElement(
                                 "div",
                                 {
                                     style: {
@@ -663,7 +669,7 @@ var FiberTreeTab20 =
                                 },
                                 "Play"
                             ),
-                            _react.default.createElement(
+                            React.createElement(
                                 "div",
                                 null,
                                 "\u3010"
@@ -677,12 +683,12 @@ var FiberTreeTab20 =
                                     .concat(desc)
                             )
                         ),
-                        _react.default.createElement(IndexComponent, {
+                        React.createElement(IndexComponent, {
                             runRecordRootNodes: this.runRecordRootNodes,
                             onPress: this.onPressRecord,
                             curRecordIndex: this.state.recordIndex
                         }),
-                        _react.default.createElement(
+                        React.createElement(
                             "canvas",
                             {
                                 id: "myCanvas",
@@ -696,479 +702,13 @@ var FiberTreeTab20 =
             }
         ]);
 
-        return FiberTreeTab20;
-    })(_react.default.Component);
+        return FiberTreeTab;
+    })(React.Component); // 在网站中添加 React https://zh-hans.reactjs.org/docs/add-react-to-a-website.html
 
-var _default = (0, _decorate.default)(
-    {
-        store: "fiberTreeStore",
-        listeners: function listeners() {
-            return ["sendFiberTree"];
-        },        _inherits(FiberTreeTab20, _React$Component);
-
-function FiberTreeTab20(props) {
-    var _this;
-
-    _classCallCheck(this, FiberTreeTab20);
-
-    _this = _possibleConstructorReturn(
-        this,
-        _getPrototypeOf(FiberTreeTab20).call(this, props)
-    );
-
-    _defineProperty(_assertThisInitialized(_this), "runRecordRootNodes", []);
-
-    _defineProperty(
-        _assertThisInitialized(_this),
-        "onPressRatioAdd",
-        function() {
-            _this.setState({
-                ratio: _this.state.ratio + RatioStep
-            });
-        }
-    );
-
-    _defineProperty(
-        _assertThisInitialized(_this),
-        "onPressRatioSub",
-        function() {
-            _this.setState({
-                ratio: _this.state.ratio - RatioStep
-            });
-        }
-    );
-
-    _defineProperty(_assertThisInitialized(_this), "onPressRecord", function(
-        recordIndex
-    ) {
-        _this.setState({
-            recordIndex: recordIndex
-        });
-    });
-
-    _defineProperty(_assertThisInitialized(_this), "onPressPlay", function() {
-        _this.play(0);
-    });
-
-    _defineProperty(_assertThisInitialized(_this), "play", function(
-        recordIndex
-    ) {
-        _this.setState({
-            recordIndex: recordIndex
-        });
-
-        if (recordIndex < _this.props.fiberTreeInfos.length - 1) {
-            setTimeout(function() {
-                _this.play(recordIndex + 1);
-            }, 300);
-        }
-    });
-
-    _defineProperty(_assertThisInitialized(_this), "onKeyDown", function(e) {
-        var recordIndex = _this.state.recordIndex;
-
-        switch (e.keyCode) {
-            case 37: //左
-
-            case 38:
-                //上
-                recordIndex--;
-                break;
-
-            case 39: //右
-
-            case 40:
-                //下
-                recordIndex++;
-                break;
-        }
-
-        var fiberTreeInfosLength = _this.props.fiberTreeInfos
-            ? _this.props.fiberTreeInfos.length
-            : 0;
-        recordIndex += fiberTreeInfosLength;
-        recordIndex %= fiberTreeInfosLength;
-
-        _this.setState({
-            recordIndex: recordIndex
-        });
-    });
-
-    _this.state = {
-        ratio: InitRatio,
-        recordIndex: _this.props.fiberTreeInfos
-            ? _this.props.fiberTreeInfos.length - 1
-            : -1
-    };
-
-    _this.refershRunRecordRootNodes(props.fiberTreeInfos);
-
-    return _this;
-}
-
-_createClass(FiberTreeTab20, [
-    {
-        key: "draw",
-        value: function draw(
-            currentFiberIDs,
-            fibers,
-            doms,
-            runRecordRootNode,
-            ratio
-        ) {
-            // console.log('SSU', 'drawFiberTree', JSON.stringify(fibers));
-            (0, _FiberTree.default)(
-                currentFiberIDs,
-                fibers,
-                doms,
-                runRecordRootNode,
-                ratio
-            );
-        }
-    },
-    {
-        key: "componentWillReceiveProps",
-        value: function componentWillReceiveProps(nextProps, nextContext) {
-            // console.log('SSU', 'componentWillReceiveProps', `${this.props.fiberTreeInfo ? this.props.fiberTreeInfo.index : -1}_${nextProps.fiberTreeInfo ? nextProps.fiberTreeInfo.index : -1}`);
-            if (nextProps.fiberTreeInfos) {
-                this.setState({
-                    recordIndex: nextProps.fiberTreeInfos.length - 1
-                });
-            }
-
-            if (
-                this.runRecordRootNodes.length !== nextProps.fiberTreeInfos.length
-            ) {
-                this.refershRunRecordRootNodes(nextProps.fiberTreeInfos);
-            }
-        }
-    },
-    {
-        key: "componentDidMount",
-        value: function componentDidMount() {
-            document.addEventListener("keydown", this.onKeyDown);
-        }
-    },
-    {
-        key: "componentWillUnmount",
-        value: function componentWillUnmount() {
-            document.removeEventListener("keydown", this.onKeyDown);
-        }
-    },
-    {
-        key: "getMatchRunRecordTitle",
-        value: function getMatchRunRecordTitle(title) {
-            if (title) {
-                var index = title.indexOf("(");
-
-                if (index != -1) {
-                    return title.substring(0, index);
-                }
-            }
-
-            return title;
-        }
-    },
-    {
-        key: "isRunRecordTitleEqual",
-        value: function isRunRecordTitleEqual(title1, title2) {
-            return (
-                this.getMatchRunRecordTitle(title1) ===
-                this.getMatchRunRecordTitle(title2)
-            );
-        }
-    },
-    {
-        key: "buildRunRecordBoxColor",
-        value: function buildRunRecordBoxColor(runRecord) {
-            if (LifecycleMethods.includes(runRecord)) {
-                return "red";
-            } else if (ComponentPrototypes.includes(runRecord)) {
-                return "#ff8c00";
-            } else if (runRecord.startsWith("createFiber(")) {
-                return "#32cd32";
-            } else if (
-                runRecord.startsWith("expirationTime=(") ||
-                runRecord.startsWith("childExpirationTime=(")
-            ) {
-                return "#87cefa";
-            } else if (runRecord.startsWith("UIManager.")) {
-                return "blue";
-            } else if (runRecord.includes(".effectTag")) {
-                return "green";
-            } else if (runRecord.includes("diff算法:")) {
-                return "#2f4f4f";
-            }
-
-            return null;
-        }
-    },
-    {
-        key: "refershRunRecordRootNodes",
-        value: function refershRunRecordRootNodes(fiberTreeInfos) {
-            var _this2 = this;
-
-            this.runRecordRootNodes = [];
-            fiberTreeInfos &&
-            fiberTreeInfos.forEach(function(fiberTreeInfo, index) {
-                if (index >= _this2.runRecordRootNodes.length) {
-                    var preRunRecordHistory =
-                        index > 0 ? fiberTreeInfos[index - 1].runRecordHistory : null;
-                    var runRecordHistory = fiberTreeInfo.runRecordHistory;
-
-                    var runRecordRootNode = _this2.buildRunRecordHistoryTree(
-                        runRecordHistory,
-                        preRunRecordHistory ? preRunRecordHistory.length : -1
-                    );
-
-                    _this2.runRecordRootNodes.push(runRecordRootNode);
-                }
-            });
-        }
-    },
-    {
-        key: "buildRunRecordHistoryTree",
-        value: function buildRunRecordHistoryTree(
-            runRecordHistory,
-            preHistoryCount
-        ) {
-            var _this3 = this;
-
-            var runRecordRootNode = null; // let runRecordRootNode = {
-            //     title: '起点',
-            //     parent: null,
-            //     children: [],
-            // };
-
-            var runRecordParentNode = runRecordRootNode;
-
-            if (runRecordHistory && runRecordHistory.length) {
-                runRecordHistory.forEach(function(runRecord, index) {
-                    var boxColor = _this3.buildRunRecordBoxColor(runRecord);
-
-                    var isPatch = index > preHistoryCount;
-                    var runRecordNode;
-
-                    if ("pop()" === runRecord) {
-                        runRecordNode = runRecordParentNode;
-                        runRecordNode.highLight = false;
-                        runRecordNode.isPatch = isPatch;
-                        runRecordParentNode = runRecordNode.parent;
-                    } else {
-                        if (runRecordParentNode) {
-                            runRecordNode = runRecordParentNode.children.find(function(
-                                child
-                            ) {
-                                return _this3.isRunRecordTitleEqual(child.title, runRecord);
-                            });
-
-                            if (runRecordNode) {
-                                // do nothing
-                                runRecordNode.title = runRecord;
-                                runRecordNode.index = index;
-                                runRecordNode.count++;
-                            } else {
-                                runRecordNode = {
-                                    title: runRecord,
-                                    parent: runRecordParentNode,
-                                    children: [],
-                                    highLight: true,
-                                    count: 1,
-                                    index: index,
-                                    boxColor: boxColor,
-                                    isPatch: false
-                                };
-                                runRecordParentNode.children.push(runRecordNode);
-                            }
-
-                            runRecordNode.highLight = true;
-                            runRecordNode.isPatch = false;
-                            runRecordParentNode = runRecordNode;
-                        } else {
-                            runRecordNode = {
-                                title: runRecord,
-                                parent: null,
-                                children: [],
-                                highLight: true,
-                                count: 1,
-                                index: index,
-                                boxColor: boxColor,
-                                isPatch: false
-                            };
-                            runRecordRootNode = runRecordNode;
-                            runRecordParentNode = runRecordNode;
-                        }
-                    }
-                });
-            }
-
-            return runRecordRootNode;
-        }
-    },
-    {
-        key: "render",
-        value: function render() {
-            var _this4 = this;
-
-            var _ref2 = this.props.fiberTreeInfos
-                ? this.state.recordIndex >= 0 &&
-                this.state.recordIndex < this.props.fiberTreeInfos.length
-                    ? this.props.fiberTreeInfos[this.state.recordIndex]
-                    : this.props.fiberTreeInfos[
-                    this.props.fiberTreeInfos.length - 1
-                        ]
-                : {},
-                currentFiberIDs = _ref2.currentFiberIDs,
-                _ref2$fibers = _ref2.fibers,
-                fibers = _ref2$fibers === void 0 ? null : _ref2$fibers,
-                _ref2$doms = _ref2.doms,
-                doms = _ref2$doms === void 0 ? null : _ref2$doms,
-                _ref2$runRecordHistor = _ref2.runRecordHistory,
-                runRecordHistory =
-                    _ref2$runRecordHistor === void 0 ? null : _ref2$runRecordHistor,
-                _ref2$desc = _ref2.desc,
-                desc = _ref2$desc === void 0 ? null : _ref2$desc;
-
-            var runRecordRootNode =
-                this.state.recordIndex >= 0
-                    ? this.runRecordRootNodes[this.state.recordIndex]
-                    : null;
-            console.log("SSU", "render", "fiberTreeInfos", {
-                fibers: fibers,
-                doms: doms,
-                runRecordHistory: runRecordHistory,
-                runRecordRootNode: runRecordRootNode
-            });
-            setTimeout(function() {
-                return _this4.draw(
-                    currentFiberIDs,
-                    fibers,
-                    doms,
-                    runRecordRootNode,
-                    _this4.state.ratio
-                );
-            }, 0);
-            return _react.default.createElement(
-                "div",
-                {
-                    style: {
-                        overflow: "scroll"
-                    }
-                },
-                _react.default.createElement(
-                    "div",
-                    {
-                        style: {
-                            display: "flex",
-                            width: CONTENT_SIZE
-                        }
-                    },
-                    _react.default.createElement(
-                        "div",
-                        {
-                            style: {
-                                width: 30,
-                                height: 30,
-                                backgroundColor: "orange",
-                                borderRadius: 15,
-                                fontSize: 25,
-                                textAlign: "center",
-                                color: "red"
-                            },
-                            onClick: this.onPressRatioAdd
-                        },
-                        "+"
-                    ),
-                    _react.default.createElement(
-                        "div",
-                        {
-                            style: {
-                                width: 60,
-                                height: 30,
-                                backgroundColor: "gray",
-                                borderRadius: 15,
-                                fontSize: 25,
-                                textAlign: "center",
-                                color: "red"
-                            }
-                        },
-                        this.state.ratio.toFixed(2)
-                    ),
-                    _react.default.createElement(
-                        "div",
-                        {
-                            style: {
-                                width: 30,
-                                height: 30,
-                                backgroundColor: "orange",
-                                borderRadius: 15,
-                                fontSize: 25,
-                                textAlign: "center",
-                                color: "red"
-                            },
-                            onClick: this.onPressRatioSub
-                        },
-                        "-"
-                    ),
-                    _react.default.createElement(
-                        "div",
-                        {
-                            style: {
-                                width: 100,
-                                height: 30,
-                                backgroundColor: "purple",
-                                borderRadius: 15,
-                                marginLeft: 10,
-                                fontSize: 25,
-                                textAlign: "center",
-                                color: "red"
-                            },
-                            onClick: this.onPressPlay
-                        },
-                        "Play"
-                    ),
-                    _react.default.createElement(
-                        "div",
-                        null,
-                        "\u3010"
-                            .concat(this.state.recordIndex, "/")
-                            .concat(
-                                this.props.fiberTreeInfos
-                                    ? this.props.fiberTreeInfos.length - 1
-                                    : 0,
-                                "\u3011"
-                            )
-                            .concat(desc)
-                    )
-                ),
-                _react.default.createElement(IndexComponent, {
-                    runRecordRootNodes: this.runRecordRootNodes,
-                    onPress: this.onPressRecord,
-                    curRecordIndex: this.state.recordIndex
-                }),
-                _react.default.createElement(
-                    "canvas",
-                    {
-                        id: "myCanvas",
-                        width: CONTENT_SIZE,
-                        height: CONTENT_SIZE
-                    },
-                    "Your browser does not support the canvas element."
-                )
-            );
-        }
-    }
-]);
-
-return FiberTreeTab20;
-
-props: function props(store) {
-            return {
-                fiberTreeInfos: store.fiberTreeInfos
-            };
-        }
-    },
-    FiberTreeTab20
+var domContainer = document.querySelector("#fiberTreeContainer");
+ReactDOM.render(
+    React.createElement(FiberTreeTab, {
+        fiberTreeInfos: FiberTreeInfos
+    }),
+    domContainer
 );
-
-exports.default = _default;

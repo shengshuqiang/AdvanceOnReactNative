@@ -2,11 +2,21 @@
 <html>
 <body>
 
-<canvas id="myCanvas" width="800" height="1750" style="border:1px solid #c3c3c3;">
-    Your browser does not support the canvas element.
-</canvas>
+<div id="fiberTreeContainer"></div>
 
-<script type="text/javascript" src="./fibertree.js"></script>
+<!--<canvas id="myCanvas" width="800" height="1750" style="border:1px solid #c3c3c3;">-->
+<!--    Your browser does not support the canvas element.-->
+<!--</canvas>-->
+
+<!-- Load React. -->
+<!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+
+<!-- Load our React component. -->
+<script type="text/javascript" src="FiberTreeInfos.js"></script>
+<script type="text/javascript" src="FiberTree.2.0.js"></script>
+<script type="text/javascript" src="FiberTreeTab.2.1.js"></script>
 
 </body>
 </html>
