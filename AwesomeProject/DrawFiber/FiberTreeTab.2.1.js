@@ -132,7 +132,8 @@ function _defineProperty(obj, key, value) {
     return obj;
 }
 
-var CONTENT_SIZE = 10000;
+var CONTENT_WIDTH = 10000;
+var CONTENT_HEIGHT = 10000;
 var InitRatio = 1.0 * 0.58;
 var RatioStep = InitRatio * 0.2;
 var LifecycleMethods = [
@@ -233,7 +234,7 @@ var IndexComponent = function IndexComponent(_ref) {
             "div",
             {
                 style: {
-                    width: CONTENT_SIZE
+                    width: CONTENT_WIDTH
                 }
             },
             groups
@@ -602,7 +603,7 @@ var FiberTreeTab =
                             {
                                 style: {
                                     display: "flex",
-                                    width: CONTENT_SIZE
+                                    width: CONTENT_WIDTH
                                 }
                             },
                             React.createElement(
@@ -692,8 +693,8 @@ var FiberTreeTab =
                             "canvas",
                             {
                                 id: "myCanvas",
-                                width: CONTENT_SIZE,
-                                height: CONTENT_SIZE
+                                width: CONTENT_WIDTH,
+                                height: CONTENT_HEIGHT
                             },
                             "Your browser does not support the canvas element."
                         )

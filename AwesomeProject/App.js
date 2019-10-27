@@ -159,26 +159,28 @@ class DeprecatedLifecycleComponent extends Component<Props, State> {
 }
 
 // export default class App extends NewLifecycleComponent<Props, State> {
-export default class App extends DeprecatedLifecycleComponent<Props, State> {
+// export default class App extends DeprecatedLifecycleComponent<Props, State> {
+// export default class App extends React.Component {
+export default class App extends React.PureComponent {
     constructor(props: Props) {
         super(props);
-        // debugger;
-        console.log('SSU', 'App#constructor()');
-        this.state = {
-            count: 0
-        }
+        debugger;
+    //     console.log('SSU', 'App#constructor()');
+    //     this.state = {
+    //         count: 0
+    //     }
     }
-
-    onPress = () => {
-        // debugger;
-        console.log('SSU', 'App#onPress()');
-
-        this.setState({
-            count: this.state.count + 1
-        }, () => {
-            // debugger;
-        })
-    }
+    //
+    // onPress = () => {
+    //     // debugger;
+    //     console.log('SSU', 'App#onPress()');
+    //
+    //     this.setState({
+    //         count: this.state.count + 1
+    //     }, () => {
+    //         // debugger;
+    //     })
+    // }
 
     // render() {
     //     debugger;
@@ -192,18 +194,31 @@ export default class App extends DeprecatedLifecycleComponent<Props, State> {
     //     return ret;
     // }
 
+    // render() {
+    //     debugger;
+    //     console.log('SSU', 'App#Render Phase NormalLifecycle Methods#render()', {count: this.state.count}, this.props, this.state);
+    //     return (
+    //         <TouchableWithoutFeedback onPress={this.onPress}>
+    //             <View style={{width: 300, height: 150, backgroundColor: 'red'}}>
+    //                 {this.state.count % 2 === 0 ? <Text style={styles.txt}>{`点击数${this.state.count}`}</Text> :
+    //                     <Image style={styles.img}
+    //                            source={{uri: 'http://demo.sc.chinaz.com/Files/pic/icons/5918/c12.png'}}/>}
+    //             </View>
+    //         </TouchableWithoutFeedback>
+    //     );
+    // }
+
     render() {
-        console.log('SSU', 'App#Render Phase NormalLifecycle Methods#render()', {count: this.state.count}, this.props, this.state);
         return (
-            <TouchableWithoutFeedback onPress={this.onPress}>
-                <View style={{width: 300, height: 150, backgroundColor: 'red'}}>
-                    {this.state.count % 2 === 0 ? <Text style={styles.txt}>{`点击数${this.state.count}`}</Text> :
-                        <Image style={styles.img}
-                               source={{uri: 'http://demo.sc.chinaz.com/Files/pic/icons/5918/c12.png'}}/>}
-                </View>
-            </TouchableWithoutFeedback>
+            <Text style={{color: 'black'}}>
+                {'点击数0'}
+            </Text>
         );
     }
+}
+
+const App1 = function () {
+    return <Text style={{color: 'black'}}>{'点击数0'}</Text>;
 }
 
 
