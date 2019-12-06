@@ -5,7 +5,7 @@
 import {AppRegistry, NativeModules} from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
-import FlatListDemo from "./FlatListDemo";
+import FlatListDemo from "./ReactDemo/FlatListDemo";
 import calendars from "./CalendarDemo/screens/calendars.js";
 import agenda from "./CalendarDemo/screens/agenda.js";
 import calendarsList from "./CalendarDemo/screens/calendarsList.js";
