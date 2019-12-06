@@ -204,6 +204,30 @@ export default class App extends DeprecatedLifecycleComponent<Props, State> {
     render() {
         // debugger;
         console.log('SSU', 'App#Render Phase NormalLifecycle Methods#render()', {count: this.state.count}, this.props, this.state);
+        return this.renderUpdateText();
+    }
+
+    renderUpdateText() {
+        return (
+            <TouchableWithoutFeedback onPress={this.onPress}>
+                <View>
+                    <Text style={styles.txt}>{`点击数${this.state.count}`}</Text>
+                </View>
+            </TouchableWithoutFeedback>
+        );
+    }
+
+    renderUpdateImage() {
+        return (
+            <TouchableWithoutFeedback onPress={this.onPress}>
+                <View>
+                    <Image style={styles.img} source={{uri: 'http://demo.sc.chinaz.com/Files/pic/icons/5918/c12.png'}}/>
+                </View>
+            </TouchableWithoutFeedback>
+        );
+    }
+
+    renderSwitchTextImage() {
         const isText = this.state.count % 2 === 0;
         return (
             <TouchableWithoutFeedback onPress={this.onPress}>
@@ -232,13 +256,18 @@ const App1 = function () {
 
 const styles = StyleSheet.create({
     txt: {
+        width: 300,
+        height: 150,
+        backgroundColor: 'red',
         textAlign: 'center',
         textAlignVertical: 'center',
         color: 'white',
-        fontSize: 30,
+        fontSize: 30
     },
     img: {
-        width: 100,
-        height: 100
+        width: 300,
+        height: 150,
+        backgroundColor: 'red',
+        resizeMode: 'center'
     }
 });
