@@ -177,16 +177,16 @@ export default class App extends DeprecatedLifecycleComponent<Props, State> {
         // debugger;
         console.log('SSU', 'App#onPress()');
 
-        // this.setState({
-        //     count: this.state.count + 1
-        // }, () => {
-        //     // debugger;
-        // });
+        this.setState({
+            count: this.state.count + 1
+        }, () => {
+            // debugger;
+        });
         // debugger;
-        console.log('SSU', ToastAndroid);
+        // console.log('SSU', ToastAndroid);
 
-        ToastAndroid.show("Hello SSU", ToastAndroid.SHORT);
-        NativeModules.XXX && NativeModules.XXX.xx("Hello SSU");
+        // ToastAndroid.show("Hello SSU", ToastAndroid.SHORT);
+        // NativeModules.XXX && NativeModules.XXX.xx("Hello SSU");
     }
 
     // render() {
@@ -204,7 +204,7 @@ export default class App extends DeprecatedLifecycleComponent<Props, State> {
     render() {
         // debugger;
         console.log('SSU', 'App#Render Phase NormalLifecycle Methods#render()', {count: this.state.count}, this.props, this.state);
-        const isText = true || this.state.count % 2 === 0;
+        const isText = this.state.count % 2 === 0;
         return (
             <TouchableWithoutFeedback onPress={this.onPress}>
                 <View style={{width: 300, height: 150, backgroundColor: 'red'}}>
