@@ -204,7 +204,13 @@ export default class App extends DeprecatedLifecycleComponent<Props, State> {
     render() {
         // debugger;
         console.log('SSU', 'App#Render Phase NormalLifecycle Methods#render()', {count: this.state.count}, this.props, this.state);
-        return this.renderUpdateText();
+        return this.renderText();
+    }
+
+    renderText() {
+        return (
+          <Text style={styles.txt}>{`Hello SSU!`}</Text>
+        );
     }
 
     renderUpdateText() {
