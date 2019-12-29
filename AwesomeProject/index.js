@@ -1,8 +1,8 @@
 /**
  * @format
  */
-
-import {AppRegistry, NativeModules} from 'react-native';
+import React from 'react';
+import {AppRegistry, Text} from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
 import FlatListDemo from "./ReactDemo/FlatListDemo";
@@ -28,7 +28,12 @@ import horizontalCalendarList from "./CalendarDemo/screens/horizontalCalendarLis
 // debugger;
 AppRegistry.registerComponent(appName, () => {
     console.log('SSU', 'index#AppRegistry.registerComponent().componentProvider(){获取和native指定的已注册js入口代码}', appName);
-    return App;
+    return function HelloSSUTextFunc () {
+        const RCTText = 'RCTText';
+        return <RCTText>{`Hello SSU!`}</RCTText>;
+      // return <Text>{`Hello SSU!`}</Text>;
+    };
+    // return App;
 });
 // AppRegistry.registerComponent(appName, () => FlatListDemo);
 // AppRegistry.registerComponent(appName, () => calendars);
