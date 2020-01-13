@@ -2,7 +2,7 @@
  * @format
  */
 import React from 'react';
-import {AppRegistry, Text} from 'react-native';
+import {AppRegistry, Text, View} from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
 import FlatListDemo from "./ReactDemo/FlatListDemo";
@@ -30,8 +30,11 @@ AppRegistry.registerComponent(appName, () => {
     console.log('SSU', 'index#AppRegistry.registerComponent().componentProvider(){获取和native指定的已注册js入口代码}', appName);
     return function HelloSSUTextFunc () {
         const RCTText = 'RCTText';
+        const SSUView = function ({children}) {
+            return <Text>{`Hello SSU!${children}`}</Text>;
+        }
         return <RCTText>{`Hello SSU!`}</RCTText>;
-      // return <Text>{`Hello SSU!`}</Text>;
+       // return <View style={{width: 300, height: 150, backgroundColor: 'red'}}><SSUView>{`123!`}</SSUView></View>;
     };
     // return App;
 });
