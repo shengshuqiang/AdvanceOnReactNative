@@ -8,15 +8,15 @@ import com.facebook.react.bridge.ReactMethod;
 
 import javax.annotation.Nonnull;
 
-public class ToastCustomAndroid extends ReactContextBaseJavaModule {
-    public ToastCustomAndroid(@Nonnull ReactApplicationContext reactContext) {
+public class SSUToastAndroid extends ReactContextBaseJavaModule {
+    public SSUToastAndroid(@Nonnull ReactApplicationContext reactContext) {
         super(reactContext);
     }
 
     @Nonnull
     @Override
     public String getName() {
-        return "ToastCustomAndroid";
+        return "SSUToastAndroid";
     }
 
     @ReactMethod

@@ -2,7 +2,7 @@
  * @format
  */
 import React from 'react';
-import {AppRegistry, Text, View} from 'react-native';
+import { AppRegistry, Text, View, NativeModules, requireNativeComponent } from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
 import FlatListDemo from "./ReactDemo/FlatListDemo";
@@ -26,21 +26,47 @@ import horizontalCalendarList from "./CalendarDemo/screens/horizontalCalendarLis
 // };
 // console.log('SSU', NativeModules.ToastAndroid);
 // debugger;
-AppRegistry.registerComponent(appName, () => {
-    console.log('SSU', 'index#AppRegistry.registerComponent().componentProvider(){获取和native指定的已注册js入口代码}', appName);
+AppRegistry.registerComponent('AwesomeProject', () => {
     return function HelloSSUTextFunc () {
-        const RCTText = 'RCTText';
-        const SSUView = function ({children}) {
-            return <Text>{`Hello SSU!${children}`}</Text>;
-        }
-        return <RCTText>{`Hello SSU!`}</RCTText>;
-       // return <View style={{width: 300, height: 150, backgroundColor: 'red'}}><SSUView>{`123!`}</SSUView></View>;
+        // const rawSSUToastAndroid = NativeModules.SSUToastAndroid;
+        // Object.defineProperty(NativeModules, 'SSUToastAndroid', {
+        //     get() {
+        //         console.log('HelloSSUTextFunc', '监听到正在获取属性SSUToastAndroid的值');
+        //         alert('监听到正在获取属性SSUToastAndroid的值');
+        //         return rawSSUToastAndroid;
+        //     }
+        // });
+        // const rawSSUView = NativeModules.UIManager.SSUView;
+        // console.log('HelloSSUTextFunc', NativeModules.UIManager);
+        // console.log('HelloSSUTextFunc', SSUView);
+        // Object.defineProperty(NativeModules.UIManager, 'SSUView', {
+        //     get() {
+        //         debugger;
+        //         console.log('HelloSSUTextFunc', '监听到正在获取属性SSUView的值');
+        //         alert('监听到正在获取属性SSUView的值');
+        //         return rawSSUView;
+        //     }
+        // });
+        // const rawRequireNativeComponent = requireNativeComponent;
+        // requireNativeComponent = function (name) {
+        //     console.log('HelloSSUTextFunc', '监听到正在获取属性SSUView的值');
+        //     alert('监听到正在获取属性SSUView的值');
+        //     return rawRequireNativeComponent(name);
+        // };
+        // debugger;
+        // const SSUView = requireNativeComponent('SSUView');
+        // NativeModules.SSUToastAndroid;
+        // console.log('HelloSSUTextFunc', NativeModules.SSUToastAndroid);
+        // return <SSUView style={{width: 100, height: 100}}/>;
+        const RCTView = 'RCTView';
+        return <RCTView style={{width: 100, height: 100, backgroundColor: 'blue'}}/>;
     };
-    // return App;
 });
+// AppRegistry.registerComponent('AwesomeProject', () => ThirdBridgeDemo);
 // AppRegistry.registerComponent(appName, () => FlatListDemo);
 // AppRegistry.registerComponent(appName, () => calendars);
 // AppRegistry.registerComponent(appName, () => agenda);
 // AppRegistry.registerComponent(appName, () => calendarsList);
 // AppRegistry.registerComponent(appName, () => expandableCalendar);
+
 // AppRegistry.registerComponent(appName, () => horizontalCalendarList);

@@ -34,7 +34,7 @@ public class MainApplication extends Application implements ReactApplication {
                         @Override
                         public List<NativeModule> createNativeModules(@Nonnull ReactApplicationContext reactContext) {
                             return Arrays.asList(
-                                    new ToastCustomAndroid(reactContext),
+                                    new SSUToastAndroid(reactContext),
                                     new ToastCustomAndroidPromise(reactContext)
                             );
                         }
@@ -42,7 +42,9 @@ public class MainApplication extends Application implements ReactApplication {
                         @Nonnull
                         @Override
                         public List<ViewManager> createViewManagers(@Nonnull ReactApplicationContext reactContext) {
-                            return Arrays.asList();
+                            return Arrays.asList(
+                                    new SSUViewManager()
+                            );
                         }
                     }
             );

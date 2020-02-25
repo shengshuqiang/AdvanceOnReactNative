@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.facebook.react.ReactActivity;
+import com.facebook.react.bridge.WritableNativeArray;
 
 public class MainActivity extends ReactActivity {
 
@@ -38,6 +39,8 @@ public class MainActivity extends ReactActivity {
             @Override
             public void onClick(View v) {
                 getReactNativeHost().getReactInstanceManager().getDevSupportManager().handleReloadJS();
+//                getReactNativeHost().getReactInstanceManager().getCurrentReactContext().getCatalystInstance()
+//                        .callFunction("global", "eval", new WritableNativeArray());
             }
         });
         contentLayout.addView(btn, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 200));
