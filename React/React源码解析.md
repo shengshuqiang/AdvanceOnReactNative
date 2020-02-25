@@ -159,7 +159,7 @@ beginwork updateExpirationTime < renderExpirationTime 费解
 	23. fiber与workInProgress互相持有引用，把current指针指向workInProgress tree，丢掉旧的fiber tree。旧fiber就作为新fiber更新的预留空间，达到复用fiber实例的目的。
 	24. 工作中才有双树，稳态后只维持系统容器部分的双树(不变)和用户容器的单树。
 21. React和ReactDevTools通信
-	21. React -> ReactDevTools
+	21. React -> ReactDevTools【重新构建后需要将ReactDevTools中新构建的backend.js放到node_modules/react-devtools-core/build】
 		22. React: backend.js(node_modules/react-devtools-core/build)
 			23. ws.send(JSON.stringify(data));
 		23. ReactDevTools: standalone.js (react-devtools-p/packages/react-devtools-core/src)

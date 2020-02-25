@@ -27,40 +27,67 @@ import horizontalCalendarList from "./CalendarDemo/screens/horizontalCalendarLis
 // console.log('SSU', NativeModules.ToastAndroid);
 // debugger;
 AppRegistry.registerComponent('AwesomeProject', () => {
-    return function HelloSSUTextFunc () {
-        // const rawSSUToastAndroid = NativeModules.SSUToastAndroid;
-        // Object.defineProperty(NativeModules, 'SSUToastAndroid', {
-        //     get() {
-        //         console.log('HelloSSUTextFunc', '监听到正在获取属性SSUToastAndroid的值');
-        //         alert('监听到正在获取属性SSUToastAndroid的值');
-        //         return rawSSUToastAndroid;
-        //     }
-        // });
-        // const rawSSUView = NativeModules.UIManager.SSUView;
-        // console.log('HelloSSUTextFunc', NativeModules.UIManager);
-        // console.log('HelloSSUTextFunc', SSUView);
-        // Object.defineProperty(NativeModules.UIManager, 'SSUView', {
-        //     get() {
-        //         debugger;
-        //         console.log('HelloSSUTextFunc', '监听到正在获取属性SSUView的值');
-        //         alert('监听到正在获取属性SSUView的值');
-        //         return rawSSUView;
-        //     }
-        // });
-        // const rawRequireNativeComponent = requireNativeComponent;
-        // requireNativeComponent = function (name) {
-        //     console.log('HelloSSUTextFunc', '监听到正在获取属性SSUView的值');
-        //     alert('监听到正在获取属性SSUView的值');
-        //     return rawRequireNativeComponent(name);
-        // };
-        // debugger;
-        // const SSUView = requireNativeComponent('SSUView');
-        // NativeModules.SSUToastAndroid;
-        // console.log('HelloSSUTextFunc', NativeModules.SSUToastAndroid);
-        // return <SSUView style={{width: 100, height: 100}}/>;
-        const RCTView = 'RCTView';
-        return <RCTView style={{width: 100, height: 100, backgroundColor: 'blue'}}/>;
+    return class HelloSSUComponent extends React.PureComponent {
+        isFirst = true;
+        constructor(){
+            super();
+        }
+
+        componentDidMount(): void {
+            setTimeout(() => {
+                this.forceUpdate();
+            }, 1000);
+        }
+
+        render() {
+            if (this.isFirst) {
+                this.isFirst = false;
+                const RCTView = 'RCTView';
+                return <RCTView style={ { width: 100, height: 100, backgroundColor: 'blue' } }/>;
+            } else {
+                requireNativeComponent('SSUView');
+                const SSUView = 'SSUView';
+                console.log('SSUView', SSUView);
+                return <SSUView style={{width: 100, height: 100}}/>;
+            }
+        }
     };
+    // return function HelloSSUTextFunc () {
+    //     // const rawSSUToastAndroid = NativeModules.SSUToastAndroid;
+    //     // Object.defineProperty(NativeModules, 'SSUToastAndroid', {
+    //     //     get() {
+    //     //         console.log('HelloSSUTextFunc', '监听到正在获取属性SSUToastAndroid的值');
+    //     //         alert('监听到正在获取属性SSUToastAndroid的值');
+    //     //         return rawSSUToastAndroid;
+    //     //     }
+    //     // });
+    //     // const rawSSUView = NativeModules.UIManager.SSUView;
+    //     // console.log('HelloSSUTextFunc', NativeModules.UIManager);
+    //     // console.log('HelloSSUTextFunc', SSUView);
+    //     // Object.defineProperty(NativeModules.UIManager, 'SSUView', {
+    //     //     get() {
+    //     //         debugger;
+    //     //         console.log('HelloSSUTextFunc', '监听到正在获取属性SSUView的值');
+    //     //         alert('监听到正在获取属性SSUView的值');
+    //     //         return rawSSUView;
+    //     //     }
+    //     // });
+    //     // const rawRequireNativeComponent = requireNativeComponent;
+    //     // requireNativeComponent = function (name) {
+    //     //     console.log('HelloSSUTextFunc', '监听到正在获取属性SSUView的值');
+    //     //     alert('监听到正在获取属性SSUView的值');
+    //     //     return rawRequireNativeComponent(name);
+    //     // };
+    //     // debugger;
+    //     // NativeModules.SSUToastAndroid;
+    //     // console.log('HelloSSUTextFunc', NativeModules.SSUToastAndroid);
+    //     const RCTView = 'RCTView';
+    //     return <RCTView style={{width: 100, height: 100, backgroundColor: 'blue'}}/>;
+    //     // requireNativeComponent('SSUView');
+    //     // const SSUView = 'SSUView';
+    //     // console.log('SSUView', SSUView);
+    //     // return <SSUView style={{width: 100, height: 100}}/>;
+    // };
 });
 // AppRegistry.registerComponent('AwesomeProject', () => ThirdBridgeDemo);
 // AppRegistry.registerComponent(appName, () => FlatListDemo);
